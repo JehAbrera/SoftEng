@@ -1,0 +1,102 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS styling for nav */
+/* Nav icon */
+.icon-container {
+    font-size: 1.2rem;
+}
+/* nav wrapper */
+.nav-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    z-index: 1;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+}
+.nav-wrapper * {
+    font-weight: bolder;
+}
+/* nav content wrapper */
+.nav-content {
+    display: flex;
+}
+
+/* nav contents */
+.nav-item {
+    display: block;
+    padding: 1rem;
+    color: var(--black);
+}
+.nav-item:hover, .nav-item:hover .dp-title 
+, .nav-item:hover i {
+    cursor: pointer;
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+/* Dropdown for nav */
+.dropdown {
+    position: relative;
+}
+.dropdown-content {
+    width: 250px;
+    top: 100%;
+    left: 0;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: var(--brown);
+}
+.dropdown-content * {
+    color: var(--white);
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* nav color on scroll */
+.nav-scrolled {
+    background-color: var(--brown);
+}
+.nav-scrolled * {
+    color: var(--white);
+}
+
+/* screen size control */
+@media screen and (max-width: 767px) {
+    .nav-content * {
+        font-size: 0.7rem;
+    }
+}
+
+/* sample content */ 
+.main-content {
+    height: 110vh;
+    width: 100%;
+    background: url(https://img.texasmonthly.com/2023/07/texas-painted-churches-1.jpg?auto=compress&crop=faces&fit=fit&fm=jpg&h=0&ixlib=php-3.3.1&q=45&w=1250) center/cover no-repeat;
+}
