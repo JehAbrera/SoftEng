@@ -84,7 +84,7 @@ $_SESSION['isLoggedIn'] = true;
                         <i class="fa-solid fa-phone"></i>
                     </div>
                     <div class="foot-info">
-                        <span>8527-7925</span>
+                        <span>Contact Number: 8527-7925</span>
                     </div>
                 </div>
                 <div class="foot-item">
@@ -92,7 +92,7 @@ $_SESSION['isLoggedIn'] = true;
                         <i class="fa-solid fa-fax"></i>
                     </div>
                     <div class="foot-info">
-                        <span>7799-5429</span>
+                        <span>Fax: 7799-5429</span>
                     </div>
                 </div>
                 <div class="foot-item">
