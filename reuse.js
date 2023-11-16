@@ -6,3 +6,12 @@ window.onscroll = () => {
         navbar.classList.remove('nav-scrolled');
     }
 };
+
+function triggerSideNav() {
+    const side = document.querySelector('.nav-content');
+    if (side.className === "nav-content") {
+        side.className += " responsive";
+      } else {
+        side.className = "nav-content";
+      }
+}
