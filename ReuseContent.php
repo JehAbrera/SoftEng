@@ -11,7 +11,7 @@ $_SESSION['isLoggedIn'] = true;
     <link rel="stylesheet" href="reuse.css">
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
-    <title>Reuse Nav Footer</title>
+    <title>SJCP FAQ</title>
 </head>
 
 <body>
@@ -38,7 +38,13 @@ $_SESSION['isLoggedIn'] = true;
                         <div class="nav-item">Search Record</div>
                     </div>
                 </div>
-                <div class="nav-item">Events</div>
+                <div class="nav-item dropdown">
+                    <span class="dp-title">Events <i class="fa-solid fa-angle-down"></i></span>
+                    <div class="dropdown-content">
+                        <div class="nav-item">Announcements</div>
+                        <div class="nav-item">Calendar</div>
+                    </div>
+                </div>
                 <div class="nav-item">About Us</div>
                 <?php
                 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
@@ -55,10 +61,12 @@ $_SESSION['isLoggedIn'] = true;
                 ?>
             </div>
         </nav>
-        <!-- Filler Body - No need to Copy -->
+
+        <!-- FAQ content -->
         <div class="main-body-wrapper">
             <section class="main-content"></section>
         </div>
+
         <!-- Reusable Footer -->
         <footer class="footer-wrapper">
             <div class="footer-logo">
