@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #808080;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS styling for nav */
+/* Nav icon */
+.icon-container {
+    font-size: 1.2rem;
+}
+/* nav wrapper */
+.nav-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    z-index: 1;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+}
+.nav-wrapper * {
+    font-weight: bolder;
+}
+/* nav content wrapper */
+.nav-content {
+    display: flex;
+}
+
+/* nav contents */
+.nav-item, .top-icon {
+    display: block;
+    padding: 1rem;
+    color: var(--black);
+}
+.nav-item:hover, .nav-item:hover .dp-title 
+, .nav-item:hover i, .top-icon:hover, .top-icon:hover i {
+    cursor: pointer;
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+/* Dropdown for nav */
+.dropdown {
+    position: relative;
+}
+.dropdown-content {
+    width: 250px;
+    top: 100%;
+    left: 0;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: var(--brown);
+}
+.dropdown-content * {
+    color: var(--white);
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* nav color on scroll */
+.nav-scrolled {
+    background-color: var(--brown);
+}
+.nav-scrolled * {
+    color: var(--white);
+}
+
+/* Responsive nav */
+.top-icon {
+    display: none;
+}
+
+/*Available services main body*/
+
+.main-content {
+    width: 100%;
+    padding: 8rem 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.main-header {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.main-header span {
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    width: min(80%, 1400px);
+    height: auto;
+    padding: 50px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 15px 1px var(--black);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: justify;
+	border: 1px solid green;
+}
+
+.events-preference {
+    width: 100%;
+    display: flex;
+	flex-direction: column;
+}
+
+.events-preference * {
+    font-size: 1.25rem;
+}
+
+.events-select-container{
+	justify-content: space between;
+}
+.date-preferred-container {
+    display: flex;
+	justify-content: space between;
+}
+
+.available-schedule{
+    color: var(--pink);
+    margin-left: 32%;
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.schedule-time, .schedule-availability{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.select-cont{
+	display: flex;
+	justify-content: space-between;
+}
+
+form{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+select{
+    width: 250px;
+    margin: 50px;
+    background-color: lightgrey;
+}
+
+option{
+    background-color:var(--white);
+}
+
+/* Footer styling */
+footer{
+    position:fixed;
+    bottom:0px;
+    width:100%;
+}
+
+.footer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 4rem;
+    background-color: var(--brown);
+}
+.footer-wrapper * {
+    color: var(--white);
+}
+.footer-logowrap {
+    font-size: 3rem;
+    font-weight: 900;
+    padding: 1rem 0;
+}
+.footer-addwrap {
+    padding: 1rem 0;
+    font-size: 0.8rem;
+    border-top: 2px solid var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.footer-contact {
+    margin: 1rem 0;
+}
+.foot-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    align-items: center;
+}
+.foot-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* screen size control */
+@media screen and (max-width: 767px) {
+    .nav-content * {
+        font-size: 0.8rem;
+    }
+}
+@media screen and (width <= 705px) {
+    /* for nav*/
+    .nav-wrapper {
+        padding: 0;
+    }
+    .navicon-wrapper {
+        display: none;
+    }
+    .nav-content div:not(:first-child) {
+        display: none;
+    }
+    .top-icon {
+        display: block;
+    }
+    .nav-content.responsive {
+        position: absolute;
+        width: 70%;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 2;
+        background-color: var(--brown);
+    }
+    .nav-content.responsive * {
+        color: var(--white);
+    }
+    .nav-content.responsive .dropdown-content {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    .nav-content.responsive .nav-item {
+        display: block;
+    }
+    .nav-item:hover {
+        color: var(--black);
+    }
+
+    /* for footer */
+    .footer-wrapper {
+        flex-direction: column;
+    }
+    .foot-info, .footer-addwrap {
+        font-size: 0.6rem;
+    }
+}
