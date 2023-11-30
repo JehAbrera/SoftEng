@@ -11,14 +11,14 @@ function triggerSideNav() {
     const side = document.querySelector('.nav-content');
     if (side.className === "nav-content") {
         side.className += " responsive";
-      } else {
+      } else {  
         side.className = "nav-content";
       }
 }
 
 const login = document.getElementById('login');
 const openLogin = () => {
-    if (login.style.display == "none") {
+    if (login.style.display == "none" || login.style.display == "") {
         login.style.display = "block"
         document.body.style.height = "100%";
         document.body.style.overflow = "hidden";

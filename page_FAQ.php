@@ -69,10 +69,27 @@ session_start();
                 <div class="nav-item dropdown">
                     <span class="dp-title">Services <i class="fa-solid fa-angle-down"></i></span>
                     <div class="dropdown-content">
-                        <div class="nav-item">View Services</div>
-                        <div class="nav-item">Set Appointment</div>
-                        <div class="nav-item">View Appointment</div>
-                        <div class="nav-item">Search Record</div>
+                        <div class="nav-item">
+                            View Services
+                        </div>
+                        <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
+                                                    echo 'onclick="openLogin()"';
+                                                } else {
+                                                } ?>>
+                            Set Appointment
+                        </div>
+                        <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
+                                                    echo 'onclick="openLogin()"';
+                                                } else {
+                                                } ?>>
+                            View Appointment
+                        </div>
+                        <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
+                                                    echo 'onclick="openLogin()"';
+                                                } else {
+                                                } ?>>
+                            Search Record
+                        </div>
                     </div>
                 </div>
                 <div class="nav-item dropdown">

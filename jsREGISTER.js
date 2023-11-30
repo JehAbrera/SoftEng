@@ -6,7 +6,7 @@ const req2 = document.getElementsByClassName("req2");
 const req3 = document.getElementsByClassName("req3");
 
 const openForm = item => {
-    if (document.getElementById(item.id).style.display == "none") {
+    if (document.getElementById(item.id).style.display == "none" || document.getElementById(item.id).style.display == "") {
         document.getElementById(item.id).style.display = "flex";
 
         for (var index = 0; index < inputArray.length; index++)

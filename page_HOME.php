@@ -15,6 +15,44 @@ session_start();
 
 <body>
     <div class="content-wrapper">
+        <!-- Login Form -->
+        <div class="login-cover" id="login">
+            <div class="login-form">
+                <i class="fa-solid fa-xmark close-icon" onclick="openLogin()"></i>
+                <div class="login-header">
+                    Log-In
+                </div>
+                <div class="error-message">
+                    <?php
+                    if (!isset($_SESSION['isValidEmail'])) {
+                    } else if ($_SESSION['isValidEmail'] == false) {
+                        echo '<span class="error-dialogue"> This email address is not connected to an account! Please double-check or register first.</span>';
+                    } else if (!isset($_SESSION['isValidPass'])) {
+                    } else if ($_SESSION['isValidPass'] == false) {
+                        echo '<span class="error-dialogue"> Your password is incorrect! Please try again.</span>';
+                    }
+                    ?>
+                </div>
+                <div class="loginform-wrapper">
+                    <form action="" method="post">
+                        <span>Email:</span>
+                        <div class="form-input">
+                            <input type="text" name="" id="" required>
+                        </div>
+                        <span>Password: </span>
+                        <div class="form-input">
+                            <input type="password" name="" id="" required>
+                            <i class="fa-solid fa-eye" id="pass-icon"></i>
+                        </div>
+                        <span><a href="" target="_self" rel="noopener noreferrer">Forgot Password?</a></span>
+                        <button type="submit">Log-in</button>
+                        <span>Don't have an account yet? <a href="" target="_self" rel="noopener noreferrer">Register Now</a></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Reusable Nav -->
         <nav class="nav-wrapper">
             <div class="navicon-wrapper">
@@ -31,10 +69,27 @@ session_start();
                 <div class="nav-item dropdown">
                     <span class="dp-title">Services <i class="fa-solid fa-angle-down"></i></span>
                     <div class="dropdown-content">
-                        <div class="nav-item">View Services</div>
-                        <div class="nav-item">Set Appointment</div>
-                        <div class="nav-item">View Appointment</div>
-                        <div class="nav-item">Search Record</div>
+                        <div class="nav-item">
+                            View Services
+                        </div>
+                        <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
+                                                    echo 'onclick="openLogin()"';
+                                                } else {
+                                                } ?>>
+                            Set Appointment
+                        </div>
+                        <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
+                                                    echo 'onclick="openLogin()"';
+                                                } else {
+                                                } ?>>
+                            View Appointment
+                        </div>
+                        <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
+                                                    echo 'onclick="openLogin()"';
+                                                } else {
+                                                } ?>>
+                            Search Record
+                        </div>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
@@ -47,7 +102,7 @@ session_start();
                 <div class="nav-item">About Us</div>
                 <?php
                 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
-                    echo '<div class="nav-item">Login</div>';
+                    echo '<div class="nav-item" onclick="openLogin()">Login</div>';
                 } else if ($_SESSION['isLoggedIn'] == true) {
                     echo '<div class="nav-item dropdown">' ?>
                     <span class="dp-title">Profile <i class="fa-solid fa-angle-down"></i></span>
@@ -194,14 +249,14 @@ session_start();
                     <span><strong>Vision of the Archdiocese:</strong></span>
                     <div class="contents">
                         <p>
-                        A country called by the Father to Jesus Christ to be a community of people with life events. Witnessing the reign of God living the Paschal Mystery in the power of the Holy Spirit along with the Blessed Mother, the Virgin Mary.
+                            A country called by the Father to Jesus Christ to be a community of people with life events. Witnessing the reign of God living the Paschal Mystery in the power of the Holy Spirit along with the Blessed Mother, the Virgin Mary.
                         </p>
                     </div>
                     <span><strong>Vision of the Parish:</strong></span>
                     <div class="contents">
                         <p>
-                        A faithful Christian community called by the Father, in communion with Jesus Christ and guided by the Holy Spirit to become a  model of love for the word and deed rooted in deep faith, continually shaped by Christian wisdom, 
-                        and spreading the word of God in modern evangelization. A community thriving in all aspects of life, actively engaging with society towards the fulfillment of life with the help of Mother Mary and San Juan de la Cruz.
+                            A faithful Christian community called by the Father, in communion with Jesus Christ and guided by the Holy Spirit to become a model of love for the word and deed rooted in deep faith, continually shaped by Christian wisdom,
+                            and spreading the word of God in modern evangelization. A community thriving in all aspects of life, actively engaging with society towards the fulfillment of life with the help of Mother Mary and San Juan de la Cruz.
                         </p>
                     </div>
                 </div>

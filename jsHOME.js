@@ -75,3 +75,16 @@ function showSlides() {
     slides[slideIndex - 1].style.display = "flex";
     dots[slideIndex - 1].className += " active-dot";
 }
+
+const login = document.getElementById('login');
+const openLogin = () => {
+    if (login.style.display == "none" || login.style.display == "") {
+        login.style.display = "block"
+        document.body.style.height = "100%";
+        document.body.style.overflow = "hidden";
+    } else {
+        login.style.display = "none"
+        document.body.style.height = "auto";
+        document.body.style.overflow = "unset";
+    }
+}

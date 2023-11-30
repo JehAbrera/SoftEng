@@ -14,6 +14,7 @@ session_start();
 </head>
 
 <body>
+    <!-- To update for validation and patterns -->
     <div class="registration-wrapper">
         <!-- Left Section -->
         <section class="left-content">

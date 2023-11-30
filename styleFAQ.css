@@ -42,7 +42,7 @@ body {
     left: 0;
     display: none;
     position: fixed;
-    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
 }
 
 .login-form {
