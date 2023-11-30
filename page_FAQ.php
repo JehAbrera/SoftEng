@@ -15,6 +15,44 @@ session_start();
 
 <body>
     <div class="content-wrapper">
+        <!-- Login Form -->
+        <div class="login-cover" id="login">
+            <div class="login-form">
+                <i class="fa-solid fa-xmark close-icon" onclick="openLogin()"></i>
+                <div class="login-header">
+                    Log-In
+                </div>
+                <div class="error-message">
+                    <?php
+                    if (!isset($_SESSION['isValidEmail'])) {
+                    } else if ($_SESSION['isValidEmail'] == false) {
+                        echo '<span class="error-dialogue"> This email address is not connected to an account! Please double-check or register first.</span>';
+                    } else if (!isset($_SESSION['isValidPass'])) {
+                    } else if ($_SESSION['isValidPass'] == false) {
+                        echo '<span class="error-dialogue"> Your password is incorrect! Please try again.</span>';
+                    }
+                    ?>
+                </div>
+                <div class="loginform-wrapper">
+                    <form action="" method="post">
+                        <span>Email:</span>
+                        <div class="form-input">
+                            <input type="text" name="" id="" required>
+                        </div>
+                        <span>Password: </span>
+                        <div class="form-input">
+                            <input type="password" name="" id="" required>
+                            <i class="fa-solid fa-eye" id="pass-icon"></i>
+                        </div>
+                        <span><a href="" target="_self" rel="noopener noreferrer">Forgot Password?</a></span>
+                        <button type="submit">Log-in</button>
+                        <span>Don't have an account yet? <a href="" target="_self" rel="noopener noreferrer">Register Now</a></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Reusable Nav -->
         <nav class="nav-wrapper">
             <div class="navicon-wrapper">
@@ -47,7 +85,7 @@ session_start();
                 <div class="nav-item">About Us</div>
                 <?php
                 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
-                    echo '<div class="nav-item">Login</div>';
+                    echo '<div class="nav-item" onclick="openLogin()">Login</div>';
                 } else if ($_SESSION['isLoggedIn'] == true) {
                     echo '<div class="nav-item dropdown">' ?>
                     <span class="dp-title">Profile <i class="fa-solid fa-angle-down"></i></span>

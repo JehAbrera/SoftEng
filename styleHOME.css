@@ -1,0 +1,480 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #696969;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS styling for nav */
+/* Nav icon */
+.icon-container, .icon-container * {
+    font-size: 1.2rem;
+    color: var(--white);
+}
+/* nav wrapper */
+.nav-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    z-index: 1;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+}
+.nav-wrapper * {
+    font-weight: bolder;
+}
+/* nav content wrapper */
+.nav-content {
+    display: flex;
+}
+
+/* nav contents */
+.nav-item, .top-icon {
+    display: block;
+    padding: 1rem;
+    color: var(--white);
+}
+.nav-item:hover, .nav-item:hover .dp-title 
+, .nav-item:hover i, .top-icon:hover, .top-icon:hover i, .nav-item.active:hover {
+    cursor: pointer;
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+/* Dropdown for nav */
+.dropdown {
+    position: relative;
+}
+.dropdown * {
+    color: var(--white);
+}
+.dropdown-content {
+    width: 250px;
+    top: 100%;
+    left: 0;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: var(--brown);
+}
+.dropdown-content * {
+    color: var(--white);
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* nav color on scroll */
+.nav-scrolled {
+    background-color: var(--brown);
+}
+.nav-scrolled * {
+    color: var(--white);
+}
+
+/* Responsive nav */
+.top-icon {
+    display: none;
+}
+
+/* Active nav link */
+.nav-item.active {
+    background-color: var(--brown);
+    color: var(--white);
+}
+.nav-wrapper.nav-scrolled .nav-item.active {
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+/* Footer styling */
+.footer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 4rem;
+    background-color: var(--brown);
+}
+.footer-wrapper * {
+    color: var(--white);
+}
+.footer-logowrap {
+    font-size: 3rem;
+    font-weight: 900;
+    padding: 1rem 0;
+}
+.footer-addwrap {
+    padding: 1rem 0;
+    font-size: 0.8rem;
+    border-top: 2px solid var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.footer-contact {
+    margin: 1rem 0;
+}
+.foot-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    align-items: center;
+}
+.foot-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content css */
+section {
+    margin-bottom: 2rem;
+}
+
+/* Slideshow styling */
+.slideshow-wrapper {
+    height: 75vh;
+    width: 100%;
+    position: relative;
+}
+.img-slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.img-slide > .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+.img-slide> .content > span {
+    font-size: clamp(1rem, -0.0714rem + 3.4286vw, 2.5rem);
+    font-weight: bolder;
+    color: var(--white);
+}
+.img-slide> .content > p {
+    font-size: clamp(0.7rem, 0.3429rem + 1.1429vw, 1.2rem);
+    color: var(--white);
+}
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 3s;
+    animation-name: fade;
+    animation-duration: 3s;
+}
+/* keyframe animation for slideshow transition */
+@-webkit-keyframes fade {
+    from {
+        opacity: .9
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: .9
+    }
+
+    to {
+        opacity: 1
+    }
+}
+.img1 {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(photos/EDITED.jpg) center/cover no-repeat;
+}
+.img2 {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(photos/mass.jpg) center/cover no-repeat;
+}
+.img3 {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url(photos/House-Blessing-scaled.jpg) center/cover no-repeat;
+}
+.img4 {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(photos/Fiesta2.1.jpg) center/cover no-repeat;
+}
+.img5 {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url(photos/FR.jpg) center/cover no-repeat;
+}
+/* pointer styling */
+.left, .right {
+    cursor: pointer;
+    position: absolute;
+    height: 100%;
+    width: auto;
+    font-size: 2rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    transition: 0.6s ease;
+    padding-inline: 1rem;
+    user-select: none;
+    top: 0;
+}
+.left i, .right i {
+    color: var(--white);
+}
+.left:hover,
+.right:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.left:hover i,
+.right:hover i {
+    color: var(--white);
+}
+.left {
+    left: 0;
+}
+.right {
+    right: 0;
+}
+/* slideshow navigation dot styling */
+.dot-container {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.dot {
+    width: 1rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0.5rem;
+    background: var(--grey);
+}
+.active-dot {
+    background-color: var(--brown);
+}
+
+/* detail section styling */
+.detail-wrapper {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    background-color: var(--white);
+}
+.detail-card {
+    width: min(90%, 1200px);
+    display: flex;
+    flex-wrap: wrap;
+}
+.sched-left, .location-right {
+    flex: 1;
+    padding: 1rem 0;
+}
+.sched-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border-right: 2px solid var(--black);
+}
+.sched-container {
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    font-size: 0.7rem;
+}
+.sched-container > div {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    justify-content: space-between;
+}
+button {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background-color: var(--pink);
+    box-shadow: 0 0 10px 1px var(--grey);
+    border-radius: 50px;
+    transition: 0.6s ease;
+    border: none;
+    font-weight: 600;
+}
+button:hover {
+    scale: 1.1;
+    background-color: var(--brown);
+    color: var(--white);
+}
+.location-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem;
+    text-align: center;
+    gap: 1rem;
+}
+.location-right span:first-child {
+    font-size: 1.5rem;
+}
+
+.location-right span:nth-child(3) i {
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+/* saint info styling */
+.saintinfo-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 10%;
+}
+.saint-card {
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 2px var(--black);
+    flex-wrap: wrap;
+}
+.saint-img {
+    flex: 1;
+}
+.saint-desc {
+    flex: 2;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
+}
+.saint-desc span {
+    font-size: 1.5rem;
+}
+.saint-desc p {
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
+}
+
+/* Mission Vision */
+.vismis-wrapper {
+    width: 100%;
+    display: flex;
+    padding: 5rem 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--brown);
+}
+.vismis-wrapper * {
+    color: var(--white);
+}
+.mission-container, .vision-container {
+    width: min(90%, 1000px);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: justify;
+}
+.contents * {
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
+}
+
+/* screen size control */
+/* query screen size for font change */
+@media screen and (max-width: 1100px) {
+    .saint-card {
+        flex-direction: column;
+    }
+    .saint-desc, .saint-img {
+        flex: 1;
+    }
+}
+@media screen and (max-width: 767px) {
+    .nav-content * {
+        font-size: 0.8rem;
+    }
+    .saint-desc {
+        font-size: 0.75rem;
+    }
+    /* for mass sched */ 
+    .detail-card {
+        flex-direction: column;
+    }
+    .sched-left {
+        border-right: unset;
+        border-bottom: 2px solid var(--black);
+    }
+}
+/* query screen size for display */
+@media screen and (width <= 705px) {
+    /* for nav*/
+    .nav-wrapper {
+        padding: 0;
+    }
+    .navicon-wrapper {
+        display: none;
+    }
+    .nav-content div:not(:first-child) {
+        display: none;
+    }
+    .top-icon {
+        display: block;
+    }
+    .nav-content.responsive {
+        position: absolute;
+        width: 70%;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 2;
+        background-color: var(--brown);
+    }
+    .nav-content.responsive * {
+        color: var(--white);
+    }
+    .nav-content.responsive .dropdown-content {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    .nav-content.responsive .nav-item {
+        display: block;
+    }
+    .nav-item:hover {
+        color: var(--black);
+    }
+
+    /* for footer */
+    .footer-wrapper {
+        flex-direction: column;
+    }
+    .foot-info, .footer-addwrap {
+        font-size: 0.6rem;
+    }
+}

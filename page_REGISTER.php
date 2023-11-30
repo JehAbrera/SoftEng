@@ -19,11 +19,24 @@
                     <span><i class="fa-solid fa-church"></i></span>
                     <span>&nbsp&nbspSt. John of the Cross Parish</span>
                 </div>
+                <div class="direction-wrapper">
+                    <strong><span style="font-size: 1.3rem;">Create an Account</span></strong>
+                    <p>By creating an account, you gain access to a host of features designed to make your experience seamless and efficient. Here's a step-by-step guide for creating an account:</p>
+                    <ol>
+                        <li>Provide Personal information.</li>
+                        <li>Create a strong Password.</li>
+                        <li>Verify Account using email address.</li>
+                    </ol>
+                    <span>Already Registered? <a href="" style="color: blue;">Login</a></span>
+                </div>
             </div>
         </section>
 
         <!-- Right/ Form Section -->
         <section class="right-content">
+            <div class="registration-part">
+                <span><i class="fa-solid fa-church"></i> User Registration</span>
+            </div>
             <div class="form-wrapper">
                 <button class="backbtn">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -52,37 +65,41 @@
                             <span>Email Address</span>
                             <input type="email" name="" id="">
                         </div>
-                        <div class="error email">Email already taken. Please use a different email.</div>
+                        <?php
+                        if (isset($_SESSION['takenEmail']) && $_SESSION['takenEmail']) {
+                            echo '<div class="error email">Email already taken. Please use a different email.</div>';
+                        }
+                        ?>
                         <div class="form-input">
                             <span>Password</span>
                             <div class="password-space">
-                                <input type="password" name="password" id="">
+                                <input type="password" name="password" id="password" onkeyup="checkPass()">
                                 <i class="fa-solid fa-eye"></i>
                             </div>
                         </div>
                         <div class="form-input">
                             <span>Confirm Password</span>
                             <div class="password-space">
-                                <input type="password" name="conpassword" id="">
+                                <input type="password" name="conpassword" id="cpass" onkeyup="checkConfirm()">
                                 <i class="fa-solid fa-eye"></i>
                             </div>
                         </div>
-                        <div class="error pass">Passwords do not match</div>
+                        <div class="error pass" id="errorPass">Passwords do not match</div>
                         <div class="pass-requirements">
                             <span>Password Requirements:</span>
                             <div class="requirement">
-                                <span><i class="fa-solid fa-circle-exclamation"></i> Atleast 8 characters long</span>
+                                <span class="req1" id="req1"><i class="fa-solid fa-circle-exclamation req1"></i> Atleast 8 characters long</span>
                             </div>
                             <div class="requirement">
-                                <span><i class="fa-solid fa-circle-exclamation"></i> A combination of uppercase and lowercase letters</span>
+                                <span class="req2"><i class="fa-solid fa-circle-exclamation req2"></i> A combination of uppercase and lowercase letters</span>
                             </div>
                             <div class="requirement">
-                                <span><i class="fa-solid fa-circle-exclamation"></i> Must contain atleast one special character/s</span>
+                                <span class="req3"><i class="fa-solid fa-circle-exclamation req3"></i> Must contain atleast one special character/s</span>
                             </div>
                         </div>
                         <div class="button-area">
-                            <button type="button" onclick="openForm(clearForm)">Clear</button>
-                            <button type="button" onclick="openForm(submitForm)">Submit</button>
+                            <button type="button" onclick="openForm(clearForm)" id="clear">Clear</button>
+                            <button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
                         </div>
                         <div class="popupForm" id="clearForm">
                             <div class="icon-box"></div>
@@ -90,8 +107,8 @@
                                 Are you sure you want to clear?
                             </div>
                             <div class="form-btnarea">
-                                <button type="button">No</button>
-                                <button type="reset">Yes</button>
+                                <button type="button" onclick="openForm(clearForm)">No</button>
+                                <button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
                             </div>
                         </div>
                         <div class="popupForm" id="submitForm">
@@ -100,7 +117,7 @@
                                 Are you sure you want to submit?
                             </div>
                             <div class="form-btnarea">
-                                <button type="button">No</button>
+                                <button type="button" onclick="openForm(submitForm)">No</button>
                                 <button type="Submit">Yes</button>
                             </div>
                         </div>

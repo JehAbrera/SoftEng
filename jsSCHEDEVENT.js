@@ -15,16 +15,3 @@ function triggerSideNav() {
         side.className = "nav-content";
       }
 }
-
-const login = document.getElementById('login');
-const openLogin = () => {
-    if (login.style.display == "none") {
-        login.style.display = "block"
-        document.body.style.height = "100%";
-        document.body.style.overflow = "hidden";
-    } else {
-        login.style.display = "none"
-        document.body.style.height = "auto";
-        document.body.style.overflow = "unset";
-    }
-}

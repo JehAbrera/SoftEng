@@ -48,8 +48,6 @@ body {
     transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
 }
 .heading-wrapper {
     display: flex;
@@ -65,30 +63,20 @@ body {
 .heading-wrapper span i {
     font-size: clamp(3rem, 2rem + 3.2vw, 5rem);
 }
-.direction-wrapper {
-    margin-top: 16px;
-    width: 85%;
-    padding-inline: 8px;
-    background: linear-gradient(to bottom left, rgba(225, 225, 225, 0.4), rgba(255, 255, 255, 0.9));
-}
-.direction-wrapper * {
-    text-align: justify;
-    font-weight: 600;
-}
 
 /* right content */
 .right-content {
     flex: 1;
     display: flex;
     justify-content: center;
-    padding: 2rem 0 1rem;
+    align-items: center;
 }
 .registration-part {
     font-size: 2rem;
     font-weight: 900;
     display: none;
 }
-.form-wrapper {
+.otp-card {
     width: min(90%, 400px);
     padding: 1rem;
     overflow: hidden;
@@ -107,45 +95,31 @@ body {
     font-weight: 600;
     margin: 0.5rem 0;
 }
-.form-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
+.info-content {
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
 }
-.form-input {
-    display: flex;
-    flex-direction: column;
-}
-.form-input > span {
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-.password-space {
-    position: relative;
-}
-.password-space i {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translate(0, -50%);
-}
-.pass-requirements {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    background-color: var(--pink);
-}
-.pass-requirements > span {
-    font-weight: 600;
-}
-.requirement {
-    font-size: 0.75rem;
-}
-input {
+.otp-input > * {
     width: 100%;
-    padding: 0.25rem 0.5rem;
 }
-
-/* for buttons */
+.otp-input > span:first-child {
+    font-weight: 600;
+}
+.otp-input > span:nth-child(3) {
+    font-size: 0.7rem;
+    color: red;
+    font-weight: 600;
+}
+.option-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 8px;
+}
+.option-wrapper > span > a {
+    color: blue;
+    text-decoration: none;
+}
 button {
     cursor: pointer;
     transition: 0.6s ease;
@@ -168,60 +142,20 @@ button:hover {
     color: var(--white);
     font-weight: 900;
 }
-.popupForm {
-    background-color: var(--white);
-    border-radius: 20px;
-    box-shadow: 0 0 10px var(--black);
-    padding: 1rem;
-    width: 80%;
-    text-align: center;
-}
-.form-btnarea {
-    width: 80%;
-}
-.button-area, .form-btnarea {
-    margin-top: 3rem;
-    display: flex;
-    justify-content: space-between;
-}
-.button-area button, .form-btnarea button {
+.option-wrapper > button {
     width: 5rem;
     padding: 0.5rem 1rem;
     border-radius: 25px;
     border: none;
-    box-shadow: 0 0 10px grey;
+    box-shadow: 0 0 10px 1px grey;
     font-weight: 600;
-}
-.button-area button:first-child, .form-btnarea button:first-child {
-    background-color: var(--btnRed);
-    color: red;
-}
-.button-area button:nth-child(2), .form-btnarea button:nth-child(2) {
-    background-color: var(--btnGreen);
     color: green;
+    background-color: var(--btnGreen);
 }
-.error.pass {
-    display: none;
-}
-
-/* popup form */ 
-.popupForm {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.otp-input > input {
+    padding: 0.25rem 0.5rem;
 }
 
-/* for error message */ 
-.error {
-    font-size: 0.6rem;
-    color: red;
-    font-weight: 600;
-}
 
 /* screen size control */
 /* query screen size for font change */
@@ -240,10 +174,9 @@ button:hover {
     }
     .right-content {
         flex-direction: column;
-        align-items: center;
         gap: 1rem;
     }
-    .form-wrapper {
+    .otp-card {
         background: var(--white);
     }
     .registration-part, .registration-part * {
