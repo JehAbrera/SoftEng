@@ -397,7 +397,10 @@ $_SESSION['isLoggedIn'] = true;
 								else {
 									echo '<div> Event type: '.$type.'</div>';
 									echo '<div> Date: '.$date.'</div>';
-									?> <div> mass intention form </div><?php
+									?> <div> Mass intention form </div>
+									
+									
+									<?php
 								}
 							} else {
 								//do nothing
