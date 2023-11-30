@@ -1,0 +1,285 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #dddddd;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--grey);
+}
+
+* CSS styling for nav */
+/* Nav icon */
+.icon-container, .icon-container * {
+    font-size: 1.2rem;
+    color: var(--white);
+}
+/* nav wrapper */
+.nav-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    z-index: 1;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+}
+.nav-wrapper * {
+    font-weight: bolder;
+}
+/* nav content wrapper */
+.nav-content {
+    display: flex;
+}
+
+/* nav contents */
+.nav-item, .top-icon {
+    display: block;
+    padding: 1rem;
+    color: var(--white);
+}
+.dp-title, .dp-title *{
+    color: var(--white);
+}
+.nav-item:hover, .nav-item:hover .dp-title 
+, .nav-item:hover i, .top-icon:hover, .top-icon:hover i, .nav-item.active{
+    cursor: pointer;
+    background-color: var(--pink);
+    color: var(--black);
+}
+.active{
+    display: block;
+    padding: 1rem;
+    color: var(--white);
+    background-color: var(--pink);
+}
+
+/* Dropdown for nav */
+.dropdown {
+    position: relative;
+}
+.dropdown-content {
+    width: 250px;
+    top: 100%;
+    left: 0;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: var(--brown);
+}
+.dropdown-content * {
+    color: var(--white);
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* nav color on scroll */
+.nav-scrolled {
+    background-color: var(--brown);
+}
+.nav-scrolled * {
+    color: var(--white);
+}
+
+/* Responsive nav */
+.top-icon {
+    display: none;
+}
+/* Active nav link */
+.nav-item.active {
+    background-color: var(--brown);
+    color: var(--white);
+}
+.nav-wrapper.nav-scrolled .nav-item.active {
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+/* Footer styling */
+.footer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 4rem;
+    background-color: var(--brown);
+}
+.footer-wrapper * {
+    color: var(--white);
+}
+.footer-logowrap {
+    font-size: 3rem;
+    font-weight: 900;
+    padding: 1rem 0;
+}
+.footer-addwrap {
+    padding: 1rem 0;
+    font-size: 0.8rem;
+    border-top: 2px solid var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.footer-contact {
+    margin: 1rem 0;
+}
+.foot-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    align-items: center;
+}
+.foot-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* screen size control */
+@media screen and (max-width: 767px) {
+    .nav-content * {
+        font-size: 0.8rem;
+    }
+}
+@media screen and (width <= 705px) {
+    /* for nav*/
+    .nav-wrapper {
+        padding: 0;
+    }
+    .navicon-wrapper {
+        display: none;
+    }
+    .nav-content div:not(:first-child) {
+        display: none;
+    }
+    .top-icon {
+        display: block;
+    }
+    .nav-content.responsive {
+        position: absolute;
+        width: 70%;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 2;
+        background-color: var(--brown);
+    }
+    .nav-content.responsive * {
+        color: var(--white);
+    }
+    .nav-content.responsive .dropdown-content {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    .nav-content.responsive .nav-item {
+        display: block;
+    }
+    .nav-item:hover {
+        color: var(--black);
+    }
+
+    /* for footer */
+    .footer-wrapper {
+        flex-direction: column;
+    }
+    .foot-info, .footer-addwrap {
+        font-size: 0.6rem;
+    }
+}
+
+/* sample content */ 
+.main-content {
+    height: 60vh;
+    width: 100%;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url(images/header.png) center/cover no-repeat;
+    display: flex;
+    align-items: center;
+}
+.main-content-body{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+}
+.main-content-title{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1{
+    color: white;
+}
+.content-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+}
+.body-content{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    margin: 1rem 0;
+    box-shadow: 5px 5px 15px var(--black);
+    border-radius: 20px;
+}
+.details-container{
+    width: 95%;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color:var(--grey);
+    border-radius: 20px;
+}
+.top-cont{
+    display: flex;
+    justify-content: space-between;
+}
+form{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+button{
+    width: 19%;
+    font-size: clamp(0.5rem, 0.25rem + 0.8vw, 1rem);
+}
+.deletebutton{
+    width: auto;
+    border-radius: 25px;
+}
+.delete-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
