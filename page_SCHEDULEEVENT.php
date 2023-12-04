@@ -123,14 +123,6 @@ $_SESSION['isLoggedIn'] = true;
 									
 								<div class="events-select-container" id="specificBlessing" style="display: none;">
 									<span>
-										<label for="ddBlessing"><strong>Select type of blessing: </strong></label>
-										<select class="dropdown" id="ddBlessing" name="Event" onchange="openCalendar();">
-											<option value="" disabled selected hidden>Blessings</option>
-											<option value="House Blessing">House</option>
-											<option value="Car Blessing">Car</option>
-											<option value="Motorcycle Blessing">Motorcycle</option>
-											<option value="Store Blessing">Store</option>
-										</select>
 									</span>
 								</div>
 									
@@ -164,8 +156,11 @@ $_SESSION['isLoggedIn'] = true;
 								if(isset($_POST["submit"])){
 									$type = $_POST["ddEvent"];
 									$date = $_POST["calDate"];
-									if($type != "Mass Intention"){
+									$_SESSION['type'] = $type;
+									$_SESSION['date'] = $date;
+									if($type != "Mass Intention" && $type != "Blessing"){
 										$event = $_POST["Event"];
+										$_SESSION['event'] = $event;
 										echo '<div> Event main type: '.$type.'</div>';
 										echo '<div> Event type: '.$event.'</div>';
 										echo '<div> Date: '.$date.'</div>';
@@ -177,21 +172,10 @@ $_SESSION['isLoggedIn'] = true;
 											
 											$weddingst = array("09:00:00", "10:30:00", "14:00:00", "15:30:00");
 											$weddinget = array("10:15:00", "11:45:00", "15:15:00", "16:45:00");
+											//query for retrieving appointments in the same day
 											$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date'";
 											$result = mysqli_query($conn, $query);
-											/*INNER COMMENT START
-											while ($row = mysqli_fetch_array($result)) {
-												
-												for($x = 0; $x < count($weddingst); $x++){
-													if(strtotime($row[0]) != strtotime($weddingst[$x])){
-														echo $weddingst[$x];
-													} else if(strtotime($row[0]) == strtotime($weddingst[$x])){
-														
-													} else {
-														echo "wala lang";
-													}
-												}
-												INNER COMMENT END */
+											////////
 											$starttime = array();
 											$endtime = array();
 											$counter = 0;
@@ -230,7 +214,7 @@ $_SESSION['isLoggedIn'] = true;
 												</div>
 												<?php
 												$counter++;
-											}
+											} 
 											
 												?> 
 												
@@ -251,69 +235,140 @@ $_SESSION['isLoggedIn'] = true;
 															<div>> The couple must submit all the requirements before the date of the event. </div>
 														</div>
 													</div>
-													<div class="form-cont">
-														<b> Groom </b>
-														<div class="form">
-															<div class="form-grid-cont">
-																<label for="groom_lastName">Last name: </label>
-																<input type="text" id="groom_lastName" name="groom_lastName" required><br>
-																<label for="groom_firstName">First name: </label>
-																<input type="text" id="groom_firstName" name="groom_firstName" required><br>
-																<label for="groom_middleName">Middle name: </label>
-																<input type="text" id="groom_middleName" name="groom_middleName"><br>
-																<label for="groom_contactNum">Contact number: </label>
-																<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
-																<label for="groom_dob">Birth date: </label>
-																<input type="date" id="groom_dob" name="groom_dob" required><br>
-																<label for="groom_pob">Birth place: </label>
-																<input type="text" id="groom_pob" name="groom_pob" required><br>
-																<label for="groom_address">Present address: </label>
-																<input type="text" id="groom_address" name="groom_address" required><br>
-																<label for="groom_fatherName">Father's name: </label>
-																<input type="text" id="groom_fatherName" name="groom_fatherName" required><br>
-																<label for="groom_motherName">Mother's maiden name: </label>
-																<input type="text" id="groom_motherName" name="groom_motherName" required><br>
-																<label for="groom_religion">Religion: </label>
-																<input type="text" id="groom_religion" name="groom_religion" required><br>
+													<form action="page_LANDING.php" method="post">
+														<div class="form-cont">
+															<b> Groom </b>
+															<div class="form">
+																<div class="form-grid-cont">
+																	<label for="groom_lastName">Last name: </label>
+																	<input type="text" id="groom_lastName" name="groom_lastName" required><br>
+																	<label for="groom_firstName">First name: </label>
+																	<input type="text" id="groom_firstName" name="groom_firstName" required><br>
+																	<label for="groom_middleName">Middle name: </label>
+																	<input type="text" id="groom_middleName" name="groom_middleName"><br>
+																	<label for="groom_contactNum">Contact number: </label>
+																	<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
+																	<label for="groom_dob">Birth date: </label>
+																	<input type="date" id="groom_dob" name="groom_dob" required><br>
+																	<label for="groom_pob">Birth place: </label>
+																	<input type="text" id="groom_pob" name="groom_pob" required><br>
+																	<label for="groom_address">Present address: </label>
+																	<input type="text" id="groom_address" name="groom_address" required><br>
+																	<label for="groom_fatherName">Father's name: </label>
+																	<input type="text" id="groom_fatherName" name="groom_fatherName" required><br>
+																	<label for="groom_motherName">Mother's maiden name: </label>
+																	<input type="text" id="groom_motherName" name="groom_motherName" required><br>
+																	<label for="groom_religion">Religion: </label>
+																	<input type="text" id="groom_religion" name="groom_religion" required><br>
+																</div>
+																
+																<b> Bride </b>
+																<div class="form-grid-cont">
+																	<label for="bride_lastName">Last name: </label>
+																	<input type="text" id="bride_lastName" name="bride_lastName" required><br>
+																	<label for="bride_firstName">First name: </label>
+																	<input type="text" id="bride_firstName" name="bride_firstName" required><br>
+																	<label for="bride_middleName">Middle name: </label>
+																	<input type="text" id="bride_middleName" name="bride_middleName"><br>
+																	<label for="bride_contactNum">Contact number: </label>
+																	<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
+																	<label for="bride_dob">Birth date: </label>
+																	<input type="date" id="bride_dob" name="bride_dob" required><br>
+																	<label for="bride_pob">Birth place: </label>
+																	<input type="text" id="bride_pob" name="bride_pob" required><br>
+																	<label for="bride_address">Present address: </label>
+																	<input type="text" id="bride_address" name="bride_address" required><br>
+																	<label for="bride_fatherName">Father's name: </label>
+																	<input type="text" id="bride_fatherName" name="bride_fatherName" required><br>
+																	<label for="bride_motherName">Mother's maiden name: </label>
+																	<input type="text" id="bride_motherName" name="bride_motherName" required><br>
+																	<label for="bride_religion">Religion: </label>
+																	<input type="text" id="bride_religion" name="bride_religion" required><br>
+																</div>
 															</div>
-															
-															<b> Bride </b>
-															<div class="form-grid-cont">
-																<label for="bride_lastName">Last name: </label>
-																<input type="text" id="bride_lastName" name="bride_lastName" required><br>
-																<label for="bride_firstName">First name: </label>
-																<input type="text" id="bride_firstName" name="bride_firstName" required><br>
-																<label for="bride_middleName">Middle name: </label>
-																<input type="text" id="bride_middleName" name="bride_middleName"><br>
-																<label for="bride_contactNum">Contact number: </label>
-																<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
-																<label for="bride_dob">Birth date: </label>
-																<input type="date" id="bride_dob" name="bride_dob" required><br>
-																<label for="bride_pob">Birth place: </label>
-																<input type="text" id="bride_pob" name="bride_pob" required><br>
-																<label for="bride_address">Present address: </label>
-																<input type="text" id="bride_address" name="bride_address" required><br>
-																<label for="bride_fatherName">Father's name: </label>
-																<input type="text" id="bride_fatherName" name="bride_fatherName" required><br>
-																<label for="bride_motherName">Mother's maiden name: </label>
-																<input type="text" id="bride_motherName" name="bride_motherName" required><br>
-																<label for="bride_religion">Religion: </label>
-																<input type="text" id="bride_religion" name="bride_religion" required><br>
+															<div class="button-cont">
+																<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
+																<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+															</div>
+															<div class="popupForm" id="clearForm">
+																 <div class="icon-box"></div>
+																<div class="headertext-box">
+																	Are you sure you want to clear?
+																</div>
+																<div class="form-btnarea">
+																	<button type="button" onclick="openForm(clearForm)">No</button>
+																	<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+																</div>
+															</div>
+															<div class="popupForm" id="submitForm">
+																<div class="icon-box"></div>
+																<div class="headertext-box">
+																	Are you sure you want to submit?
+																</div>
+																<div class="form-btnarea">
+																	<button type="button" onclick="openForm(submitForm)">No</button>
+																	<button type="Submit" name="submitform">Yes</button>
+																</div>
 															</div>
 														</div>
-														<div class="button-cont">
-															<button type="button" onclick="openForm(clearForm)" id="clear">Clear</button>
-															<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
-														</div>
+													</form>
 													</div>
 												</div>
 												<?php
 											
 										}
 										
-				// BAPTISM FORM
+								// BAPTISM FORM
 										else if($event == "Baptism"){ ?> 
-											<form action="landing.php" method="post">
+											 <?php
+												$baptismst = array("09:00:00", "10:00:00", "11:00:00", "14:00:00", "15:00:00");
+												$baptismet = array("09:45:00", "10:45:00", "11:45:00", "14:45:00", "15:45:00");
+												//query for retrieving appointments in the same day
+												$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date'";
+												$result = mysqli_query($conn, $query);
+												////////
+												$starttime = array();
+												$endtime = array();
+												$counter = 0;
+												while ($row = mysqli_fetch_assoc($result)){
+													$starttime[$counter] = $row['event_timeStart'];
+													$endtime[$counter] = $row['event_timeEnd'];
+													$counter++;
+												}
+												
+												$avtime = $baptismst;
+												$count =0;
+												$break = false;
+												for ($x = 0; $x < count($baptismst); $x++){
+													for($y = 0; $y < count($starttime); $y++) {
+														if(strtotime($baptismst[$x]) == strtotime($starttime[$y]) || strtotime($baptismst[$x]) == strtotime($endtime[$y])){
+															unset($avtime[$x]);
+															break;	
+														}else if(strtotime($baptismst[$x]) > strtotime($starttime[$y]) && strtotime($baptismst[$x]) < strtotime($endtime[$y])) {
+															unset($avtime[$x]);
+															break;
+														}else if(strtotime($baptismst[$x]) > strtotime($starttime[$y]) && strtotime($baptismst[$x]) < strtotime($endtime[$y])){
+															unset($avtime[$x]);
+															break;
+														} else {
+															
+														}
+													}
+												}
+												$count_time = 0;?>
+												<div> <h3> Available time: </h3></div>
+												<?php
+												foreach ($avtime as $i){
+													?><div>
+														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="fav_language" value="<?php echo $i?>">
+														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo $i ?></label><br>
+													</div>
+													<?php
+													$counter++;
+												}
+											
+											?> 
+											<form action="page_LANDING.php" method="post">
 												<div> Baptism form </div>
 												
 												<b> Requirements: </b>
@@ -369,6 +424,30 @@ $_SESSION['isLoggedIn'] = true;
 												<input type="text" id="godmotherName" name="godmotherName" required><br>
 												<label for="godmotherAddress">Godmother's address: </label>
 												<input type="text" id="godmotherAddress" name="godmotherAddress" required><br>
+												<div class="button-cont">
+													<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
+													<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+												</div>
+												<div class="popupForm" id="clearForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to clear?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(clearForm)">No</button>
+														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+													</div>
+												</div>
+												<div class="popupForm" id="submitForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to submit?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(submitForm)">No</button>
+														<button type="Submit" name="submitform">Yes</button>
+													</div>
+												</div>
 												
 											</form>
 											<?php
@@ -377,7 +456,46 @@ $_SESSION['isLoggedIn'] = true;
 				// FUNERAL MASS AND BLESSING FORM
 										else if($event == "Funeral Mass/Blessing"){
 											?>
-											<form action="landing.php" method="post">
+											<?php
+											
+												$funeralst = array("08:00:00", "13:00:00");
+												
+												//query for retrieving appointments in the same day
+												$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date' AND appointment_type = 'Funeral Mass/Blessing'";
+												$result = mysqli_query($conn, $query);
+												////////
+												$starttime = array();
+												$counter = 0;
+												while ($row = mysqli_fetch_assoc($result)){
+													$starttime[$counter] = $row['event_timeStart'];
+													$counter++;
+												}
+												
+												$avtime = $funeralst;
+												$count =0;
+												$break = false;
+												for ($x = 0; $x < count($funeralst); $x++){
+													for($y = 0; $y < count($starttime); $y++) {
+														if(strtotime($funeralst  [$x]) == strtotime($starttime[$y])){
+															unset($avtime[$x]);
+															break;	
+														}
+													}
+												}
+												$count_time = 0;?>
+												<div> <h3> Available time: </h3></div>
+												<?php
+												foreach ($avtime as $i){
+													?><div>
+														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="fav_language" value="<?php echo $i?>">
+														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo $i ?></label><br>
+													</div>
+													<?php
+													$counter++;
+												}
+											
+											?> 
+											<form action="page_LANDING.php" method="post">
 												<div> Funeral Mass/Blessing Form </div>
 												
 												<b> Requirements: </b>
@@ -433,83 +551,140 @@ $_SESSION['isLoggedIn'] = true;
 												<input type="tel" id="contactNum" name="contactNum" required><br>
 												<label for="address">Present address: </label>
 												<input type="text" id="address" name="address" required><br>
+												<div class="button-cont">
+													<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
+													<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+												</div>
+												<div class="popupForm" id="clearForm">
+													 <div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to clear?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(clearForm)">No</button>
+														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+													</div>
+												</div>
+												<div class="popupForm" id="submitForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to submit?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(submitForm)">No</button>
+														<button type="Submit" name="submitform">Yes</button>
+													</div>
+												</div>
 											</form>
 											<?php
-										}
-				// BLESSINGS FORM
-										else if ($type == "Blessing"){ 
-											?> 
-											<form action="landing.php" method="post">
-												<div> Blessings Form </div>
-												
-												<b> Notes: </b>
-												> Blessing Fee: Donation <br>
-												> Barangay Pembo and Rizal only <br>
-												
-												<label for="contactNum">Contact number: </label>
-												<input type="tel" id="contactNum" name="contactNum" required><br>
-												
-												<p> Type of Blessing: </p>
-												<input type="radio" id="HouseBlessing" name="blessingType" required>
-												<label for="HouseBlessing">House Blessing </label> <br>
-												<input type="radio" id="CarBlessing" name="blessingType" required>
-												<label for="CarBlessing">Car Blessing </label> <br>
-												<input type="radio" id="MotorcycleBlessing" name="blessingType" required>
-												<label for="MotorcycleBlessing">Motorcycle Blessing </label> <br>
-												<input type="radio" id="StoreBlessing" name="blessingType" required>
-												<label for="StoreBlessing">Store Blessing </label> <br>
-											</form>
-										
-											
-											<?php
-										} else {
+										}else{
 											?> <div> More form </div><?php
 										}
 									}
-									else {
+									else if($type == "Mass Intention"){
 										echo '<div> Event type: '.$type.'</div>';
 										echo '<div> Date: '.$date.'</div>';
-										?> <div> Mass Intention Form </div>
-									
-										<b> Notes: </b>
-										> Mass Intention Fee: Donation <br>
-										
-										<label for="contactNum">Contact number: </label>
-										<input type="tel" id="contactNum" name="contactNum" required><br>
-										
-										<b> Purpose: </b>
-										
-										<input type="checkbox" name="purposes[]" id="Thanksgiving" value="Thanksgiving">
-										<label for="Thanksgiving">Thanksgiving</label><br>
-										<input type="checkbox" name="purposes[]" id="Healing" value="Healing/Recovery">
-										<label for="Healing">Healing/Recovery</label><br>
-										<input type="checkbox" name="purposes[]" id="SpecialInt" value="Special Intention">
-										<label for="SpecialInt">Special Intention</label><br>
-										<input type="checkbox" name="purposes[]" id="Soul" value="Soul">
-										<label for="Soul">Soul</label><br>
+										?> 
+										<form action="page_LANDING.php" method="post">
+											<div> Mass Intention Form </div>
+											
+											<b> Notes: </b>
+											> Mass Intention Fee: Donation <br>
+											
+											<label for="contactNum">Contact number: </label>
+											<input type="tel" id="contactNum" name="contactNum" required><br>
+											
+											<b> Purpose: </b>
+											
+											<input type="checkbox" name="purposes[]" id="Thanksgiving" value="Thanksgiving">
+											<label for="Thanksgiving">Thanksgiving</label><br>
+											<input type="checkbox" name="purposes[]" id="Healing" value="Healing/Recovery">
+											<label for="Healing">Healing/Recovery</label><br>
+											<input type="checkbox" name="purposes[]" id="SpecialInt" value="Special Intention">
+											<label for="SpecialInt">Special Intention</label><br>
+											<input type="checkbox" name="purposes[]" id="Soul" value="Soul">
+											<label for="Soul">Soul</label><br>
+											<div class="button-cont">
+												<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
+												<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+											</div>
+											<div class="popupForm" id="clearForm">
+												 <div class="icon-box"></div>
+												<div class="headertext-box">
+													Are you sure you want to clear?
+												</div>
+												<div class="form-btnarea">
+													<button type="button" onclick="openForm(clearForm)">No</button>
+													<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+												</div>
+											</div>
+											<div class="popupForm" id="submitForm">
+												<div class="icon-box"></div>
+												<div class="headertext-box">
+													Are you sure you want to submit?
+												</div>
+												<div class="form-btnarea">
+													<button type="button" onclick="openForm(submitForm)">No</button>
+													<button type="Submit" name="submitform">Yes</button>
+												</div>
+											</div>
+										</form>
 									
 										<?php
-									} ?>
-									<div class="popupForm" id="clearForm">
-															<div class="icon-box"></div>
-															<div class="headertext-box">
-																Are you sure you want to clear?
-															</div>
-															<div class="form-btnarea">
-																<button type="button" onclick="openForm(clearForm)">No</button>
-																<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
-															</div>
-														</div>
-														<div class="popupForm" id="submitForm">
-															<div class="icon-box"></div>
-															<div class="headertext-box">
-																Are you sure you want to submit?
-															</div>
-															<div class="form-btnarea">
-																<button type="button" onclick="openForm(submitForm)">No</button>
-																<button type="Submit">Yes</button>
-															</div>
-														</div> <?php
+									} 
+												// BLESSINGS FORM
+									else if ($type == "Blessing"){
+										echo '<div> Event type: '.$type.'</div>';
+										echo '<div> Date: '.$date.'</div>';
+										?> 
+										<form action="page_LANDING.php" method="post">
+											<div> Blessings Form </div>
+											
+											<b> Notes: </b>
+											> Blessing Fee: Donation <br>
+											> Barangay Pembo and Rizal only <br>
+											
+											<label for="contactNum">Contact number: </label>
+											<input type="tel" id="contactNum" name="contactNum" required><br>
+											
+											<p> Type of Blessing: </p>
+											<input type="radio" id="HouseBlessing" name="blessingType" value="House Blessing" required>
+											<label for="HouseBlessing">House Blessing </label> <br>
+											<input type="radio" id="CarBlessing" name="blessingType" value="Car Blessing" required>
+											<label for="CarBlessing">Car Blessing </label> <br>
+											<input type="radio" id="MotorcycleBlessing" name="blessingType" value="Motorcycle Blessing" required>
+											<label for="MotorcycleBlessing">Motorcycle Blessing </label> <br>
+											<input type="radio" id="StoreBlessing" name="blessingType" value="Store Blessing" required>
+											<label for="StoreBlessing">Store Blessing </label> <br>
+											<div class="button-cont">
+												<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
+												<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+											</div>
+											<div class="popupForm" id="clearForm">
+												 <div class="icon-box"></div>
+												<div class="headertext-box">
+													Are you sure you want to clear?
+												</div>
+												<div class="form-btnarea">
+													<button type="button" onclick="openForm(clearForm)">No</button>
+													<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+												</div>
+											</div>
+											<div class="popupForm" id="submitForm">
+												<div class="icon-box"></div>
+												<div class="headertext-box">
+													Are you sure you want to submit?
+												</div>
+												<div class="form-btnarea">
+													<button type="button" onclick="openForm(submitForm)">No</button>
+													<button type="Submit" name="submitform">Yes</button>
+												</div>
+											</div>
+										</form>
+										
+											
+											<?php
+										} 
 								} 
 								else {
 									//do nothing
