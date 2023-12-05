@@ -15,6 +15,7 @@ session_start();
 <body>
     <div class="content-wrapper">
         <!-- Nav Wrapper -->
+        <!-- Add active class on active button of current page -->
         <div class="nav-wrapper">
             <div class="icon-wrapper">
                 <i class="fa-solid fa-church"></i> SJCP

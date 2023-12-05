@@ -28,6 +28,7 @@ body {
 /* Content Wrapper */
 .content-wrapper {
     width: 100%;
+    min-width: 1000px;
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -62,6 +63,7 @@ body {
     border: unset;
     font-weight: 600;
     box-shadow: 0 2px 10px var(--grey);
+    transition: 200ms ease-in;
 }
 .nav-items > button:not(.active-btn) {
     background-color: var(--pink);
