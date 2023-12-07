@@ -10,6 +10,7 @@ $_SESSION['isLoggedIn'] = true;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styleSCHEDULEEVENT.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>SJCP AVAILABLE SCHEDULES</title>
@@ -65,20 +66,22 @@ $_SESSION['isLoggedIn'] = true;
 
         <!-- FAQ content -->
         <div class="main-body-wrapper">
+			<section class="main-header">
+				<h1 class="main-content-title">Set Appointment</h1>
+			</section>
             <section class="main-content">
-                <div class="main-header">
+                <!--<div class="main-header">
                     <span><strong>Set Schedules</strong></span>
-                </div>
+                </div>-->
                 <div class="schedule-container">
                     <div class="events-preference">
 				
-				<!-- SELECT EVENT AND DATE FORM -->
+						<!-- SELECT EVENT AND DATE FORM -->
 						<form action="page_SCHEDULEEVENT.php" method="post">
 							<div class="select-cont">
-							<?php 
-								if(!isset($_POST["submit"])){
-									 ?> <div class="events-select-container" id="events-select-container" style="display:flex">
-											<span>
+								<?php 
+									if(!isset($_POST["submit"])){
+										?> <div class="events-select-container" id="events-select-container" style="display:flex">
 												<label for="ddEvent"><strong> Select to Appoint: </strong></label>
 												<select class="dropdown" id="ddEvent" name="ddEvent" onchange="chooseEvent()">
 													<option value="default" disabled selected hidden></option>
@@ -87,11 +90,9 @@ $_SESSION['isLoggedIn'] = true;
 													<option value="Blessing">Blessing</option>
 													<option value="Document Request">Document Request</option>
 												</select>
-											</span>
-										</div> <?php
-								} else {
-									?> <div class="events-select-container" id="events-select-container" style="display:none">
-											<span>
+											</div> <?php
+									} else {
+										?> <div class="events-select-container" id="events-select-container" style="display:none">
 												<label for="ddEvent"><strong> Select to Appoint: </strong></label>
 												<select class="dropdown" id="ddEvent" name="ddEvent" onchange="chooseEvent()">
 													<option value="default" disabled selected hidden></option>
@@ -100,35 +101,20 @@ $_SESSION['isLoggedIn'] = true;
 													<option value="Blessing">Blessing</option>
 													<option value="Document Request">Document Request</option>
 												</select>
-											</span>
-										</div> <?php
-								}
-							?>
-								<div class="events-select-container" id="specificSpecial" style="display: none;">
-									<span>
-										<label for="ddSpecialEvent"><strong>Select type of special event: </strong></label>
+											</div> <?php
+									}
+									?>
+									<div class="events-select-container" id="specificSpecial" style="display: none;">
+										<label for="ddSpecialEvent"><strong>Select Special Event:</strong></label>
 										<select class="dropdown" id="ddSpecialEvent" name="Event" onchange="openCalendar();">
 											<option value="" disabled selected hidden>Special Events</option>
 											<option value="Wedding">Private Wedding</option>
 											<option value="Baptism">Private Baptism</option>
 											<option value="Funeral Mass/Blessing">Funeral Mass/Blessing</option>
 										</select>
-									</span>
-								</div>
-								
-								<div class="events-select-container" id="specificMassInt" style="display: none;">
-									<span>
-									</span>
-								</div>
-									
-								<div class="events-select-container" id="specificBlessing" style="display: none;">
-									<span>
-									</span>
-								</div>
-									
-								<div class="events-select-container" id="specificDocument" style="display: none;">
-									<span>
-										<label for="ddDocument"><strong>Select type of document: </strong></label>
+									</div>
+									<div class="events-select-container" id="specificDocument" style="display: none;">
+										<label for="ddDocument"><strong>Select Document </strong></label>
 										<select class="dropdown" id="ddDocument" name="Event" onchange="openCalendar();">
 											<option value="" disabled selected hidden>Documents</option>
 											<option value="Baptismal Certificate">Baptismal Certificate</option>
@@ -137,479 +123,678 @@ $_SESSION['isLoggedIn'] = true;
 											<option value="Good Moral Certificate">Good Moral Certificate</option>
 											<option value="Permit and No Record">Permit and No Record</option>
 										</select>
-									</span>
-								</div>
-							</div>
-							<div class="date-preferred-container">
-								<div id="chooseCal" style="display: none;">
-									<label for="calDate"><strong>Select date:</strong></label>
-									<input type="date" id="calDate" name="calDate" min="<?php echo date("Y-m-d"); ?>" required>
-								</div>
+									</div>
+									<div class="events-select-container" id="chooseCal" style="display: none">
+										<div class="cal-container">
+											<label for="calDate"><strong>Select date:</strong></label>
+											<input type="date" id="calDate" name="calDate" min="<?php echo date("Y-m-d"); ?>" required>
+											<button type="submit" value="submit" name="submit" id="submitbtn"> View available time</button>
+										</div>
+									</div>
 								
-								<div>
-									<button type="submit" value="submit" name="submit" id="submitbtn" style="display: none"> View available time slots </button>
-								</div>
 							</div>
 						</form>
-						
-							<?php
-								if(isset($_POST["submit"])){
-									$type = $_POST["ddEvent"];
-									$date = $_POST["calDate"];
-									$_SESSION['type'] = $type;
-									$_SESSION['date'] = $date;
-									if($type != "Mass Intention" && $type != "Blessing"){
-										$event = $_POST["Event"];
-										$_SESSION['event'] = $event;
-										echo '<div> Event main type: '.$type.'</div>';
-										echo '<div> Event type: '.$event.'</div>';
-										echo '<div> Date: '.$date.'</div>';
+                    </div>
+                </div>
+				<div class="form-container">
+					<?php
+						if(isset($_POST["submit"])){
+							$type = $_POST["ddEvent"];
+							$date = $_POST["calDate"];
+							$day = date('l', strtotime($date));
+							$_SESSION['type'] = $type;
+							$_SESSION['date'] = $date;
+							//change date format from yyyy-mm-dd to month day, year
+							$formated_date = date('F m, Y', strtotime($date));
+							if($type != "Mass Intention" && $type != "Blessing"){
+								$event = $_POST["Event"];
+								$_SESSION['event'] = $event;
+								?> 
+								
+								<div class="Event-grid-cont">
+									<div><h1> Event: <?php echo $event?></h1></div>
+									<div><h1> Date: <?php echo $formated_date?></h1></div>
+								</div>
+								<?php	
+								// WEDDING FORM
+								if($event == "Wedding"){
+									
+									$weddingst = array("09:00:00", "10:30:00", "14:00:00", "15:30:00");
+									$weddinget = array("10:15:00", "11:45:00", "15:15:00", "16:45:00");
+									//query for retrieving appointments in the same day
+									$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date'";
+									$result = mysqli_query($conn, $query);
+									////////
+									$starttime = array();
+									$endtime = array();
+									$counter = 0;
+									while ($row = mysqli_fetch_assoc($result)){
+										$starttime[$counter] = $row['event_timeStart'];
+										$endtime[$counter] = $row['event_timeEnd'];
+										$counter++;
+									}
+									
+									$avtime = $weddingst;
+									$count =0;
+									$break = false;
+									for ($x = 0; $x < count($weddingst); $x++){
+										for($y = 0; $y < count($starttime); $y++) {
+											if(strtotime($weddingst[$x]) == strtotime($starttime[$y])){
+												unset($avtime[$x]);
+												break;
+											}else if(strtotime($weddingst[$x]) > strtotime($starttime[$y]) && strtotime($weddingst[$x]) < strtotime($endtime[$y])) {
+												unset($avtime[$x]);
+												break;
+											}else if(strtotime($weddinget[$x]) > strtotime($starttime[$y]) && strtotime($weddinget[$x]) < strtotime($endtime[$y])){
+												unset($avtime[$x]);
+												break;
+											} else {
+												
+											}
+										}
+									}
+									$count_time = 0;?>
+									<form action="page_LANDING.php" method="post">
+										<div> <strong> Select Available time:</strong> </div>
+										<div class="avtime-container">
+											<?php
+												$event_endtime = "";
+												$_SESSION['eventendtime'] = $event_endtime;
+												foreach ($avtime as $i){
+													for($y = 0; $y < count($weddingst); $y++){
+														if(strtotime($i) == strtotime($weddingst[$y])){
+															$event_endtime = $weddinget[$y];
+														}
+													}
+													?><div>
+														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i." ".$event_endtime?>">
+														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+													</div>
+													<?php
+													$count_time++;
+												}
 										
-				// WEDDING FORM
-										if($event == "Wedding"){
-											?>
-											<div> Wedding form </div><?php
+											?> 
+										</div>
+										
+										<div class="contents-cont">
+											<div class="req-cont">
+												<b> Requirements: </b>
+												<div class="Event-grid-cont">
+													<div>> Birth Certificate & 2x2 ID picture</div>		<div>> Wedding Interview </div>
+													<div>> Baptismal Certificate (Original copy)</div>		<div>	> Marriage License or Live-In Liscense (article 34) </div>
+													<div>> Confirmation Certificate (original copy)</div>		<div>> Cenomar (Certificate of No Marriage - photocopy) </div>
+													<div>> Long Brown Envelope			</div>				<div>> Pre-Cana Seminar </div>
+													<div>> Publication  of wedding banns</div>				<div>	> Marriage contract (Civil Marriage) </div>
+													<div>> Confession </div>
+												</div>
+												
+												<b> Notes: </b>
+												<div class="Event-grid-cont">
+													<div>> The couple must submit all the requirements before the date of the event. </div>
+												</div>
+												<br>
+											</div>
+												<div class="form-cont">
+													<div class="form-content">
+														<div class="form-title">
+															<h2> Groom's Information </h2>
+														</div>
+														<div>
+															<b>Name</b>
+															<div class="form-grid-cont">
+																<div class="input-box">
+																	<input type="text" id="groom_lastName" name="groom_lastName" placeholder="Last Name"required><br>
+																</div>
+																<div class="input-box">
+																	<input type="text" id="groom_firstName" name="groom_firstName" placeholder="First Name" required><br>
+																</div>
+																<div class="input-box">
+																	<input type="text" id="groom_middleName" name="groom_middleName" placeholder="Middle Name"><br>
+																</div>
+															</div>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="groom_contactNum"><strong>Contact number </strong></label>
+																<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_dob"><strong>Birth Date </strong></label>
+																<input type="date" id="groom_dob" name="groom_dob" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_pob"><strong>Birth Place </strong> </label>
+																<input type="text" id="groom_pob" name="groom_pob" required><br>
+															</div>
+														</div>
+														<div	>
+															<div class="input-box">
+																<label for="groom_address"><strong>Present Address </strong> </label>
+																<input type="text" id="groom_address" name="groom_address" required><br>
+															</div>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="groom_fatherName"><strong>Father's name </strong> </label>
+																<input type="text" id="groom_fatherName" name="groom_fatherName" required><br>
+															</div>
+															<div class="input-box"> 
+																<label for="groom_motherName"><strong>Mother's name </strong> </label>
+																<input type="text" id="groom_motherName" name="groom_motherName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_religion"><strong>Religion </strong> </label>
+																<input type="text" id="groom_religion" name="groom_religion" required><br>
+															</div>
+														</div>
+													</div>
+													
+													<div class="form-content">
+														<div class="form-title">
+															<h2> Bride's Information </h2>
+														</div>
+														<div>
+															<b>Name</b>
+															<div class="form-grid-cont">
+																<div class="input-box">
+																	<input type="text" id="bride_lastName" name="bride_lastName" placeholder="Last Name" required><br>
+																</div>
+																<div class="input-box">
+																	<input type="text" id="bride_firstName" name="bride_firstName" placeholder="First Name"required><br>
+																</div>
+																<div class="input-box">
+																	<input type="text" id="bride_middleName" name="bride_middleName" placeholder="Middle Name"><br>
+																</div>
+															</div>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="bride_contactNum"><strong>Contact number </strong></label>
+																<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_dob"><strong>Birth Date </strong></label>
+																<input type="date" id="bride_dob" name="bride_dob" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_pob"><strong>Birth Place </strong> </label>
+																<input type="text" id="bride_pob" name="bride_pob" required><br>
+															</div>
+														</div>
+														<div>
+															<div class="input-box">
+																<label for="bride_address"><strong>Present Address </strong> </label>
+																<input type="text" id="bride_address" name="bride_address" required><br>
+															</div>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="bride_fatherName"><strong>Father's name </strong> </label>
+																<input type="text" id="bride_fatherName" name="bride_fatherName" required><br>
+															</div>
+															<div class="input-box"> 
+																<label for="bride_motherName"><strong>Mother's name </strong> </label>
+																<input type="text" id="bride_motherName" name="bride_motherName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_religion"><strong>Religion </strong> </label>
+																<input type="text" id="bride_religion" name="bride_religion" required><br>
+															</div>
+														</div>
+													</div>
+													<div class="lower-form">
+														<div class="button-cont">
+															<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+															<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- confirmation pop up -->
+										<div class="popupCover" id="clearForm">
+											<div class="popupForm">
+												<div class="icon-box"></div>
+												<div class="headertext-box">
+													Are you sure you want to clear?
+												</div>
+												<div class="form-btnarea">
+													<button type="button" onclick="openForm(clearForm)">No</button>
+													<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+												</div>
+											</div>
+										</div>
+										<div class="popupCover" id="submitForm">
+											<div class="popupForm">
+												<div class="icon-box"></div>
+												<div class="headertext-box">
+													Are you sure you want to submit?
+												</div>
+												<div class="form-btnarea">
+													<button type="button" onclick="openForm(submitForm)">No</button>
+													<button type="Submit" name="submitform">Yes</button>
+												</div>
+											</div>
+										</div>
+									</form>
+									
+									<?php
+									
+								}
+								
+								// BAPTISM FORM
+								else if($event == "Baptism"){ ?> 
+										<?php
+										$baptismst = array("09:00:00", "10:00:00", "11:00:00", "14:00:00", "15:00:00");
+										$baptismet = array("09:45:00", "10:45:00", "11:45:00", "14:45:00", "15:45:00");
+										//query for retrieving appointments in the same day
+										$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date'";
+										$result = mysqli_query($conn, $query);
+										////////
+										$starttime = array();
+										$endtime = array();
+										$counter = 0;
+										while ($row = mysqli_fetch_assoc($result)){
+											$starttime[$counter] = $row['event_timeStart'];
+											$endtime[$counter] = $row['event_timeEnd'];
+											$counter++;
+										}
+										
+										$avtime = $baptismst;
+										$count =0;
+										$break = false;
+										for ($x = 0; $x < count($baptismst); $x++){
+											for($y = 0; $y < count($starttime); $y++) {
+												if(strtotime($baptismst[$x]) == strtotime($starttime[$y]) || strtotime($baptismst[$x]) == strtotime($endtime[$y])){
+													unset($avtime[$x]);
+													break;	
+												}else if(strtotime($baptismst[$x]) > strtotime($starttime[$y]) && strtotime($baptismst[$x]) < strtotime($endtime[$y])) {
+													unset($avtime[$x]);
+													break;
+												}else if(strtotime($baptismet[$x]) > strtotime($starttime[$y]) && strtotime($baptismet[$x]) < strtotime($endtime[$y])){
+													unset($avtime[$x]);
+													break;
+												} else {
+													
+												}
+											}
+										}
+										$count_time = 0;?>
+										<form action="page_LANDING.php" method="post">
+											<div> <strong> Select Available time:</strong> </div>
+											<div class="avtime-container">
+												<?php
+													$event_endtime = "";
+													foreach ($avtime as $i){
+														for($y = 0; $y < count($baptismst); $y++){
+															if(strtotime($i) == strtotime($baptismst[$y])){
+																$event_endtime = $baptismet[$y];
+															}
+														}
+														?><div>
+															<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i." ". $event_endtime?>">
+															<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+														</div>
+														<?php
+														$count_time++;
+													}
 											
-											$weddingst = array("09:00:00", "10:30:00", "14:00:00", "15:30:00");
-											$weddinget = array("10:15:00", "11:45:00", "15:15:00", "16:45:00");
+												?> 
+											</div>
+											<div class="req-cont">
+												<b> Requirements: </b>
+												<div class="Event-grid-cont">
+													<div>
+														> Child's PSA/Local Birth Certificate (photocopy) <br>
+														> Marriage Contract of parents (photocopy) <br>
+													</div>
+												</div>
+												
+												<b> Notes: </b>
+												<div class="Event-grid-cont">
+													<div>> Parents and Sponsors are required to attend the seminar <br>
+															> White dress or polo and pants for the child <br>
+															> Any colors for the parents and sponsors <br>
+															> The Godfather (Ninong) and Godmother (Ninang) must be 18 years of age or older. <br>
+															> Only baptized Catholics are eligible to be chosen as Godfathers (Ninong) and Godmothers (Ninang). <br>/div>
+													</div>
+												<br>
+											</div>
+											<div class="form-cont">
+												<div class="form-content">
+													<div class="form-title">
+														<b>To be baptesize's Information</b>
+													</div>
+													<div>
+														<b>Name</b>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="lastName">Last name: </label>
+																<input type="text" id="lastName" name="lastName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="firstName">First name: </label>
+																<input type="text" id="firstName" name="firstName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="middleName">Middle name: </label>
+																<input type="text" id="middleName" name="middleName"><br>
+															</div>
+														</div>
+													</div>
+													<div class="form-grid-cont">
+														<div>
+															<b>Gender</b>
+															<div style="display: flex">
+																<div>
+																	<input type="radio" id="genderMale" name="gender" required>
+																	<label for="genderMale">Male </label> <br>
+																</div>
+																<div>
+																	<input type="radio" id="genderFemale" name="gender" required>
+																	<label for="genderFemale">Female </label> <br>
+																</div>
+															</div>
+														</div>
+														<div class="input-box">
+															<label for="dob"><strong>>Birth date</strong> </label>
+															<input type="date" id="dob" name="dob" required><br>
+														</div>
+														<div class="input-box">
+															<label for="pob"><strong>Birth place</strong> </label>
+															<input type="text" id="pob" name="pob" required><br>
+														</div>
+													</div>
+													<div>
+														<div class="input-box">
+															<label for="address"><strong>Present address</strong> </label>
+															<input type="text" id="address" name="address" required><br>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="fatherName"><strong>Present address</strong> </label>
+															<input type="text" id="fatherName" name="fatherName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="fatherPob"><strong>Father's birth place</strong> </label>
+															<input type="text" id="fatherPob" name="fatherPob" required><br>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="motherName"><strong>Father's birth place</strong> </label>
+															<input type="text" id="motherName" name="motherName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="motherPob"><strong>Mother's birth place</strong> </label>
+															<input type="text" id="motherPob" name="motherPob" required><br>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="contactNum"><strong>Parent/Guardian's contact number</strong></label>
+															<input type="tel" id="contactNum" name="contactNum" required><br>
+														</div>
+														<div class="input-box">
+															<label for="marriage_type"><strong>Parents' type of marriage</strong> </label>
+															<select id="marriage_type" name="marriage_type">
+																<option value="default" disabled selected hidden></option>
+																<option value="Catholic Marriage">Catholic Marriage</option>											
+																<option value="Civil Marriage">Civil Marriage</option>
+															</select>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="godfatherName"><strong>Godfather's name</strong> </label>
+															<input type="text" id="godfatherName" name="godfatherName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="godfatherAddress"><strong>Godfather's address</strong> </label>
+															<input type="text" id="godfatherAddress" name="godfatherAddress" required><br>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="godmotherName"><strong>Godmother's name</strong></label>
+															<input type="text" id="godmotherName" name="godmotherName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="godmotherAddress"><strong>Godmother's address</strong></label>
+															<input type="text" id="godmotherAddress" name="godmotherAddress" required><br>
+														</div>
+													</div>
+													<div class="lower-form">
+														<div class="button-cont">
+															<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+															<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="popupCover" id="clearForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to clear?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(clearForm)">No</button>
+														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+													</div>
+												</div>
+											</div>
+											<div class="popupCover" id="submitForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to submit?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(submitForm)">No</button>
+														<button type="Submit" name="submitform">Yes</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									<?php
+								}
+								
+								// FUNERAL MASS AND BLESSING FORM
+								else if($event == "Funeral Mass/Blessing"){
+									?>
+									<form action="page_LANDING.php" method="post">
+										
+										<?php
+											$funeralst = array("08:00:00", "13:00:00");
+											
 											//query for retrieving appointments in the same day
-											$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date'";
+											$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date' AND appointment_type = 'Funeral Mass/Blessing'";
 											$result = mysqli_query($conn, $query);
 											////////
 											$starttime = array();
-											$endtime = array();
 											$counter = 0;
 											while ($row = mysqli_fetch_assoc($result)){
 												$starttime[$counter] = $row['event_timeStart'];
-												$endtime[$counter] = $row['event_timeEnd'];
 												$counter++;
 											}
 											
-											$avtime = $weddingst;
+											$avtime = $funeralst;
 											$count =0;
 											$break = false;
-											for ($x = 0; $x < count($weddingst); $x++){
+											for ($x = 0; $x < count($funeralst); $x++){
 												for($y = 0; $y < count($starttime); $y++) {
-													if(strtotime($weddingst[$x]) == strtotime($starttime[$y])){
+													if(strtotime($funeralst  [$x]) == strtotime($starttime[$y])){
 														unset($avtime[$x]);
-														break;
-													}else if(strtotime($weddingst[$x]) > strtotime($starttime[$y]) && strtotime($weddingst[$x]) < strtotime($endtime[$y])) {
-														unset($avtime[$x]);
-														break;
-													}else if(strtotime($weddinget[$x]) > strtotime($starttime[$y]) && strtotime($weddinget[$x]) < strtotime($endtime[$y])){
-														unset($avtime[$x]);
-														break;
-													} else {
-														
+														break;	
 													}
 												}
 											}
 											$count_time = 0;?>
-											<div> <h3> Available time: </h3></div>
-											<?php
-											foreach ($avtime as $i){
-												?><div>
-													<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="fav_language" value="<?php echo $i?>">
-													<label for="<?php echo 'rtime'.$count_time ?>"><?php echo $i ?></label><br>
-												</div>
+											<div> <strong> Select Available time:</strong> </div>
+											<div class="avtime-container">
 												<?php
-												$counter++;
-											} 
+												foreach ($avtime as $i){
+													if($day == "Sunday"){
+														if($i == "08:00:00"){
+															//discarding 8:00 schedule
+														} else {
+															?><div>
+																<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
+																<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+															</div>
+															<?php
+														}
+													} else {
+														?><div>
+															<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
+															<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+														</div>
+														<?php
+													}
+													$count_time++;
+												}
 											
 												?> 
-												
-												<div class="contents-cont">
-													<div class="req-cont">
-														<b> Requirements: </b>
-														<div class="grid-cont">
-															<div>> Birth Certificate & 2x2 ID picture</div>		<div>> Wedding Interview </div>
-															<div>> Baptismal Certificate (Original copy)</div>		<div>	> Marriage License or Live-In Liscense (article 34) </div>
-															<div>> Confirmation Certificate (original copy)</div>		<div>> Cenomar (Certificate of No Marriage - photocopy) </div>
-															<div>> Long Brown Envelope			</div>				<div>> Pre-Cana Seminar </div>
-															<div>> Publication  of wedding banns</div>				<div>	> Marriage contract (Civil Marriage) </div>
-															<div>> Confession </div>
-														</div>
-														
-														<b> Notes: </b>
-														<div class="grid-cont">
-															<div>> The couple must submit all the requirements before the date of the event. </div>
-														</div>
-													</div>
-													<form action="page_LANDING.php" method="post">
-														<div class="form-cont">
-															<b> Groom </b>
-															<div class="form">
-																<div class="form-grid-cont">
-																	<label for="groom_lastName">Last name: </label>
-																	<input type="text" id="groom_lastName" name="groom_lastName" required><br>
-																	<label for="groom_firstName">First name: </label>
-																	<input type="text" id="groom_firstName" name="groom_firstName" required><br>
-																	<label for="groom_middleName">Middle name: </label>
-																	<input type="text" id="groom_middleName" name="groom_middleName"><br>
-																	<label for="groom_contactNum">Contact number: </label>
-																	<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
-																	<label for="groom_dob">Birth date: </label>
-																	<input type="date" id="groom_dob" name="groom_dob" required><br>
-																	<label for="groom_pob">Birth place: </label>
-																	<input type="text" id="groom_pob" name="groom_pob" required><br>
-																	<label for="groom_address">Present address: </label>
-																	<input type="text" id="groom_address" name="groom_address" required><br>
-																	<label for="groom_fatherName">Father's name: </label>
-																	<input type="text" id="groom_fatherName" name="groom_fatherName" required><br>
-																	<label for="groom_motherName">Mother's maiden name: </label>
-																	<input type="text" id="groom_motherName" name="groom_motherName" required><br>
-																	<label for="groom_religion">Religion: </label>
-																	<input type="text" id="groom_religion" name="groom_religion" required><br>
-																</div>
-																
-																<b> Bride </b>
-																<div class="form-grid-cont">
-																	<label for="bride_lastName">Last name: </label>
-																	<input type="text" id="bride_lastName" name="bride_lastName" required><br>
-																	<label for="bride_firstName">First name: </label>
-																	<input type="text" id="bride_firstName" name="bride_firstName" required><br>
-																	<label for="bride_middleName">Middle name: </label>
-																	<input type="text" id="bride_middleName" name="bride_middleName"><br>
-																	<label for="bride_contactNum">Contact number: </label>
-																	<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
-																	<label for="bride_dob">Birth date: </label>
-																	<input type="date" id="bride_dob" name="bride_dob" required><br>
-																	<label for="bride_pob">Birth place: </label>
-																	<input type="text" id="bride_pob" name="bride_pob" required><br>
-																	<label for="bride_address">Present address: </label>
-																	<input type="text" id="bride_address" name="bride_address" required><br>
-																	<label for="bride_fatherName">Father's name: </label>
-																	<input type="text" id="bride_fatherName" name="bride_fatherName" required><br>
-																	<label for="bride_motherName">Mother's maiden name: </label>
-																	<input type="text" id="bride_motherName" name="bride_motherName" required><br>
-																	<label for="bride_religion">Religion: </label>
-																	<input type="text" id="bride_religion" name="bride_religion" required><br>
-																</div>
-															</div>
-															<div class="button-cont">
-																<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
-																<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
-															</div>
-															<div class="popupForm" id="clearForm">
-																 <div class="icon-box"></div>
-																<div class="headertext-box">
-																	Are you sure you want to clear?
-																</div>
-																<div class="form-btnarea">
-																	<button type="button" onclick="openForm(clearForm)">No</button>
-																	<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
-																</div>
-															</div>
-															<div class="popupForm" id="submitForm">
-																<div class="icon-box"></div>
-																<div class="headertext-box">
-																	Are you sure you want to submit?
-																</div>
-																<div class="form-btnarea">
-																	<button type="button" onclick="openForm(submitForm)">No</button>
-																	<button type="Submit" name="submitform">Yes</button>
-																</div>
-															</div>
-														</div>
-													</form>
-													</div>
-												</div>
-												<?php
-											
-										}
-										
-								// BAPTISM FORM
-										else if($event == "Baptism"){ ?> 
-											 <?php
-												$baptismst = array("09:00:00", "10:00:00", "11:00:00", "14:00:00", "15:00:00");
-												$baptismet = array("09:45:00", "10:45:00", "11:45:00", "14:45:00", "15:45:00");
-												//query for retrieving appointments in the same day
-												$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date'";
-												$result = mysqli_query($conn, $query);
-												////////
-												$starttime = array();
-												$endtime = array();
-												$counter = 0;
-												while ($row = mysqli_fetch_assoc($result)){
-													$starttime[$counter] = $row['event_timeStart'];
-													$endtime[$counter] = $row['event_timeEnd'];
-													$counter++;
-												}
-												
-												$avtime = $baptismst;
-												$count =0;
-												$break = false;
-												for ($x = 0; $x < count($baptismst); $x++){
-													for($y = 0; $y < count($starttime); $y++) {
-														if(strtotime($baptismst[$x]) == strtotime($starttime[$y]) || strtotime($baptismst[$x]) == strtotime($endtime[$y])){
-															unset($avtime[$x]);
-															break;	
-														}else if(strtotime($baptismst[$x]) > strtotime($starttime[$y]) && strtotime($baptismst[$x]) < strtotime($endtime[$y])) {
-															unset($avtime[$x]);
-															break;
-														}else if(strtotime($baptismst[$x]) > strtotime($starttime[$y]) && strtotime($baptismst[$x]) < strtotime($endtime[$y])){
-															unset($avtime[$x]);
-															break;
-														} else {
-															
-														}
-													}
-												}
-												$count_time = 0;?>
-												<div> <h3> Available time: </h3></div>
-												<?php
-												foreach ($avtime as $i){
-													?><div>
-														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="fav_language" value="<?php echo $i?>">
-														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo $i ?></label><br>
-													</div>
-													<?php
-													$counter++;
-												}
-											
-											?> 
-											<form action="page_LANDING.php" method="post">
-												<div> Baptism form </div>
-												
-												<b> Requirements: </b>
-												> Child’s PSA/Local Birth Certificate (photocopy) <br>
-												> Marriage Contract of parents (photocopy) <br>
-													
-												<b> Notes: </b>
-												> Parents and Sponsors are required to attend the seminar <br>
-												> White dress or polo and pants for the child <br>
-												> Any colors for the parents and sponsors <br>
-												> The Godfather (Ninong) and Godmother (Ninang) must be 18 years of age or older. <br>
-												> Only baptized Catholics are eligible to be chosen as Godfathers (Ninong) and Godmothers (Ninang). <br>
-												
-												<b> To be baptized's </b>
-												<label for="lastName">Last name: </label>
-												<input type="text" id="lastName" name="lastName" required><br>
-												<label for="firstName">First name: </label>
-												<input type="text" id="firstName" name="firstName" required><br>
-												<label for="middleName">Middle name: </label>
-												<input type="text" id="middleName" name="middleName"><br>
-												<p> Gender: </p>
-												<input type="radio" id="genderMale" name="gender" required>
-												<label for="genderMale">Male </label> <br>
-												<input type="radio" id="genderFemale" name="gender" required>
-												<label for="genderFemale">Female </label> <br>
-												<label for="dob">Birth date: </label>
-												<input type="date" id="dob" name="dob" required><br>
-												<label for="pob">Birth place: </label>
-												<input type="text" id="pob" name="pob" required><br>
-												<label for="address">Present address: </label>
-												<input type="text" id="address" name="address" required><br>
-												<label for="contactNum">Parent/Guardian's contact number: </label>
-												<input type="tel" id="contactNum" name="contactNum" required><br>
-												<label for="fatherName">Father's name: </label>
-												<input type="text" id="fatherName" name="fatherName" required><br>
-												<label for="fatherPob">Father's birth place: </label>
-												<input type="text" id="fatherPob" name="fatherPob" required><br>
-												<label for="motherName">Mother's maiden name: </label>
-												<input type="text" id="motherName" name="motherName" required><br>
-												<label for="motherPob">Mother's birth place: </label>
-												<input type="text" id="motherPob" name="motherPob" required><br>
-												<label for="marriage_type">Parents' type of marriage: </label>
-												<select class="dropdown" id="marriage_type" name="marriage_type">
-													<option value="default" disabled selected hidden></option>
-													<option value="Catholic Marriage">Catholic Marriage</option>											
-													<option value="Civil Marriage">Civil Marriage</option>
-												</select>
-												<label for="godfatherName">Godfather's name: </label>
-												<input type="text" id="godfatherName" name="godfatherName" required><br>
-												<label for="godfatherAddress">Godfather's address: </label>
-												<input type="text" id="godfatherAddress" name="godfatherAddress" required><br>
-												<label for="godmotherName">Godmother's name: </label>
-												<input type="text" id="godmotherName" name="godmotherName" required><br>
-												<label for="godmotherAddress">Godmother's address: </label>
-												<input type="text" id="godmotherAddress" name="godmotherAddress" required><br>
-												<div class="button-cont">
-													<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
-													<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
-												</div>
-												<div class="popupForm" id="clearForm">
-													<div class="icon-box"></div>
-													<div class="headertext-box">
-														Are you sure you want to clear?
-													</div>
-													<div class="form-btnarea">
-														<button type="button" onclick="openForm(clearForm)">No</button>
-														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
-													</div>
-												</div>
-												<div class="popupForm" id="submitForm">
-													<div class="icon-box"></div>
-													<div class="headertext-box">
-														Are you sure you want to submit?
-													</div>
-													<div class="form-btnarea">
-														<button type="button" onclick="openForm(submitForm)">No</button>
-														<button type="Submit" name="submitform">Yes</button>
-													</div>
-												</div>
-												
-											</form>
-											<?php
-										}
-										
-				// FUNERAL MASS AND BLESSING FORM
-										else if($event == "Funeral Mass/Blessing"){
-											?>
-											<?php
-											
-												$funeralst = array("08:00:00", "13:00:00");
-												
-												//query for retrieving appointments in the same day
-												$query = "SELECT event_timeStart, event_timeEnd FROM appointment_details WHERE appointment_status = 'Accepted' AND event_date = '$date' AND appointment_type = 'Funeral Mass/Blessing'";
-												$result = mysqli_query($conn, $query);
-												////////
-												$starttime = array();
-												$counter = 0;
-												while ($row = mysqli_fetch_assoc($result)){
-													$starttime[$counter] = $row['event_timeStart'];
-													$counter++;
-												}
-												
-												$avtime = $funeralst;
-												$count =0;
-												$break = false;
-												for ($x = 0; $x < count($funeralst); $x++){
-													for($y = 0; $y < count($starttime); $y++) {
-														if(strtotime($funeralst  [$x]) == strtotime($starttime[$y])){
-															unset($avtime[$x]);
-															break;	
-														}
-													}
-												}
-												$count_time = 0;?>
-												<div> <h3> Available time: </h3></div>
-												<?php
-												foreach ($avtime as $i){
-													?><div>
-														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="fav_language" value="<?php echo $i?>">
-														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo $i ?></label><br>
-													</div>
-													<?php
-													$counter++;
-												}
-											
-											?> 
-											<form action="page_LANDING.php" method="post">
-												<div> Funeral Mass/Blessing Form </div>
-												
-												<b> Requirements: </b>
-												> Death certificate of the deceased <br>
-													
-												<b> Notes: </b>
-												> Funeral masses are held at the church while funeral blessings are held at the wake. <br>
-												> Funeral mass - Php 1,000.00 <br>
-												> Funeral blessing - Donation <br>
-												
-												<b> Deceased's </b>
-												<label for="lastName">Last name: </label>
-												<input type="text" id="lastName" name="lastName" required><br>
-												<label for="firstName">First name: </label>
-												<input type="text" id="firstName" name="firstName" required><br>
-												<label for="middleName">Middle name: </label>
-												<input type="text" id="middleName" name="middleName"><br>
-												<label for="age">Age: </label>
-												<input type="num" id="age" name="age" required><br>
-												<label for="date_of_internment">Date of internment: </label>
-												<input type="date" id="date_of_internment" name="date_of_internment" required><br>
-												<p> Gender: </p>
-												<input type="radio" id="genderMale" name="gender" required>
-												<label for="genderMale">Male </label> <br>
-												<input type="radio" id="genderFemale" name="gender" required>
-												<label for="genderFemale">Female </label> <br>
-												<label for="place_of_cemetery">Place of cemetery: </label>
-												<input type="text" id="place_of_cemetery" name="place_of_cemetery" required><br>
-												<label for="address">Present address: </label>
-												<input type="text" id="address" name="address" required><br>
-												<label for="cause_of_death">Cause of death: </label>
-												<input type="text" id="cause_of_death" name="cause_of_death" required><br>
-												<p> Sacrament Received: </p>
-												<input type="radio" id="sacramentYes" name="sacrament" required>
-												<label for="sacramentYes">Yes </label><br>
-												<input type="radio" id="sacramentNo" name="sacrament" required>
-												<label for="sacramentNo">No </label><br>
-												<p> Casket or urn: </p>
-												<input type="radio" id="burialCasket" name="burial" required>
-												<label for="burialCasket">Casket </label>
-												<input type="radio" id="burialUrn" name="burial" required>
-												<label for="burialUrn">Urn </label>
-												
-												<br><br>
-												<b> Informant's </b>
-												<label for="informantLastName">Last name: </label>
-												<input type="text" id="informantLastName" name="informantLastName" required><br>
-												<label for="informantFirstName">First name: </label>
-												<input type="text" id="informantFirstName" name="informantFirstName" required><br>
-												<label for="informantMiddleName">Middle name: </label>
-												<input type="text" id="informantMiddleName" name="informantMiddleName"><br>
-												<label for="contactNum">Contact number: </label>
-												<input type="tel" id="contactNum" name="contactNum" required><br>
-												<label for="address">Present address: </label>
-												<input type="text" id="address" name="address" required><br>
-												<div class="button-cont">
-													<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
-													<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
-												</div>
-												<div class="popupForm" id="clearForm">
-													 <div class="icon-box"></div>
-													<div class="headertext-box">
-														Are you sure you want to clear?
-													</div>
-													<div class="form-btnarea">
-														<button type="button" onclick="openForm(clearForm)">No</button>
-														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
-													</div>
-												</div>
-												<div class="popupForm" id="submitForm">
-													<div class="icon-box"></div>
-													<div class="headertext-box">
-														Are you sure you want to submit?
-													</div>
-													<div class="form-btnarea">
-														<button type="button" onclick="openForm(submitForm)">No</button>
-														<button type="Submit" name="submitform">Yes</button>
-													</div>
-												</div>
-											</form>
-											<?php
-										}else{
-											?> <div> More form </div><?php
-										}
-									}
-									else if($type == "Mass Intention"){
-										echo '<div> Event type: '.$type.'</div>';
-										echo '<div> Date: '.$date.'</div>';
-										?> 
-										<form action="page_LANDING.php" method="post">
-											<div> Mass Intention Form </div>
-											
-											<b> Notes: </b>
-											> Mass Intention Fee: Donation <br>
-											
-											<label for="contactNum">Contact number: </label>
-											<input type="tel" id="contactNum" name="contactNum" required><br>
-											
-											<b> Purpose: </b>
-											
-											<input type="checkbox" name="purposes[]" id="Thanksgiving" value="Thanksgiving">
-											<label for="Thanksgiving">Thanksgiving</label><br>
-											<input type="checkbox" name="purposes[]" id="Healing" value="Healing/Recovery">
-											<label for="Healing">Healing/Recovery</label><br>
-											<input type="checkbox" name="purposes[]" id="SpecialInt" value="Special Intention">
-											<label for="SpecialInt">Special Intention</label><br>
-											<input type="checkbox" name="purposes[]" id="Soul" value="Soul">
-											<label for="Soul">Soul</label><br>
-											<div class="button-cont">
-												<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
-												<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
 											</div>
-											<div class="popupForm" id="clearForm">
-												 <div class="icon-box"></div>
+
+										<b> Requirements: </b>
+										> Death certificate of the deceased <br>
+											
+										<b> Notes: </b>
+										> Funeral masses are held at the church while funeral blessings are held at the wake. <br>
+										> Funeral mass - Php 1,000.00 <br>
+										> Funeral blessing - Donation <br>
+										<div class="form-cont">
+											<div class="form-content">
+												<div class="form-title">
+													<h2>Deceased's Information</h2>
+												</div>
+												<div>
+													<b>Name</b>
+													<div class="form-grid-cont">
+														<div class="input-box">
+															<label for="lastName">Last name: </label>
+															<input type="text" id="lastName" name="lastName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="firstName">First name: </label>
+															<input type="text" id="firstName" name="firstName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="middleName">Middle name: </label>
+															<input type="text" id="middleName" name="middleName"><br>
+														</div>
+													</div>
+												</div>
+												<div class="form-grid-cont">
+													<div class="input-box">
+														<label for="age"><strong>Age:</strong> </label>
+														<input type="num" id="age" name="age" required><br>
+													</div>
+													<div>
+														<b>Gender</b>
+														<div style="display: flex">
+															<div>
+																<input type="radio" id="genderMale" name="gender" required>
+																<label for="genderMale">Male </label> <br>
+															</div>
+															<div>
+																<input type="radio" id="genderFemale" name="gender" required>
+																<label for="genderFemale">Female </label> <br>
+															</div>
+														</div>
+													</div>
+													<div class="input-box">
+														<label for="cause_of_death"><strong>Cause of death</strong></label>
+														<input type="text" id="cause_of_death" name="cause_of_death" required><br>
+													</div>
+													<div class="input-box">
+														<label for="date_of_death"><strong>Date of death</strong></label>
+														<input type="date" name="date_of_death" required><br>
+													</div>
+													<div class="input-box">
+														<label for="date_of_internment"><strong>Date of internment</strong> </label>
+														<input type="date" id="date_of_internment" name="date_of_internment" required><br>
+													</div>
+													<div class="input-box">
+														<label for="place_of_cemetery"><strong>Place of cemetery:</strong> </label>
+														<input type="text" id="place_of_cemetery" name="place_of_cemetery" required><br>
+													</div>
+												</div>
+												<div class="grid-cont">
+													<div>
+														<b>Sacrament Received</b>
+														<div style="display: flex">
+															<div>
+																<input type="radio" id="sacramentYes" name="sacrament" required>
+																<label for="sacramentYes">Yes </label><br>
+															</div>
+															<div>
+																<input type="radio" id="sacramentNo" name="sacrament" required>
+																<label for="sacramentNo">No </label><br>
+															</div>
+														</div>
+													</div>
+													<div>
+														<b>Casket or urn</b>
+														<div style="display: flex">
+															<div>
+																<input type="radio" id="burialCasket" name="burial" required>
+																<label for="burialCasket">Casket </label>
+															</div>
+															<div>
+																<input type="radio" id="burialUrn" name="burial" required>
+																<label for="burialUrn">Urn </label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-title">
+													<h2>Informant's Information</h2>
+												</div>
+												<div>
+													<b>Name</b>
+													<div class="form-grid-cont">
+														<div class="input-box">
+															<label for="informantLastName">Last name: </label>
+															<input type="text" id="informantLastName" name="informantLastName" required><br>
+														</div>
+														<div class="input-box">
+															<label for="informantFirstName">First name: </label>
+															<input type="text" id="informantFirstName" name="informantFirstName" required><br>
+														</div>
+														<div class="input-box">
+														<label for="informantMiddleName">Middle name: </label>
+														<input type="text" id="informantMiddleName" name="informantMiddleName"><br>
+														</div>
+													</div>
+												</div>
+												<div class="grid-cont">
+													<div class="input-box">
+														<label for="contactNum"><strong>Contact number</strong></label>
+														<input type="tel" id="contactNum" name="informantContactNum" required><br>
+													</div>
+													<div class="input-box">
+														<label for="address"><strong>Present address</strong> </label>
+														<input type="text" id="address" name="informantAddress" required><br>
+													</div>
+												</div>
+											</div>
+											<div class="lower-form">
+												<div class="button-cont">
+													<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+													<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+												</div>
+											</div>
+										</div>
+										
+										<div class="popupCover" id="clearForm">
+											<div class="popupForm">
+												<div class="icon-box"></div>
 												<div class="headertext-box">
 													Are you sure you want to clear?
 												</div>
@@ -618,7 +803,9 @@ $_SESSION['isLoggedIn'] = true;
 													<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
 												</div>
 											</div>
-											<div class="popupForm" id="submitForm">
+										</div>
+										<div class="popupCover" id="submitForm">
+											<div class="popupForm">
 												<div class="icon-box"></div>
 												<div class="headertext-box">
 													Are you sure you want to submit?
@@ -628,70 +815,498 @@ $_SESSION['isLoggedIn'] = true;
 													<button type="Submit" name="submitform">Yes</button>
 												</div>
 											</div>
+										</div>
+									</form>
+									<?php
+								}else if($event == "Baptismal Certificate" || $event == "Wedding Certificate" || $event == "Confirmation Certificate"){
+									?> 
+									<div>
+										<div>
+										<b> Requirements for : <?php echo $event?> </b>
+											<div class="grid-cont">
+												<div>> Birth Certificate & 2x2 ID picture</div>		
+												<div>> Baptismal Certificate (Original copy)</div>		
+												<div>> Confirmation Certificate (original copy)</div>		
+												<div>> Publication  of wedding banns</div>				
+											</div>
+											<b> Notes: </b>
+											<div class="grid-cont">
+												<div> > The document should be claimed within the scheduled date </div>
+											</div>
+										</div>
+										<form action="page_LANDING.php" method="post">
+											<div class="form-cont">
+												<div class="form-content">
+													<div class="form-title">
+														<h2>
+														<?php 
+															if($event == "Baptismal Certificate"){
+																echo"<b>Child's</b>";
+															}else {
+																echo"<b>Requester's</b>";
+															}
+														?>
+														</h2>
+													</div>
+													<div>
+														<b>Name</b>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="lastName">Last name: </label>
+																<input type="text" id="lastName" name="lastName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="firstName">First name: </label>
+																<input type="text" id="firstName" name="firstName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="middleName">Middle name: </label>
+																<input type="text" id="middleName" name="middleName"><br>
+															</div>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="dob"><strong>Date of birth</strong></label>
+															<input type="date" id="dob" name="dob" required> <br>
+														</div>
+														<div class="input-box">
+															<label for="contactNum"><strong> Contact number</strong></label>
+															<input type="tel" id="contactNum" name="ContactNum" required><br>
+														</div>
+														<div class="input-box">
+															<label for="fname"><strong>Father's Name</strong> </label>
+															<input type="text" id="fname" name="fname" required><br>
+														</div>
+														<div class="input-box">
+															<label for="mname"><strong>Mother's Name</strong> </label>
+															<input type="text" id="mname" name="mname" required><br>
+														</div>
+														<div class="input-box">
+															<label for="purpose"><strong>Purpose</strong> </label>
+															<input type="text" id="purpose" name="purpose" required><br>
+														</div>
+													</div>
+													<div class="lower-form">
+														<div class="button-cont">
+															<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+															<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="popupCover"  id="clearForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to clear?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(clearForm)">No</button>
+														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+													</div>
+												</div>
+											</div>
+											<div class="popupCover" id="submitForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to submit?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(submitForm)">No</button>
+														<button type="Submit" name="submitform">Yes</button>
+													</div>
+												</div>
+											</div>
 										</form>
+									</div>
 									
-										<?php
-									} 
-												// BLESSINGS FORM
-									else if ($type == "Blessing"){
-										echo '<div> Event type: '.$type.'</div>';
-										echo '<div> Date: '.$date.'</div>';
-										?> 
-										<form action="page_LANDING.php" method="post">
-											<div> Blessings Form </div>
-											
+									<?php
+								} else if($event == "Good Moral Certificate"){
+								?>
+									<div>
+										<div>
+										<b> Requirements for : <?php echo $event?> </b>
+											<div class="grid-cont">
+												<div>> Birth Certificate & 2x2 ID picture</div>		
+												<div>> Baptismal Certificate (Original copy)</div>		
+												<div>> Confirmation Certificate (original copy)</div>		
+												<div>> Publication  of wedding banns</div>				
+											</div>
 											<b> Notes: </b>
-											> Blessing Fee: Donation <br>
-											> Barangay Pembo and Rizal only <br>
-											
-											<label for="contactNum">Contact number: </label>
-											<input type="tel" id="contactNum" name="contactNum" required><br>
-											
-											<p> Type of Blessing: </p>
-											<input type="radio" id="HouseBlessing" name="blessingType" value="House Blessing" required>
-											<label for="HouseBlessing">House Blessing </label> <br>
-											<input type="radio" id="CarBlessing" name="blessingType" value="Car Blessing" required>
-											<label for="CarBlessing">Car Blessing </label> <br>
-											<input type="radio" id="MotorcycleBlessing" name="blessingType" value="Motorcycle Blessing" required>
-											<label for="MotorcycleBlessing">Motorcycle Blessing </label> <br>
-											<input type="radio" id="StoreBlessing" name="blessingType" value="Store Blessing" required>
-											<label for="StoreBlessing">Store Blessing </label> <br>
-											<div class="button-cont">
-												<button type="reset" onclick="openForm(clearForm)" id="clear">Clear</button>
-												<button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+											<div class="grid-cont">
+												<div> > The document should be claimed within the scheduled date </div>
 											</div>
-											<div class="popupForm" id="clearForm">
-												 <div class="icon-box"></div>
-												<div class="headertext-box">
-													Are you sure you want to clear?
-												</div>
-												<div class="form-btnarea">
-													<button type="button" onclick="openForm(clearForm)">No</button>
-													<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+										</div>
+										<form action="page_LANDING.php" method="post">
+											<div class="form-cont">
+												<div class="form-content">
+													<div class="form-title">
+														<h2><b>Requester's</b></h2>
+													</div>
+													<div>
+														<b>Name</b>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="lastName">Last name: </label>
+																<input type="text" id="lastName" name="lastName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="firstName">First name: </label>
+																<input type="text" id="firstName" name="firstName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="middleName">Middle name: </label>
+																<input type="text" id="middleName" name="middleName"><br>
+															</div>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="dob"><strong>Date of birth</strong></label>
+															<input type="date" id="dob" name="dob" required> <br>
+														</div>
+														<div class="input-box">
+															<label for="contactNum"><strong> Contact number</strong></label>
+															<input type="tel" id="contactNum" name="ContactNum" required><br>
+														</div>
+														<div class="input-box">
+															<label for="purpose"><strong>Purpose</strong> </label>
+															<input type="text" id="purpose" name="purpose" required><br>
+														</div>
+													</div>
+													<div class="lower-form">
+														<div class="button-cont">
+															<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+															<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+														</div>
+													</div>
 												</div>
 											</div>
-											<div class="popupForm" id="submitForm">
-												<div class="icon-box"></div>
-												<div class="headertext-box">
-													Are you sure you want to submit?
+											<div class="popupCover" id="clearForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to clear?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(clearForm)">No</button>
+														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+													</div>
 												</div>
-												<div class="form-btnarea">
-													<button type="button" onclick="openForm(submitForm)">No</button>
-													<button type="Submit" name="submitform">Yes</button>
+											</div>
+											<div class="popupCover" id="submitForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to submit?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(submitForm)">No</button>
+														<button type="Submit" name="submitform">Yes</button>
+													</div>
 												</div>
 											</div>
 										</form>
-										
-											
-											<?php
-										} 
-								} 
-								else {
-									//do nothing
+									</div>
+									
+								<?php
+								} else if($event == "Permit and No Record"){
+									?> 
+									<div>
+										<div>
+										<b> Requirements for : <?php echo $event?> </b>
+											<div class="grid-cont">
+												<div>> Birth Certificate & 2x2 ID picture</div>		
+												<div>> Baptismal Certificate (Original copy)</div>		
+												<div>> Confirmation Certificate (original copy)</div>		
+												<div>> Publication  of wedding banns</div>				
+											</div>
+											<b> Notes: </b>
+											<div class="grid-cont">
+												<div> > The document should be claimed within the scheduled date </div>
+											</div>
+										</div>
+										<form action="page_LANDING.php" method="post">
+											<div class="form-cont">
+												<div class="form-content">
+													<div class="form-title">
+														<h2><b>Requester's</b></h2>
+													</div>
+													<div>
+														<b>Name</b>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="lastName">Last name: </label>
+																<input type="text" id="lastName" name="lastName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="firstName">First name: </label>
+																<input type="text" id="firstName" name="firstName" required><br>
+															</div>
+															<div class="input-box">
+																<label for="middleName">Middle name: </label>
+																<input type="text" id="middleName" name="middleName"><br>
+															</div>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="dob"><strong>Date of birth</strong></label>
+															<input type="date" id="dob" name="dob" required> <br>
+														</div>
+														<div class="input-box">
+															<label for="contactNum"><strong> Contact number</strong></label>
+															<input type="tel" id="contactNum" name="ContactNum" required><br>
+														</div>
+														<div class="input-box">
+															<label for="address"><strong>Address</strong> </label>
+															<input type="text" id="address" name="address" required><br>
+														</div>
+														<div class="input-box">
+															<label for="purpose"><strong>Purpose</strong> </label>
+															<input type="text" id="purpose" name="purpose" required><br>
+														</div>
+													</div>
+													<div class="lower-form">
+														<div class="button-cont">
+															<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+															<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="popupCover" id="clearForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to clear?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(clearForm)">No</button>
+														<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+													</div>
+												</div>
+											</div>
+											<div class="popupCover" id="submitForm">
+												<div class="popupForm">
+													<div class="icon-box"></div>
+													<div class="headertext-box">
+														Are you sure you want to submit?
+													</div>
+													<div class="form-btnarea">
+														<button type="button" onclick="openForm(submitForm)">No</button>
+														<button type="Submit" name="submitform">Yes</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									
+									<?php
+								} else {
+									//do notihing
 								}
-							?>
-                    </div>
-                </div>
+							}
+							else if($type == "Mass Intention"){ 
+								?>
+								<div class="Event-grid-cont">
+									<div><h1> Event: <?php echo $type?></h1></div>
+									<div><h1> Date: <?php echo $formated_date?></h1></div>
+								</div>
+								<?php
+								$intention = array("06:00:00","07:00:00","09:00:00","16:30:00","17:00:00", "18:00:00");
+								$count_time = 0; ?>
+								<form action="page_LANDING.php" method="post">
+									<div><b>Time Available: </b></div>
+									<div class="rd-cont">
+										<?php 
+											foreach ($intention as $i){
+												if($day != "Sunday"){
+													if($i == "18:00:00"){
+														?><div>
+															<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
+															<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+														</div>
+														<?php
+													} 
+												} else {
+													?><div>
+														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
+														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+													</div>
+													<?php
+												}
+												$count_time++;
+											}
+
+										?> 
+
+									</div>
+									<b> Notes: </b>
+									> Mass Intention Fee: Donation <br>
+									
+									<div class="form-cont">
+										<div class="form-content">
+											<div class="grid-cont">
+												<div class="input-box">
+													<label for="contactNum">Contact number: </label>
+													<input type="tel" id="contactNum" name="contactNum" required><br>
+												</div>
+												<div>
+													<b> Purpose: </b>
+													<div class="input-box">
+														<div>
+															<input type="checkbox" name="purposes" id="Thanksgiving" value="Thanksgiving">
+															<label for="Thanksgiving">Thanksgiving</label><br>
+														</div>
+														<div>
+															<input type="checkbox" name="purposes" id="Healing" value="Healing/Recovery">
+															<label for="Healing">Healing/Recovery</label><br>
+														</div>
+														<div>
+															<input type="checkbox" name="purposes" id="SpecialInt" value="Special Intention">
+															<label for="SpecialInt">Special Intention</label><br>
+														</div>
+														<div>
+															<input type="checkbox" name="purposes" id="Soul" value="Soul">
+															<label for="Soul">Soul</label><br>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div>
+												<div class="input-box">
+													<label for="names">Name/s: </label>
+													<textarea name = "names">
+														Enter details here...
+													</textarea>
+												</div>
+											</div>
+											<br>
+											<div class="lower-form">
+												<div class="button-cont">
+													<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+													<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="popupCover" id="clearForm">
+										<div class="popupForm">
+											<div class="icon-box"></div>
+											<div class="headertext-box">
+												Are you sure you want to clear?
+											</div>
+											<div class="form-btnarea">
+												<button type="button" onclick="openForm(clearForm)">No</button>
+												<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+											</div>
+										</div>
+									</div>
+									<div class="popupCover" id="submitForm">
+										<div class="popupForm">
+											<div class="icon-box"></div>
+											<div class="headertext-box">
+												Are you sure you want to submit?
+											</div>
+											<div class="form-btnarea">
+												<button type="button" onclick="openForm(submitForm)">No</button>
+												<button type="Submit" name="submitform">Yes</button>
+											</div>
+										</div>
+									</div>
+								</form>
+							
+								<?php
+							} 
+										// BLESSINGS FORM
+							else if ($type == "Blessing"){
+								?> 
+								<div class="Event-grid-cont">
+									<div><h1> Event: <?php echo $type?></h1></div>
+									<div><h1> Date: <?php echo $formated_date?></h1></div>
+								</div>
+								<form action="page_LANDING.php" method="post">
+									<b> Notes: </b>
+									> Blessing Fee: Donation <br>
+									> Barangay Pembo and Rizal only <br>
+									
+									<div class="form-cont">
+										<div class="form-content">
+											<div class="grid-cont">
+												<div class="input-box">
+													<label for="contactNum">Contact number: </label>
+													<input type="tel" id="contactNum" name="contactNum" required><br>
+												</div>
+												<div>
+													<b> Type of Blessing </b>
+													<div class="input-box">
+														<div>
+															<input type="radio" id="HouseBlessing" name="blessingType" value="House Blessing" required>
+															<label for="HouseBlessing">House Blessing </label> <br>
+														</div>
+														<div>
+															<input type="radio" id="CarBlessing" name="blessingType" value="Car Blessing" required>
+															<label for="CarBlessing">Car Blessing </label> <br>
+														</div>
+														<div>
+															<input type="radio" id="MotorcycleBlessing" name="blessingType" value="Motorcycle Blessing" required>
+															<label for="MotorcycleBlessing">Motorcycle Blessing </label> <br>
+														</div>
+														<div>
+															<input type="radio" id="StoreBlessing" name="blessingType" value="Store Blessing" required>
+															<label for="StoreBlessing">Store Blessing </label> <br>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="lower-form">
+												<div class="button-cont">
+													<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
+													<button type="button" class="submit" onclick="openForm(submitForm)" id="submit">Submit</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="popupCover" id="clearForm">
+										<div class="popupForm">
+											<div class="icon-box"></div>
+											<div class="headertext-box">
+												Are you sure you want to clear?
+											</div>
+											<div class="form-btnarea">
+												<button type="button" onclick="openForm(clearForm)">No</button>
+												<button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+											</div>
+										</div>
+									</div>
+									<div class="popupCover" id="submitForm">
+										<div class="popupForm">
+											<div class="icon-box"></div>
+											<div class="headertext-box">
+												Are you sure you want to submit?
+											</div>
+											<div class="form-btnarea">
+												<button type="button" onclick="openForm(submitForm)">No</button>
+												<button type="Submit" name="submitform">Yes</button>
+											</div>
+										</div>
+									</div>
+								</form>
+								
+									
+									<?php
+								} 
+						} 
+						else {
+							//do nothing
+						}
+					?>
+
+				</div>
             </section>
         </div>
 
@@ -743,7 +1358,7 @@ $_SESSION['isLoggedIn'] = true;
             </div>
         </footer>
     </div>
-    <script src="reuse.js"></script>
+    <script src="jsScheduleevent.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </body>
 
