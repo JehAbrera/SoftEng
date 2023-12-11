@@ -15,6 +15,7 @@ session_start();
 
 <body>
     <div class="content-wrapper">
+        
         <!-- Login Form -->
         <div class="login-cover" id="login">
             <div class="login-form">
@@ -34,14 +35,14 @@ session_start();
                     ?>
                 </div>
                 <div class="loginform-wrapper">
-                    <form action="" method="post">
+                    <form action="validateLOGIN.php" method="post">
                         <span>Email:</span>
                         <div class="form-input">
-                            <input type="text" name="" id="" required>
+                            <input type="text" name="user_email" id="" required>
                         </div>
                         <span>Password: </span>
                         <div class="form-input">
-                            <input type="password" name="" id="" required>
+                            <input type="password" name="user_pass" id="" required>
                             <i class="fa-solid fa-eye" id="pass-icon"></i>
                         </div>
                         <span><a href="" target="_self" rel="noopener noreferrer">Forgot Password?</a></span>

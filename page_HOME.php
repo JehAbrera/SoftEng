@@ -34,7 +34,7 @@ session_start();
                     ?>
                 </div>
                 <div class="loginform-wrapper">
-                    <form action="" method="post">
+                    <form action="validateLOGIN.php" method="post">
                         <span>Email:</span>
                         <div class="form-input">
                             <input type="text" name="" id="" required>
