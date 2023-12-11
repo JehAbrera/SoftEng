@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,26 +52,30 @@
                     <span>Account Information</span>
                 </div>
                 <div class="form-content">
-                    <form action="be_validate.php" method="post">
+                    <form method="POST" action="validationREGISTER.php">
                         <div class="form-input">
                             <span>Last Name</span>
-                            <input type="text" name="lname" id="">
+                            <input type="text" name="lname" id="lname" pattern="[a-zA-Z.\s\-]*" required>
                         </div>
                         <div class="form-input">
                             <span>First Name</span>
-                            <input type="text" name="fname" id="">
+                            <input type="text" name="fname" id="fname" pattern="[a-zA-Z.\s\-]*" required>
                         </div>
                         <div class="form-input">
                             <span>Mobile Number</span>
-                            <input type="tel" name="mobile" id="">
+                            <div class="contactnum">
+                                <input type="text" name="mobile1" value="+63" id="" disabled>
+                                <input type="tel" name="mobile" id="mobile">
+                            </div>
                         </div>
                         <div class="form-input">
                             <span>Email Address</span>
-                            <input type="email" name="" id="">
+                            <input type="email" name="email" id="email" required>
                         </div>
                         <?php
-                        if (isset($_SESSION['takenEmail']) && $_SESSION['takenEmail']) {
+                        if (isset($_SESSION['takenEmail']) && $_SESSION['takenEmail'] == true) {
                             echo '<div class="error email">Email already taken. Please use a different email.</div>';
+                            unset($_SESSION['takenEmail']);
                         }
                         ?>
                         <div class="form-input">
@@ -89,13 +96,13 @@
                         <div class="pass-requirements">
                             <span>Password Requirements:</span>
                             <div class="requirement">
-                                <span class="req1" id="req1"><i class="fa-solid fa-circle-exclamation req1"></i> Atleast 8 characters long</span>
+                                <span class="req1"><i class="fa-solid fa-circle-exclamation req1"></i> At least 8 characters long</span>
                             </div>
                             <div class="requirement">
                                 <span class="req2"><i class="fa-solid fa-circle-exclamation req2"></i> A combination of uppercase and lowercase letters</span>
                             </div>
                             <div class="requirement">
-                                <span class="req3"><i class="fa-solid fa-circle-exclamation req3"></i> Must contain atleast one special character/s</span>
+                                <span class="req3"><i class="fa-solid fa-circle-exclamation req3"></i> Must contain at least one special character</span>
                             </div>
                         </div>
                         <div class="button-area">
@@ -119,7 +126,7 @@
                             </div>
                             <div class="form-btnarea">
                                 <button type="button" onclick="openForm(submitForm)">No</button>
-                                <button type="Submit">Yes</button>
+                                <button type="submit" name="submitReg" value="submit">Yes</button>
                             </div>
                         </div>
                     </form>

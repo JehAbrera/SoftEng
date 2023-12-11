@@ -1,0 +1,116 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #696969;
+    --bggreen: #90EE90;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styling */
+.content-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    background-color: var(--grey);
+}
+.card {
+    background-color: var(--white);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(80%, 550px);
+    box-shadow: 0 0 10px var(--black);
+    padding: 2rem 1rem;
+    border-radius: 20px;
+}
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.message-wrapper > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.pop-icon {
+    width: clamp(5rem, 1.4286rem + 11.4286vw, 10rem);;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px var(--black);
+    margin-bottom: 1rem;
+
+}
+.pop-icon > i:first-child {
+    font-size: clamp(3rem, 0.1429rem + 9.1429vw, 7rem);
+    color: yellow;
+}
+.heading > span {
+    font-size: clamp(1rem, 0.4643rem + 1.7143vw, 1.75rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+.message-body {
+    font-size: clamp(0.6rem, 0.4571rem + 0.4571vw, 0.8rem);
+}
+.shake {
+    -webkit-animation-name: shake;
+    -webkit-animation-duration: 1s;
+    animation-name: shake;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    } 20% {
+        transform: rotate(-30deg);
+    } 40% {
+        transform: rotate(30deg);
+    } 60% {
+        transform: rotate(-30deg);
+    } 80% {
+        transform: rotate(30deg);
+    } 100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    } 20% {
+        transform: rotate(-30deg);
+    } 40% {
+        transform: rotate(30deg);
+    } 60% {
+        transform: rotate(-30deg);
+    } 80% {
+        transform: rotate(30deg);
+    } 100% {
+        transform: rotate(0deg);
+    }
+}

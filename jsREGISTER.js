@@ -10,7 +10,7 @@ const openForm = item => {
         document.getElementById(item.id).style.display = "flex";
 
         for (var index = 0; index < inputArray.length; index++)
-            inputArray[index].disabled = true;
+            inputArray[index].readOnly = true;
 
         submit.disabled = true;
         clear.disabled = true;
@@ -18,7 +18,7 @@ const openForm = item => {
         document.getElementById(item.id).style.display = "none";
 
         for (var index = 0; index < inputArray.length; index++)
-            inputArray[index].disabled = false;
+            inputArray[index].readOnly = false;
 
         submit.disabled = false;
         clear.disabled = false;
@@ -26,16 +26,22 @@ const openForm = item => {
 }
 
 const clearReq = () => {
-    for (var index = 0; index < req1.length; index++)
+    for (var index = 0; index < req1.length; index++) {
         req1[index].style.color = "var(--black)";
+    }
     req1[1].className = "fa-solid fa-circle-exclamation req1"
-    for (var index = 0; index < req2.length; index++)
+    for (var index = 0; index < req2.length; index++) {
         req2[index].style.color = "var(--black)";
-    req2[1].className == "fa-solid fa-circle-exclamation req2"
-    for (var index = 0; index < req3.length; index++)
+    }
+    req2[1].className = "fa-solid fa-circle-exclamation req2"
+    for (var index = 0; index < req3.length; index++) {
         req3[index].style.color = "var(--black)";
-    req3[1].className == "fa-solid fa-circle-exclamation req3"
+    }
+    req3[1].className = "fa-solid fa-circle-exclamation req3"
 }
+
+const passReq2 = /^(?=.*[A-Z])(?=.*[a-z])/;
+const passReq3 = /^(?=.*[!@#$%^&*])/;
 
 const checkPass = () => {
     const password = document.getElementById("password");
@@ -54,7 +60,43 @@ const checkPass = () => {
     } else if (password.value.length == 0) {
         for (var index = 0; index < req1.length; index++)
             req1[index].style.color = "var(--black)";
-        req1[1].className = "fa-solid fa-circle-exclamation req1"
+        req1[1].className = "fa-solid fa-circle-exclamation req1";
+        for (var index = 0; index < req2.length; index++)
+            req2[index].style.color = "var(--black)";
+        req2[1].className = "fa-solid fa-circle-exclamation req2";
+        for (var index = 0; index < req3.length; index++)
+            req3[index].style.color = "var(--black)";
+        req3[1].className = "fa-solid fa-circle-exclamation req3";
+    }
+
+    // password requirement 2
+    if(password.value.match(passReq2)) {
+        for (var index = 0; index < req2.length; index++)
+            req2[index].style.color = "green";
+        if (req2[1].className == "fa-solid fa-circle-exclamation req2" || req2[1].className == "fa-solid fa-xmark req2") {
+            req2[1].className = "fa-solid fa-check req2"
+        }
+    } else if (!password.value.match(passReq2) && password.value.length > 0) {
+        for (var index = 0; index < req2.length; index++)
+            req2[index].style.color = "red";
+        if (req2[1].className == "fa-solid fa-circle-exclamation req2" || req2[1].className == "fa-solid fa-check req2") {
+            req2[1].className = "fa-solid fa-xmark req2"
+        }
+    }
+
+    // pass req 3
+    if(password.value.match(passReq3)) {
+        for (var index = 0; index < req3.length; index++)
+            req3[index].style.color = "green";
+        if (req3[1].className == "fa-solid fa-circle-exclamation req3" || req3[1].className == "fa-solid fa-xmark req3") {
+            req3[1].className = "fa-solid fa-check req3"
+        }
+    } else if (!password.value.match(passReq3) && password.value.length > 0) {
+        for (var index = 0; index < req2.length; index++)
+            req3[index].style.color = "red";
+        if (req3[1].className == "fa-solid fa-circle-exclamation req3" || req3[1].className == "fa-solid fa-check req3") {
+            req3[1].className = "fa-solid fa-xmark req3"
+        }
     }
 }
 

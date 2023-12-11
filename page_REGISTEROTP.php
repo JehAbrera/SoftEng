@@ -44,31 +44,52 @@ session_start();
                 <div class="info-content">
                     <p style="text-align: center;">
                         Please enter the verification code that was sent to
-                        your email <strong>juandelacruz@gmail.com</strong>. The code is
+                        your email <strong><?php //echo $_SESSION['email'] ?></strong>. The code is
                         valid for 30 minutes.
                     </p>
                 </div>
-                <form action="" method="post">
+                <form action="validationREGISTER.php" method="post">
                     <div class="otp-input">
                         <span>Enter your OTP here</span>
-                        <input type="text" name="" id="">
+                        <input type="text" name="userOTP" id="">
                         <?php
-                            if(!isset($_SESSION['isValidOTP'])) {
-
-                            } else if (!$_SESSION['isValidOTP']) {
-                                echo '<span>Invalid OTP</span>';
-                            }
+                        if (!isset($_SESSION['isValidOTP'])) {
+                        } else if (!$_SESSION['isValidOTP']) {
+                            echo '<span>Invalid OTP</span>';
+                        }
                         ?>
                     </div>
                     <div class="option-wrapper">
-                        <span><a href="" target="_self" rel="noopener noreferrer">Resend OTP</a></span>
-                        <button type="submit">Submit</button>
+                        <button type="submit" name="submitOTP">Submit</button>
+                        </form>
+                        <form action="sendOTP.php" method="post">
+                            <span id="resend"><input type="submit" name="submit" value="submit"></span>
+                        </form>
                     </div>
-                </form>
             </div>
         </section>
     </div>
-    <script src="jsREGISTER.js"></script>
+    <script>
+        const resend = document.getElementById('resend');
+        window.addEventListener("DOMContentLoaded", () => {
+            let count = 25;
+            const update = () => {
+                resend.innerText = 'Resend OTP in ' + count;
+            }
+
+            const countdown = () => {
+                update();
+                if (count > 0) {
+                    count--;
+                    setTimeout(countdown, 1000);
+                } else {
+                    resend.innerHTML = '<input type="submit" name="submit" value="submit">';
+                }
+            }
+
+            countdown();
+        });
+    </script>
 </body>
 
 </html>

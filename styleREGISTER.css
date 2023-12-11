@@ -203,6 +203,16 @@ button:hover {
 .error.pass {
     display: none;
 }
+.contactnum {
+    display: flex;
+    gap: 4px;
+}
+.contactnum input:first-child {
+    flex: 1;
+}
+.contactnum input:nth-child(2) {
+    flex: 8;
+}
 
 /* popup form */ 
 .popupForm {
