@@ -1,0 +1,341 @@
+/* Main Style for all file */
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS styling for nav */
+/* Nav icon */
+.icon-container {
+    font-size: 1.2rem;
+}
+
+/* nav wrapper */
+.nav-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    z-index: 1;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+}
+
+.nav-wrapper * {
+    font-weight: bolder;
+}
+
+/* nav content wrapper */
+.nav-content {
+    display: flex;
+}
+
+/* nav contents */
+.nav-item, .top-icon {
+    display: block;
+    padding: 1rem;
+    color: var(--black);
+}
+
+.nav-item:hover, .nav-item:hover .dp-title, .nav-item:hover i, .top-icon:hover, .top-icon:hover i, .nav-item.active:hover {
+    cursor: pointer;
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+/* Dropdown for nav */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    width: 250px;
+    top: 100%;
+    left: 0;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: var(--brown);
+}
+
+.dropdown-content * {
+    color: var(--white);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* nav color on scroll */
+.nav-scrolled {
+    background-color: var(--brown);
+}
+
+.nav-scrolled * {
+    color: var(--white);
+}
+
+/* Responsive nav */
+.top-icon {
+    display: none;
+}
+
+/* Active nav link */
+.nav-item.active {
+    background-color: var(--brown);
+    color: var(--white);
+}
+
+.nav-wrapper.nav-scrolled .nav-item.active {
+    background-color: var(--pink);
+    color: var(--black);
+}
+
+.nav-content.responsive {
+    position: absolute;
+    width: 70%;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    background-color: var(--brown);
+}
+
+.nav-content.responsive * {
+    color: var(--white);
+}
+
+.nav-content.responsive .dropdown-content {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-content.responsive .nav-item {
+    display: block;
+}
+
+.nav-item:hover {
+    color: var(--black);
+}
+
+.body-container {
+    display: flex;
+}
+
+.sidebar {
+    position: relative;
+    width: 400px;
+    padding: 20px;
+    margin-top: 70px; /* Adjust this value for spacing */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    border-right: 2px solid var(--black);
+}
+
+.sidebar button.styled-button {
+    width: 75%;
+    padding: 10px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    font-weight: bold;
+    border-radius: 15px;
+    color: #261700;
+    background-color: #F7E4D7;
+    border: none;
+    box-shadow: 0 5px 5px -5px var(--black);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar button.styled-button.clicked {
+    background-color: #261700 !important;
+    color: white !important;
+}
+
+
+.user-name {
+    margin-bottom: 50px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.main-content {
+    flex: 1; 
+    margin-top: 150px;
+    padding-left: 50px;
+}
+
+.main-content .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.main-content .form-group label {
+    min-width: 180px;
+    margin-right: 30px;
+    pointer-events: none;
+}
+
+.main-content .form-group input {
+    flex: 1;
+    max-width: 300px;
+ 
+}
+
+.main-content .editable .form-group input {
+    pointer-events: auto;
+}
+
+
+.main-content .input-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+	
+}
+
+
+
+.main-content .button-container button.save-button {
+    background-color: #90EE90; /* Green */
+    color: #00563F;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main-content .button-container button.cancel-button { 
+    background-color: #FFCCCB;
+    color: #F70D1A;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main-content .button-container {
+    display: flex;
+    margin-top: 100px;
+    margin-left: 100px;
+}
+
+.main-content .button-container button {
+    margin-right: 155px;
+}
+
+#passwordChangeGroup {
+   display: flex;
+     align-items: center;
+    margin-bottom: 15px;
+}
+
+#passwordChangeGroup label {
+    min-width: 200px;
+	margin-right: 10px;
+    
+}
+
+#passwordChangeGroup input {
+    flex: 1;
+    max-width: 300px;
+}
+
+.editable #passwordChangeGroup input {
+    pointer-events: auto;
+}
+.delete-confirmation-popup {
+    display: none;
+}
+
+.confirmation-message {
+    margin: 2rem 0;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+    color: red;
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 20px; 
+}
+
+.confirmation-buttons button {
+    width: 40%; 
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.delete-confirmation-popup .confirmation-buttons button:hover {
+    filter: brightness(90%);
+}
+.delete-confirmation-popup {
+	width: min(90%, 400px);
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    border: 1px solid var(--black);
+    box-shadow: 0 0 20px var(--black);
+    overflow: hidden;
+    border-radius: 20px;
+	background-color: white;
+}
+.close-icon {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+}
