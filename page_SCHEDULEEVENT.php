@@ -134,6 +134,16 @@ $_SESSION['isLoggedIn'] = true;
 								
 							</div>
 						</form>
+
+						<?php
+							if(isset($_POST["submit"])){
+								?>
+								<div class="back-icon-cont" onclick="location.href='page_SCHEDULEEVENT.php'">
+									<i class="fa-solid fa-arrow-left"> Back </i>
+								</div>
+								<?php
+							}
+						?>
                     </div>
                 </div>
 				<div class="form-container">
@@ -207,7 +217,7 @@ $_SESSION['isLoggedIn'] = true;
 														}
 													}
 													?><div>
-														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i." ".$event_endtime?>">
+														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i." ".$event_endtime?>" required>
 														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
 													</div>
 													<?php
@@ -221,12 +231,17 @@ $_SESSION['isLoggedIn'] = true;
 											<div class="req-cont">
 												<b> Requirements: </b>
 												<div class="Event-grid-cont">
-													<div>> Birth Certificate & 2x2 ID picture</div>		<div>> Wedding Interview </div>
-													<div>> Baptismal Certificate (Original copy)</div>		<div>	> Marriage License or Live-In Liscense (article 34) </div>
-													<div>> Confirmation Certificate (original copy)</div>		<div>> Cenomar (Certificate of No Marriage - photocopy) </div>
-													<div>> Long Brown Envelope			</div>				<div>> Pre-Cana Seminar </div>
-													<div>> Publication  of wedding banns</div>				<div>	> Marriage contract (Civil Marriage) </div>
+													<div>> PSA Birth Certificate </div>
+													<div>> 2x2 ID picture</div>		
+													<div>> Baptismal Certificate (Original copy)</div>		
+													<div>> Confirmation Certificate (original copy)</div>		
+													<div>> Cenomar (Certificate of No Marriage - photocopy) </div>
+													<div>> Publication  of wedding banns</div>
+													<div>> Pre-Cana Seminar </div>		
+													<div>> Marriage License or Live-In Liscense (article 34) / Marriage contract (Civil Marriage) </div>
+													<div>> Wedding Interview </div>
 													<div>> Confession </div>
+													<div>> Long Brown Envelope	</div>	
 												</div>
 												
 												<b> Notes: </b>
@@ -257,7 +272,10 @@ $_SESSION['isLoggedIn'] = true;
 														<div class="form-grid-cont">
 															<div class="input-box">
 																<label for="groom_contactNum"><strong>Contact number </strong></label>
-																<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
+																<div class="contactnum">
+																	<input type="text" name ="mobile1" value="+63" id="" disabled>
+																	<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
+																</div>
 															</div>
 															<div class="input-box">
 																<label for="groom_dob"><strong>Birth Date </strong></label>
@@ -268,7 +286,7 @@ $_SESSION['isLoggedIn'] = true;
 																<input type="text" id="groom_pob" name="groom_pob" required><br>
 															</div>
 														</div>
-														<div	>
+														<div>
 															<div class="input-box">
 																<label for="groom_address"><strong>Present Address </strong> </label>
 																<input type="text" id="groom_address" name="groom_address" required><br>
@@ -276,16 +294,41 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="groom_fatherName"><strong>Father's name </strong> </label>
+																<label for="groom_fatherName"><strong>Father's Name </strong> </label>
 																<input type="text" id="groom_fatherName" name="groom_fatherName" required><br>
 															</div>
 															<div class="input-box"> 
-																<label for="groom_motherName"><strong>Mother's name </strong> </label>
+																<label for="groom_motherName"><strong>Mother's Name </strong> </label>
 																<input type="text" id="groom_motherName" name="groom_motherName" required><br>
 															</div>
 															<div class="input-box">
 																<label for="groom_religion"><strong>Religion </strong> </label>
 																<input type="text" id="groom_religion" name="groom_religion" required><br>
+															</div>
+														</div>
+														<div>
+															<h2>Soft Copy of Requirements</h2>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="groom_idpic"><strong>2x2 ID Picture </strong> </label>
+																<input type="file" id="groom_idpic" name="groom_idpic" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_psa"><strong>PSA Birth Certificate </strong> </label>
+																<input type="file" id="groom_psa" name="groom_psa" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_cenomar"><strong>CENOMAR (Certificate of No Marriage) </strong> </label>
+																<input type="file" id="groom_cenomar" name="groom_cenomar" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_baptismal"><strong>Baptismal Certificate </strong> </label>
+																<input type="file" id="groom_baptismal" name="groom_baptismal" required><br>
+															</div>
+															<div class="input-box">
+																<label for="groom_confirmation"><strong>Confirmation Certificate </strong> </label>
+																<input type="file" id="groom_confirmation" name="groom_confirmation" required><br>
 															</div>
 														</div>
 													</div>
@@ -311,7 +354,10 @@ $_SESSION['isLoggedIn'] = true;
 														<div class="form-grid-cont">
 															<div class="input-box">
 																<label for="bride_contactNum"><strong>Contact number </strong></label>
-																<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
+																<div class="contactnum">
+																	<input type="text" name ="mobile1" value="+63" id="" disabled>
+																	<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
+																</div>
 															</div>
 															<div class="input-box">
 																<label for="bride_dob"><strong>Birth Date </strong></label>
@@ -330,16 +376,52 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="bride_fatherName"><strong>Father's name </strong> </label>
+																<label for="bride_fatherName"><strong>Father's Name </strong> </label>
 																<input type="text" id="bride_fatherName" name="bride_fatherName" required><br>
 															</div>
 															<div class="input-box"> 
-																<label for="bride_motherName"><strong>Mother's name </strong> </label>
+																<label for="bride_motherName"><strong>Mother's Name </strong> </label>
 																<input type="text" id="bride_motherName" name="bride_motherName" required><br>
 															</div>
 															<div class="input-box">
 																<label for="bride_religion"><strong>Religion </strong> </label>
 																<input type="text" id="bride_religion" name="bride_religion" required><br>
+															</div>
+														</div>
+														<div>
+															<h2>Soft Copy of Requirements</h2>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="bride_idpic"><strong>2x2 ID Picture </strong> </label>
+																<input type="file" id="bride_idpic" name="bride_idpic" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_psa"><strong>PSA Birth Certificate </strong> </label>
+																<input type="file" id="bride_psa" name="bride_psa" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_cenomar"><strong>CENOMAR (Certificate of No Marriage) </strong> </label>
+																<input type="file" id="bride_cenomar" name="bride_cenomar" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_baptismal"><strong>Baptismal Certificate </strong> </label>
+																<input type="file" id="bride_baptismal" name="bride_baptismal" required><br>
+															</div>
+															<div class="input-box">
+																<label for="bride_confirmation"><strong>Confirmation Certificate </strong> </label>
+																<input type="file" id="bride_confirmation" name="bride_confirmation" required><br>
+															</div>
+														</div>
+													</div>
+													<div class="form-content">
+														<div class="form-title">
+															<h2>For Couple</h2>
+														</div>
+														<div class="form-grid-cont">
+															<div class="input-box">
+																<label for="couple_contract"><strong>Marriage License or Live-In Liscense (article 34) / Marriage contract (Civil Marriage) </strong> </label>
+																<input type="file" id="couple_contract" name="couple_contract" required><br>
 															</div>
 														</div>
 													</div>
@@ -470,15 +552,15 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Name</b>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="lastName">Last name: </label>
+																<label for="lastName">Last Name: </label>
 																<input type="text" id="lastName" name="lastName" required><br>
 															</div>
 															<div class="input-box">
-																<label for="firstName">First name: </label>
+																<label for="firstName">First Name: </label>
 																<input type="text" id="firstName" name="firstName" required><br>
 															</div>
 															<div class="input-box">
-																<label for="middleName">Middle name: </label>
+																<label for="middleName">Middle Name: </label>
 																<input type="text" id="middleName" name="middleName"><br>
 															</div>
 														</div>
@@ -498,37 +580,37 @@ $_SESSION['isLoggedIn'] = true;
 															</div>
 														</div>
 														<div class="input-box">
-															<label for="dob"><strong>>Birth date</strong> </label>
+															<label for="dob"><strong>>Birth Date</strong> </label>
 															<input type="date" id="dob" name="dob" required><br>
 														</div>
 														<div class="input-box">
-															<label for="pob"><strong>Birth place</strong> </label>
+															<label for="pob"><strong>Birth Place</strong> </label>
 															<input type="text" id="pob" name="pob" required><br>
 														</div>
 													</div>
 													<div>
 														<div class="input-box">
-															<label for="address"><strong>Present address</strong> </label>
+															<label for="address"><strong>Present Address</strong> </label>
 															<input type="text" id="address" name="address" required><br>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="fatherName"><strong>Present address</strong> </label>
+															<label for="fatherName"><strong>Father's Name</strong> </label>
 															<input type="text" id="fatherName" name="fatherName" required><br>
 														</div>
 														<div class="input-box">
-															<label for="fatherPob"><strong>Father's birth place</strong> </label>
+															<label for="fatherPob"><strong>Father's Birth Place</strong> </label>
 															<input type="text" id="fatherPob" name="fatherPob" required><br>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="motherName"><strong>Father's birth place</strong> </label>
+															<label for="motherName"><strong>Mother's Name</strong> </label>
 															<input type="text" id="motherName" name="motherName" required><br>
 														</div>
 														<div class="input-box">
-															<label for="motherPob"><strong>Mother's birth place</strong> </label>
+															<label for="motherPob"><strong>Mother's Birth Place</strong> </label>
 															<input type="text" id="motherPob" name="motherPob" required><br>
 														</div>
 													</div>
@@ -566,6 +648,19 @@ $_SESSION['isLoggedIn'] = true;
 															<input type="text" id="godmotherAddress" name="godmotherAddress" required><br>
 														</div>
 													</div>
+													<div>
+															<h2>Soft Copy of Requirements</h2>
+														</div>
+														<div class="grid-cont">
+															<div class="input-box">
+																<label for="psa"><strong>Child's PSA Birth Certificate</strong> </label>
+																<input type="file" id="psa" name="psa" required><br>
+															</div>
+															<div class="input-box">
+																<label for="marriage_contract"><strong>Marriage Contract of Parents </strong> </label>
+																<input type="file" id="marriage_contract" name="marriage_contract" required><br>
+															</div>
+														</div>
 													<div class="lower-form">
 														<div class="button-cont">
 															<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
@@ -751,6 +846,15 @@ $_SESSION['isLoggedIn'] = true;
 																<label for="burialUrn">Urn </label>
 															</div>
 														</div>
+													</div>
+												</div>
+												<div>
+													<h2>Soft Copy of Requirements</h2>
+												</div>
+												<div class="form-grid-cont">
+													<div class="input-box">
+														<label for="deathcert"><strong>Death Certificate </strong> </label>
+														<input type="file" id="deathcert" name="deathcert" required><br>
 													</div>
 												</div>
 												<div class="form-title">
