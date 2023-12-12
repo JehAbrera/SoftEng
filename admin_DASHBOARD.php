@@ -107,10 +107,10 @@ $baptismDataPoints = array(
                                 <span>Today</span>
                                 <span>
                                     <?php
-                                        $nowQuery = "SELECT COUNT(*) FROM appointment_details WHERE date_appointed = date(NOW())";
-                                        $query = mysqli_query($conn, $nowQuery);
-                                        $result = mysqli_fetch_row($query);
-                                        echo $result[0];
+                                        $nowQuery = "SELECT COUNT(*) FROM appointment_details WHERE date_appointed = 'date(NOW())'";
+                                        $query2 = mysqli_query($conn, $nowQuery);
+                                        $result2 = mysqli_fetch_row($query2);
+                                        echo $result2[0];
                                     ?>
                                 </span>
                             </div>
