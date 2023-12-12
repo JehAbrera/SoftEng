@@ -137,6 +137,7 @@ body {
     width: 100%;
     display: flex;
 	flex-direction: column;
+    position: relative;
 }
 
 .events-preference * {
@@ -148,6 +149,17 @@ body {
     align-items: center;
     justify-content: center;
     margin: auto;
+}
+.back-icon-cont {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    cursor: default;
+    transition: all .2s ease-in-out; 
+}
+.back-icon-cont:hover{
+    transform: scale(1.0); 
 }
 
 .available-schedule{
@@ -236,6 +248,17 @@ input{
     display: flex;
     justify-content: center;
 }
+.contactnum{
+    display: flex;
+    gap: 4px;
+}
+.contactnum input:first-child{
+    width: 15%;
+}
+.contactnum input:nth-child(2){
+    width: 100%;
+}
+
 .button-cont{
     width: 30%;
     display: flex;
