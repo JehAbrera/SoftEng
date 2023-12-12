@@ -63,7 +63,7 @@ $_SESSION['isLoggedIn'] = true;
         </nav>
         <!-- Filler Body - No need to Copy -->
         <div class="main-body-wrapper">
-            <section class="main-content-start" style="background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/aboutus3.jpg) center/cover no-repeat;">
+            <section class="main-content-start" style="background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(Photos/aboutus3.jpg) center/cover no-repeat;">
                 <div class ="content-history">
                     <h3>HISTORY</h3>
                     <p> The Parish of Saint John of the Cross, established on March 18, 1992, encompasses Barangays Pembo and Rizal in Makati. 
@@ -91,7 +91,7 @@ $_SESSION['isLoggedIn'] = true;
                 </div>
             </section>
             <hr>
-            <section class="main-content-start" style="background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/aboutus4.jpg) center/cover no-repeat;">
+            <section class="main-content-start" style="background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(Photos/aboutus4.jpg) center/cover no-repeat;">
                 <div class ="content-history">
                     <h3>HISTORY</h3>
                     <p> In 1996, PEMBO was split into two barangays—PEMBO and RIZAL—while a change in leadership occurred on August 15, 1998, with Rev. Fr. Andy Ortega Lim succeeding Fr. Canicula. 
@@ -104,7 +104,7 @@ $_SESSION['isLoggedIn'] = true;
             </section>
             <section class = "main-content-priest">
                 <div class = "content-priest">
-                    <div class = "priest-img-cont"> <img src="images/FR.jpg" alt="priest" width="100%"></div>
+                    <div class = "priest-img-cont"> <img src="Photos/FR.jpg" alt="priest" width="100%"></div>
                     <div class = "priest-desc-cont">
                         <h2> About the priest</h2>
                         <p>Rev. Fr. Clarito "Charlie" M. Jundis started preaching at St. John of the Cross Parish on November 23, 2022. 

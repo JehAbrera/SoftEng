@@ -250,19 +250,40 @@ h1{
     align-items: center;
     background-color: white;
     margin: 1rem 0;
-    box-shadow: 5px 5px 15px var(--black);
-    border-radius: 20px;
+    box-shadow: 5px 5px 15px grey ;
 }
 .details-container{
     width: 95%;
-    padding: 1rem;
     margin: 1rem 0;
-    background-color:var(--grey);
     border-radius: 20px;
+}
+.indiv-cont{
+    margin: 0 0 1rem 0;
+    background-color: var(--grey);
 }
 .top-cont{
     display: flex;
     justify-content: space-between;
+    padding: 1rem;
+}
+.bot-cont{
+    display: flex;
+    flex-direction: column;
+    background-color: #f0eded;
+    padding: 0 1rem;
+}
+.seemore{
+    display: flex;
+    justify-content: space-between;
+}
+.display-details-bi{
+    display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-column-gap: 23px;
+	grid-row-gap: 7px;
+}
+h2{
+    padding: 0 1rem;
 }
 form{
     width: 100%;
@@ -274,12 +295,62 @@ button{
     width: 19%;
     font-size: clamp(0.5rem, 0.25rem + 0.8vw, 1rem);
 }
-.deletebutton{
-    width: auto;
-    border-radius: 25px;
-}
-.delete-cont{
+
+    
+.button-cont{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 }
+.buttoncancel{
+    background-color: rgba(255, 0, 0, 0.2);
+    color: red;
+    width: auto;
+    border-radius: 25px;
+    border: none;
+    padding: 0 1rem;
+
+}
+.buttonresched{
+    background-color: rgba(0,0,255, 0.2);
+    color: blue;
+    width: auto;
+    border-radius: 25px;
+    border: none;
+    padding: 0 1rem;
+}
+i{
+    color: blue;
+}
+.popupCover{
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    position: fixed;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+.popupForm {
+	width: min(90%, 500px);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    border: 1px solid var(--black);
+    box-shadow: 0 0 20px var(--black);
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: var(--white);
+    padding: 2rem;
+}
+.headertext-box{
+    text-align: justify; /* For Edge */
+    -moz-text-align-last: center; /* For Firefox prior 58.0 */
+    text-align-last: center;
+} 

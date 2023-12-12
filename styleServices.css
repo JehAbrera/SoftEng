@@ -197,7 +197,7 @@ h1{
     width: min(610px);
     display: flex;
     flex-direction: column;
-    background-color: rgb(255, 255, 255, 0.6) ;
+    background-color: rgb(255, 255, 255, 0.75) ;
     padding: 2rem;
     min-height: 70vh;
 }
