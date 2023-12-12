@@ -146,18 +146,33 @@
             $contactnum = $_POST["contactNum"];
             $rdpurpose = $_POST["purposes"];
             $names = $_POST["names"];
-            $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleiNTENTIN', 'sampleINTENTION@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', '$time[0]', '', '$Event', 'Pending', '' )";
+            $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleiNTENTIN', 'sampleINTENTION@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', '$time[0]', '', 'Mass Intention', 'Pending', '' )";
 			$resultappointment = mysqli_query($conn, $queryappointment);
-            $queryIntention = "INSERT INTO mass_intention_details VALUE('1','$contactnum','$Eventdate', '$time[0]', '$rdpurpose', '$names')";
+            //getting the appointments id to save as foreign key in wedding details
+            $foreignId = 0;
+            $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
+            $resultid = mysqli_query($conn, $queryid);
+            while($row = mysqli_fetch_array($resultid)) {
+                $foreignId = $row[0];
+            }
+
+            $queryIntention = "INSERT INTO mass_intention_details VALUE('','$foreignId','$contactnum','$Eventdate', '$time[0]', '$rdpurpose', '$names')";
 			$resultIntention = mysqli_query($conn, $queryIntention);
            // echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
 
 		} else if($Eventtype == "Blessing"){
 			$contactnum = $_POST["contactNum"];
 			$blessingtype = $_POST["blessingType"];
-			$queryappointment = "INSERT INTO appointment_details VALUE('', 'sample2', 'sample2@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', '', '', '$Eventtype', 'Pending', '' )";
+			$queryappointment = "INSERT INTO appointment_details VALUE('', 'sample2', 'sample2@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', '', '', '$blessingtype', 'Pending', '' )";
 			$resultappointment = mysqli_query($conn, $queryappointment);
-			$queryblessing = "INSERT INTO blessing_details VALUE('1','$contactnum','$Eventdate', '', '$blessingtype', '')";
+            //getting the appointments id to save as foreign key in wedding details
+            $foreignId = 0;
+            $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
+            $resultid = mysqli_query($conn, $queryid);
+            while($row = mysqli_fetch_array($resultid)) {
+                $foreignId = $row[0];
+            }
+			$queryblessing = "INSERT INTO blessing_details VALUE('0','$foreignId','$contactnum','$Eventdate', '', '$blessingtype', '')";
 			$resultblessing = mysqli_query($conn, $queryblessing);
             //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
 		} else if($Eventtype == "Document Request"){
@@ -175,7 +190,14 @@
 
                 $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleDOCUMENT', 'sampleDOCUMENT@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', ' ', '', '$Event', 'Pending', '' )";
                 $resultappointment = mysqli_query($conn, $queryappointment);
-                $queryDocument = "INSERT INTO document_request_details VALUE('','$Eventdate', '', '$Event', '$fname', '$mname', $lname, '$dob', '$fathersname', '$mothersname', '$contactnum', '$purpose', '')";
+                //getting the appointments id to save as foreign key in wedding details
+                $foreignId = 0;
+                $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
+                $resultid = mysqli_query($conn, $queryid);
+                while($row = mysqli_fetch_array($resultid)) {
+                    $foreignId = $row[0];
+                }
+                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '$fathersname', '$mothersname', '$contactnum', '$purpose', '')";
                 $resultDocument = mysqli_query($conn, $queryDocument);
                 //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
             } else if($Event == "Good Moral Certificate"){
@@ -183,16 +205,30 @@
                 $purpose = $_POST["purpose"];
                 $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleDOCUMENT', 'sampleDOCUMENT@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', ' ', '', '$Event', 'Pending', '' )";
                 $resultappointment = mysqli_query($conn, $queryappointment);
-                $queryDocument = "INSERT INTO document_request_details VALUE('','$Eventdate', '', '$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '')";
+                //getting the appointments id to save as foreign key in wedding details
+                $foreignId = 0;
+                $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
+                $resultid = mysqli_query($conn, $queryid);
+                while($row = mysqli_fetch_array($resultid)) {
+                    $foreignId = $row[0];
+                }
+                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '')";
                 $resultDocument = mysqli_query($conn, $queryDocument);
                 //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
             } else if($Event == "Permit and No Record") {
-                $$dob = $_POST["dob"];
+                $dob = $_POST["dob"];
                 $purpose = $_POST["purpose"];
                 $address = $_POST["address"];
                 $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleDOCUMENT', 'sampleDOCUMENT@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', ' ', '', '$Event', 'Pending', '' )";
                 $resultappointment = mysqli_query($conn, $queryappointment);
-                $queryDocument = "INSERT INTO document_request_details VALUE('','$Eventdate', '', '$Event', '$fname', '$mname', $lname, '$dob', '', '', '$contactnum', '$purpose', '$address')";
+                //getting the appointments id to save as foreign key in wedding details
+                $foreignId = 0;
+                $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
+                $resultid = mysqli_query($conn, $queryid);
+                while($row = mysqli_fetch_array($resultid)) {
+                    $foreignId = $row[0];
+                }
+                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '$address')";
                 $resultDocument = mysqli_query($conn, $queryDocument);
                 //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
             }
