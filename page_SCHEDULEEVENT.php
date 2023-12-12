@@ -155,7 +155,7 @@ $_SESSION['isLoggedIn'] = true;
 							$_SESSION['type'] = $type;
 							$_SESSION['date'] = $date;
 							//change date format from yyyy-mm-dd to month day, year
-							$formated_date = date('F m, Y', strtotime($date));
+							$formated_date = date('F d, Y', strtotime($date));
 							if($type != "Mass Intention" && $type != "Blessing"){
 								$event = $_POST["Event"];
 								$_SESSION['event'] = $event;
@@ -570,11 +570,11 @@ $_SESSION['isLoggedIn'] = true;
 															<b>Gender</b>
 															<div style="display: flex">
 																<div>
-																	<input type="radio" id="genderMale" name="gender" required>
+																	<input type="radio" id="genderMale" name="gender" value="Male" required>
 																	<label for="genderMale">Male </label> <br>
 																</div>
 																<div>
-																	<input type="radio" id="genderFemale" name="gender" required>
+																	<input type="radio" id="genderFemale" name="gender" value="Female" required>
 																	<label for="genderFemale">Female </label> <br>
 																</div>
 															</div>
@@ -794,11 +794,11 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Gender</b>
 														<div style="display: flex">
 															<div>
-																<input type="radio" id="genderMale" name="gender" required>
+																<input type="radio" id="genderMale" name="gender" Value="Male"required>
 																<label for="genderMale">Male </label> <br>
 															</div>
 															<div>
-																<input type="radio" id="genderFemale" name="gender" required>
+																<input type="radio" id="genderFemale" name="gender" Value="Female"required>
 																<label for="genderFemale">Female </label> <br>
 															</div>
 														</div>
@@ -825,11 +825,11 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Sacrament Received</b>
 														<div style="display: flex">
 															<div>
-																<input type="radio" id="sacramentYes" name="sacrament" required>
+																<input type="radio" id="sacramentYes" name="sacrament" Value="Yes"required>
 																<label for="sacramentYes">Yes </label><br>
 															</div>
 															<div>
-																<input type="radio" id="sacramentNo" name="sacrament" required>
+																<input type="radio" id="sacramentNo" name="sacrament" Value="No"required>
 																<label for="sacramentNo">No </label><br>
 															</div>
 														</div>
@@ -838,11 +838,11 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Casket or urn</b>
 														<div style="display: flex">
 															<div>
-																<input type="radio" id="burialCasket" name="burial" required>
+																<input type="radio" id="burialCasket" name="burial" value="Casket"required>
 																<label for="burialCasket">Casket </label>
 															</div>
 															<div>
-																<input type="radio" id="burialUrn" name="burial" required>
+																<input type="radio" id="burialUrn" name="burial" Value="Urn" required>
 																<label for="burialUrn">Urn </label>
 															</div>
 														</div>
@@ -1467,3 +1467,4 @@ $_SESSION['isLoggedIn'] = true;
 </body>
 
 </html>
+
