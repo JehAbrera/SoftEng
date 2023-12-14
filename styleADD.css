@@ -1,0 +1,239 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #696969;
+    --btnRed: #FFCCCB;
+    --btnGreen: #90EE90;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Content Styling */
+/* Content Wrapper */
+.content-wrapper {
+    width: 100%;
+    min-width: 1000px;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+/* Nav Wrapper */
+.nav-wrapper {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 0;
+    gap: 3rem;
+    border-right: 2px solid var(--black);
+}
+.icon-wrapper {
+    font-size: clamp(1.25rem, 0.7143rem + 1.7143vw, 2rem);
+    font-weight: 900;
+}
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.nav-items > button {
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: unset;
+    font-weight: 600;
+    box-shadow: 0 2px 10px var(--grey);
+    transition: 200ms ease-in;
+}
+.nav-items > button:not(.active-btn) {
+    background-color: var(--pink);
+}
+/* Active Button */
+.active-btn {
+    background-color: var(--brown);
+    color: var(--white);
+}
+/* Button Hover */
+.nav-items > button:not(.active-btn):hover {
+    background-color: var(--brown);
+    color: var(--white);
+}
+
+
+/* Body Wrapper */
+.main-content {
+    background-color: var(--white);
+    overflow: hidden auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 1rem 1%;
+}
+
+/* Main Content */
+.main-heading {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 10vh;
+}
+.form-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.form-card {
+    width: 50%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 0 2px 10px var(--grey);
+    position: relative;
+}
+.form-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+form > div:nth-child(3) {
+    display: flex;
+    gap: 10%;
+}
+form > div:nth-child(3) > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+form span {
+    font-weight: 600;
+}
+form input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: unset;
+    border-bottom: 1px solid var(--black);
+    outline: none;
+}
+form input, form small {
+    margin: 0.5rem 0 1.5rem;
+}
+form textarea {
+    resize: none;
+}
+
+/* Popup Form */
+button {
+    cursor: pointer;
+    transition: 0.6s ease;
+}
+button:hover {
+    scale: 1.1;
+}
+.backbtn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    border: none;
+    box-shadow: 0 0 10px 1px grey;
+    background-color: var(--black);
+    border-radius: 50%;
+    width: 2rem;
+    aspect-ratio: 1/1;
+}
+.backbtn i {
+    color: var(--white);
+    font-weight: 900;
+}
+#submitForm, #cancel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.popupForm {
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 0 10px var(--black);
+    padding: 1rem;
+    width: 28%;
+    text-align: center;
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.form-btnarea {
+    width: 100%;
+}
+.btn-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10%;
+}
+.form-btnarea {
+    display: flex;
+    justify-content: space-between;
+}
+.btn-area button, .form-btnarea button {
+    width: 5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0 0 10px grey;
+    font-weight: 600;
+}
+.btn-area button:first-child, .form-btnarea button:first-child {
+    background-color: var(--btnRed);
+    color: red;
+}
+.btn-area button:nth-child(2), .form-btnarea button:nth-child(2) {
+    background-color: var(--btnGreen);
+    color: green;
+}
+.headertext-box > span {
+    font-size: 1.75rem;
+    font-weight: 900;
+}
+.headertext-box > p {
+    margin: 1rem 0;
+    text-align: center;
+}
+.icon-box > i {
+    font-size: 5rem;
+    color: yellow;
+}
