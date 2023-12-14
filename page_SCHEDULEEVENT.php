@@ -13,7 +13,7 @@ $_SESSION['isLoggedIn'] = true;
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
-    <title>SJCP AVAILABLE SCHEDULES</title>
+    <title>SJCP | Schedule Event</title>
 </head>
 
 <body>
@@ -35,16 +35,16 @@ $_SESSION['isLoggedIn'] = true;
                     <span class="dp-title">Services <i class="fa-solid fa-angle-down"></i></span>
                     <div class="dropdown-content">
                         <div class="nav-item">View Services</div>
-                        <div class="nav-item">Set Appointment</div>
-                        <div class="nav-item">View Appointment</div>
+                        <div class="nav-item">Schedule Event</div>
+                        <div class="nav-item">View Schedules</div>
                         <div class="nav-item">Search Record</div>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <span class="dp-title">Events <i class="fa-solid fa-angle-down"></i></span>
                     <div class="dropdown-content">
-                        <div class="nav-item">Announcements</div>
-                        <div class="nav-item">Calendar</div>
+                        <div class="nav-item">View Announcements</div>
+                        <div class="nav-item">View Available Time Slots</div>
                     </div>
                 </div>
                 <div class="nav-item">About Us</div>
@@ -67,7 +67,7 @@ $_SESSION['isLoggedIn'] = true;
         <!-- FAQ content -->
         <div class="main-body-wrapper">
 			<section class="main-header">
-				<h1 class="main-content-title">Set Appointment</h1>
+				<h1 class="main-content-title">Schedule Event</h1>
 			</section>
             <section class="main-content">
                 <!--<div class="main-header">
@@ -106,7 +106,7 @@ $_SESSION['isLoggedIn'] = true;
 									?>
 									<div class="events-select-container" id="specificSpecial" style="display: none;">
 										<label for="ddSpecialEvent"><strong>Select Special Event:</strong></label>
-										<select class="dropdown" id="ddSpecialEvent" name="Event" onchange="openCalendar();">
+										<select class="dropdown" id="ddSpecialEvent" name="Event" onchange="openCalendarSpe();">
 											<option value="" disabled selected hidden>Special Events</option>
 											<option value="Wedding">Private Wedding</option>
 											<option value="Baptism">Private Baptism</option>
@@ -115,8 +115,8 @@ $_SESSION['isLoggedIn'] = true;
 									</div>
 									<div class="events-select-container" id="specificDocument" style="display: none;">
 										<label for="ddDocument"><strong>Select Document </strong></label>
-										<select class="dropdown" id="ddDocument" name="Event" onchange="openCalendar();">
-											<option value="" disabled selected hidden>Documents</option>
+										<select class="dropdown" id="ddDocument" name="Event" onchange="openCalendarDoc();">
+											<option value="defaultDoc" disabled selected hidden>Documents</option>
 											<option value="Baptismal Certificate">Baptismal Certificate</option>
 											<option value="Wedding Certificate">Wedding Certificate</option>
 											<option value="Confirmation Certificate">Confirmation Certificate</option>
@@ -124,14 +124,33 @@ $_SESSION['isLoggedIn'] = true;
 											<option value="Permit and No Record">Permit and No Record</option>
 										</select>
 									</div>
-									<div class="events-select-container" id="chooseCal" style="display: none">
+									<div class="events-select-container" id="chooseCalWed" style="display: none">
 										<div class="cal-container">
-											<label for="calDate"><strong>Select date:</strong></label>
-											<input type="date" id="calDate" name="calDate" min="<?php echo date("Y-m-d"); ?>" required>
-											<button type="submit" value="submit" name="submit" id="submitbtn"> View available time</button>
+											<label for="calDateWed"><strong>Select Date:</strong></label>
+											<input type="date" id="calDateWed" name="calDateWed" title="You must schedule your wedding 1-6 months in advance." min="<?= date('Y-m-d', strtotime('+1 month')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required>
 										</div>
 									</div>
-								
+									<div class="events-select-container" id="chooseCalBap" style="display: none">
+										<div class="cal-container">
+											<label for="calDateBap"><strong>Select Date:</strong></label>
+											<input type="date" id="calDateBap" name="calDateBap" title="You must schedule your baptism at least 1 week before the event." min="<?= date('Y-m-d', strtotime('+1 week')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required>
+										</div>
+									</div>
+									<div class="events-select-container" id="chooseCalFuner" style="display: none">
+										<div class="cal-container">
+											<label for="calDateFuner"><strong>Select Date:</strong></label>
+											<input type="date" id="calDateFuner" name="calDateFuner" title="You must schedule the funeral mass or blessing at least three days before the event." min="<?= date('Y-m-d', strtotime('+3 days')); ?>" max="<?= date('Y-m-d', strtotime('+6 weeks')); ?>" required>
+										</div>
+									</div>
+									<div class="events-select-container" id="chooseCalIntBless" style="display: none">
+										<div class="cal-container">
+											<label for="calDateIntBless"><strong>Select Date:</strong></label>
+											<input type="date" id="calDateIntBless" name="calDateIntBless" min="<?= date('Y-m-d', strtotime('+1 day')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required>
+										</div>
+									</div>
+									<div class="events-select-container" id="submitButton" style="display: none">
+										<button type="submit" value="submit" name="submit" id="submitbtn"> View Available Time</button>
+									</div>
 							</div>
 						</form>
 
@@ -150,7 +169,21 @@ $_SESSION['isLoggedIn'] = true;
 					<?php
 						if(isset($_POST["submit"])){
 							$type = $_POST["ddEvent"];
-							$date = $_POST["calDate"];
+							if($type == "Special Event") {
+								$event = $_POST["Event"];
+								if ($event == "Wedding") {
+									$date = $_POST["calDateWed"];
+								}
+								else if ($event == "Baptism") {
+									$date = $_POST["calDateBap"];
+								}
+								else {
+									$date = $_POST["calDateFuner"];
+								}
+							}
+							else {
+								$date = $_POST["calDateIntBless"];
+							}
 							$day = date('l', strtotime($date));
 							$_SESSION['type'] = $type;
 							$_SESSION['date'] = $date;
@@ -204,8 +237,8 @@ $_SESSION['isLoggedIn'] = true;
 										}
 									}
 									$count_time = 0;?>
-									<form action="page_LANDING.php" method="post">
-										<div> <strong> Select Available time:</strong> </div>
+									<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
+										<div> <strong> Select Available Time:</strong> </div>
 										<div class="avtime-container">
 											<?php
 												$event_endtime = "";
@@ -231,22 +264,22 @@ $_SESSION['isLoggedIn'] = true;
 											<div class="req-cont">
 												<b> Requirements: </b>
 												<div class="Event-grid-cont">
-													<div>> PSA Birth Certificate </div>
-													<div>> 2x2 ID picture</div>		
-													<div>> Baptismal Certificate (Original copy)</div>		
-													<div>> Confirmation Certificate (original copy)</div>		
-													<div>> Cenomar (Certificate of No Marriage - photocopy) </div>
-													<div>> Publication  of wedding banns</div>
-													<div>> Pre-Cana Seminar </div>		
-													<div>> Marriage License or Live-In Liscense (article 34) / Marriage contract (Civil Marriage) </div>
-													<div>> Wedding Interview </div>
-													<div>> Confession </div>
-													<div>> Long Brown Envelope	</div>	
+													<ul> PSA Birth Certificate </ul>
+													<ul> 2x2 ID picture</ul>		
+													<ul> Baptismal Certificate (Original copy)</ul>		
+													<ul> Confirmation Certificate (Original copy)</ul>		
+													<ul> CENOMAR (Certificate of No Marriage - photocopy) </ul>
+													<ul> Publication of Wedding Banns</ul>
+													<ul> Pre-Cana Seminar </ul>		
+													<ul> Marriage License or Live-In License (article 34) or Marriage Contract (Civil Marriage) </ul>
+													<ul> Wedding Interview </ul>
+													<ul> Confession </ul>
+													<ul> Long Brown Envelope </ul>	
 												</div>
 												
 												<b> Notes: </b>
 												<div class="Event-grid-cont">
-													<div>> The couple must submit all the requirements before the date of the event. </div>
+													<ul> The couple must submit and accomplish all the requirements before the date of the event. </ul>
 												</div>
 												<br>
 											</div>
@@ -259,51 +292,63 @@ $_SESSION['isLoggedIn'] = true;
 															<b>Name</b>
 															<div class="form-grid-cont">
 																<div class="input-box">
-																	<input type="text" id="groom_lastName" name="groom_lastName" placeholder="Last Name"required><br>
+																	<label for="groom_lastName"><strong>Last Name* </strong></label>
+																	<input type="text" id="groom_lastName" name="groom_lastName" placeholder="Dela Cruz" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 																</div>
 																<div class="input-box">
-																	<input type="text" id="groom_firstName" name="groom_firstName" placeholder="First Name" required><br>
+																	<label for="groom_firstName"><strong>First Name* </strong></label>
+																	<input type="text" id="groom_firstName" name="groom_firstName" placeholder="Juan" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 																</div>
 																<div class="input-box">
-																	<input type="text" id="groom_middleName" name="groom_middleName" placeholder="Middle Name"><br>
+																	<label for="groom_middleName"><strong>Middle Name </strong></label>
+																	<input type="text" id="groom_middleName" name="groom_middleName" placeholder="Tomas" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 																</div>
 															</div>
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="groom_contactNum"><strong>Contact number </strong></label>
+																<label for="groom_contactNum"><strong>Contact Number* </strong></label>
 																<div class="contactnum">
 																	<input type="text" name ="mobile1" value="+63" id="" disabled>
-																	<input type="tel" id="groom_contactNum" name="groom_contactNum" required><br>
+																	<input type="tel" id="groom_contactNum" name="groom_contactNum" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="10" pattern="[9]{1}[0-9]{9}" required><br>
 																</div>
 															</div>
 															<div class="input-box">
-																<label for="groom_dob"><strong>Birth Date </strong></label>
-																<input type="date" id="groom_dob" name="groom_dob" required><br>
+																<label for="groom_dob"><strong>Birth Date* </strong></label>
+																<input type="date" id="groom_dob" name="groom_dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required><br>
 															</div>
 															<div class="input-box">
-																<label for="groom_pob"><strong>Birth Place </strong> </label>
-																<input type="text" id="groom_pob" name="groom_pob" required><br>
+																<label for="groom_pob"><strong>Birth Place* </strong> </label>
+																<input type="text" id="groom_pob" name="groom_pob" placeholder="Taguig City" maxlength="120" required><br>
 															</div>
 														</div>
 														<div>
 															<div class="input-box">
-																<label for="groom_address"><strong>Present Address </strong> </label>
-																<input type="text" id="groom_address" name="groom_address" required><br>
+																<label for="groom_address"><strong>Present Address* </strong> </label>
+																<input type="text" id="groom_address" name="groom_address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
 															</div>
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="groom_fatherName"><strong>Father's Name </strong> </label>
-																<input type="text" id="groom_fatherName" name="groom_fatherName" required><br>
+																<label for="groom_fatherName"><strong>Father's Name* </strong> </label>
+																<input type="text" id="groom_fatherName" name="groom_fatherName" placeholder="Joseph Dela Cruz" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box"> 
-																<label for="groom_motherName"><strong>Mother's Name </strong> </label>
-																<input type="text" id="groom_motherName" name="groom_motherName" required><br>
+																<label for="groom_motherName"><strong>Mother's Maiden Name* </strong> </label>
+																<input type="text" id="groom_motherName" name="groom_motherName" placeholder="Maria Tomas" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="groom_religion"><strong>Religion </strong> </label>
-																<input type="text" id="groom_religion" name="groom_religion" required><br>
+																<label for="groom_religion"><strong>Religion* </strong> </label>
+																<select id="groom_religion" name="groom_religion">
+																	<option value="" disabled selected hidden>Select Religion</option>
+																	<option value="Roman Catholic">Roman Catholic</option>
+																	<option value="Catholic">Catholic</option>	
+																	<option value="Protestant">Protestant</option>
+																	<option value="Iglesia ni Cristo">Iglesia ni Cristo</option>											
+																	<option value="Jehovah&lsquo;s Witness">Jehovah&lsquo;s Witness</option>
+																	<option value="Seventh Day Adventist">Seventh Day Adventist</option>											
+																	<option value="Islam">Islam</option>
+																</select>
 															</div>
 														</div>
 														<div>
@@ -311,24 +356,24 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="groom_idpic"><strong>2x2 ID Picture </strong> </label>
-																<input type="file" id="groom_idpic" name="groom_idpic" required><br>
+																<label for="groom_idpic"><strong>2x2 ID Picture* </strong> </label>
+																<input type="file" id="groom_idpic" name="groom_idpic" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="groom_psa"><strong>PSA Birth Certificate </strong> </label>
-																<input type="file" id="groom_psa" name="groom_psa" required><br>
+																<label for="groom_psa"><strong>PSA Birth Certificate* </strong> </label>
+																<input type="file" id="groom_psa" name="groom_psa" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="groom_cenomar"><strong>CENOMAR (Certificate of No Marriage) </strong> </label>
-																<input type="file" id="groom_cenomar" name="groom_cenomar" required><br>
+																<label for="groom_cenomar"><strong>CENOMAR (Certificate of No Marriage)* </strong> </label>
+																<input type="file" id="groom_cenomar" name="groom_cenomar" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="groom_baptismal"><strong>Baptismal Certificate </strong> </label>
-																<input type="file" id="groom_baptismal" name="groom_baptismal" required><br>
+																<label for="groom_baptismal"><strong>Baptismal Certificate* </strong> </label>
+																<input type="file" id="groom_baptismal" name="groom_baptismal" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="groom_confirmation"><strong>Confirmation Certificate </strong> </label>
-																<input type="file" id="groom_confirmation" name="groom_confirmation" required><br>
+																<label for="groom_confirmation"><strong>Confirmation Certificate* </strong> </label>
+																<input type="file" id="groom_confirmation" name="groom_confirmation" accept="image/*" required><br>
 															</div>
 														</div>
 													</div>
@@ -341,51 +386,62 @@ $_SESSION['isLoggedIn'] = true;
 															<b>Name</b>
 															<div class="form-grid-cont">
 																<div class="input-box">
-																	<input type="text" id="bride_lastName" name="bride_lastName" placeholder="Last Name" required><br>
+																	<label for="bride_lastName"><strong>Last Name* </strong></label>
+																	<input type="text" id="bride_lastName" name="bride_lastName" placeholder="San Pedro" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 																</div>
 																<div class="input-box">
-																	<input type="text" id="bride_firstName" name="bride_firstName" placeholder="First Name"required><br>
+																	<label for="bride_firstName"><strong>First Name* </strong></label>
+																	<input type="text" id="bride_firstName" name="bride_firstName" placeholder="Juana" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 																</div>
 																<div class="input-box">
-																	<input type="text" id="bride_middleName" name="bride_middleName" placeholder="Middle Name"><br>
+																	<label for="bride_middleName"><strong>Middle Name </strong></label>
+																	<input type="text" id="bride_middleName" name="bride_middleName" placeholder="Agustin" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 																</div>
 															</div>
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="bride_contactNum"><strong>Contact number </strong></label>
+																<label for="bride_contactNum"><strong>Contact Number* </strong></label>
 																<div class="contactnum">
 																	<input type="text" name ="mobile1" value="+63" id="" disabled>
-																	<input type="tel" id="bride_contactNum" name="bride_contactNum" required><br>
+																	<input type="tel" id="bride_contactNum" name="bride_contactNum" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="10" pattern="[9]{1}[0-9]{9}" required><br>
 																</div>
 															</div>
 															<div class="input-box">
-																<label for="bride_dob"><strong>Birth Date </strong></label>
-																<input type="date" id="bride_dob" name="bride_dob" required><br>
+																<label for="bride_dob"><strong>Birth Date* </strong></label>
+																<input type="date" id="bride_dob" name="bride_dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required><br>
 															</div>
 															<div class="input-box">
-																<label for="bride_pob"><strong>Birth Place </strong> </label>
-																<input type="text" id="bride_pob" name="bride_pob" required><br>
+																<label for="bride_pob"><strong>Birth Place* </strong> </label>
+																<input type="text" id="bride_pob" name="bride_pob" maxlength="120" placeholder="Taguig City" required><br>
 															</div>
 														</div>
 														<div>
 															<div class="input-box">
-																<label for="bride_address"><strong>Present Address </strong> </label>
-																<input type="text" id="bride_address" name="bride_address" required><br>
+																<label for="bride_address"><strong>Present Address* </strong> </label>
+																<input type="text" id="bride_address" name="bride_address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
 															</div>
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="bride_fatherName"><strong>Father's Name </strong> </label>
-																<input type="text" id="bride_fatherName" name="bride_fatherName" required><br>
+																<label for="bride_fatherName"><strong>Father's Name* </strong> </label>
+																<input type="text" id="bride_fatherName" name="bride_fatherName" placeholder="Francis San Pedro" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box"> 
-																<label for="bride_motherName"><strong>Mother's Name </strong> </label>
-																<input type="text" id="bride_motherName" name="bride_motherName" required><br>
+																<label for="bride_motherName"><strong>Mother's Maiden Name* </strong> </label>
+																<input type="text" id="bride_motherName" name="bride_motherName" placeholder="Teresa Agustin" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="bride_religion"><strong>Religion </strong> </label>
-																<input type="text" id="bride_religion" name="bride_religion" required><br>
+																<label for="bride_religion"><strong>Religion* </strong> </label>
+																<select id="bride_religion" name="bride_religion">
+																	<option value="" disabled selected hidden>Select Religion</option>
+																	<option value="Roman Catholic">Roman Catholic</option>											
+																	<option value="Protestant">Protestant</option>
+																	<option value="Iglesia ni Cristo">Iglesia ni Cristo</option>											
+																	<option value="Jehovah&lsquo;s Witness">Jehovah&lsquo;s Witness</option>
+																	<option value="Seventh Day Adventist">Seventh Day Adventist</option>											
+																	<option value="Islam">Islam</option>
+																</select>
 															</div>
 														</div>
 														<div>
@@ -393,24 +449,24 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="bride_idpic"><strong>2x2 ID Picture </strong> </label>
-																<input type="file" id="bride_idpic" name="bride_idpic" required><br>
+																<label for="bride_idpic"><strong>2x2 ID Picture* </strong> </label>
+																<input type="file" id="bride_idpic" name="bride_idpic" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="bride_psa"><strong>PSA Birth Certificate </strong> </label>
-																<input type="file" id="bride_psa" name="bride_psa" required><br>
+																<label for="bride_psa"><strong>PSA Birth Certificate* </strong> </label>
+																<input type="file" id="bride_psa" name="bride_psa" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="bride_cenomar"><strong>CENOMAR (Certificate of No Marriage) </strong> </label>
-																<input type="file" id="bride_cenomar" name="bride_cenomar" required><br>
+																<label for="bride_cenomar"><strong>CENOMAR (Certificate of No Marriage)* </strong> </label>
+																<input type="file" id="bride_cenomar" name="bride_cenomar" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="bride_baptismal"><strong>Baptismal Certificate </strong> </label>
-																<input type="file" id="bride_baptismal" name="bride_baptismal" required><br>
+																<label for="bride_baptismal"><strong>Baptismal Certificate* </strong> </label>
+																<input type="file" id="bride_baptismal" name="bride_baptismal" accept="image/*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="bride_confirmation"><strong>Confirmation Certificate </strong> </label>
-																<input type="file" id="bride_confirmation" name="bride_confirmation" required><br>
+																<label for="bride_confirmation"><strong>Confirmation Certificate* </strong> </label>
+																<input type="file" id="bride_confirmation" name="bride_confirmation" accept="image/*" required><br>
 															</div>
 														</div>
 													</div>
@@ -420,8 +476,8 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="couple_contract"><strong>Marriage License or Live-In Liscense (article 34) / Marriage contract (Civil Marriage) </strong> </label>
-																<input type="file" id="couple_contract" name="couple_contract" required><br>
+																<label for="couple_contract"><strong>Marriage License or Live-In License (Article 34) or Marriage Contract (Civil Marriage)* </strong> </label>
+																<input type="file" id="couple_contract" name="couple_contract" title="Please submit only one (1) of the listed documents." accept="image/*" required><br>
 															</div>
 														</div>
 													</div>
@@ -503,8 +559,8 @@ $_SESSION['isLoggedIn'] = true;
 											}
 										}
 										$count_time = 0;?>
-										<form action="page_LANDING.php" method="post">
-											<div> <strong> Select Available time:</strong> </div>
+										<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
+											<div> <strong> Select Available Time:</strong> </div>
 											<div class="avtime-container">
 												<?php
 													$event_endtime = "";
@@ -538,7 +594,7 @@ $_SESSION['isLoggedIn'] = true;
 													<div>> Parents and Sponsors are required to attend the seminar <br>
 															> White dress or polo and pants for the child <br>
 															> Any colors for the parents and sponsors <br>
-															> The Godfather (Ninong) and Godmother (Ninang) must be 18 years of age or older. <br>
+															> The Godfather (Ninong) and Godmother (Ninang) must be at least 18 years of age. <br>
 															> Only baptized Catholics are eligible to be chosen as Godfathers (Ninong) and Godmothers (Ninang). <br>/div>
 													</div>
 												<br>
@@ -546,28 +602,28 @@ $_SESSION['isLoggedIn'] = true;
 											<div class="form-cont">
 												<div class="form-content">
 													<div class="form-title">
-														<b>To be baptesize's Information</b>
+														<b>To be baptized's information</b>
 													</div>
 													<div>
 														<b>Name</b>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="lastName">Last Name: </label>
-																<input type="text" id="lastName" name="lastName" required><br>
+																<label for="lastName">Last Name* </label>
+																<input type="text" id="lastName" name="lastName" maxlength="40" placeholder="Dela Cruz" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="firstName">First Name: </label>
-																<input type="text" id="firstName" name="firstName" required><br>
+																<label for="firstName">First Name* </label>
+																<input type="text" id="firstName" name="firstName" maxlength="40" placeholder="Juan" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="middleName">Middle Name: </label>
-																<input type="text" id="middleName" name="middleName"><br>
+																<label for="middleName">Middle Name </label>
+																<input type="text" id="middleName" name="middleName" maxlength="40" placeholder="Tomas" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 															</div>
 														</div>
 													</div>
 													<div class="form-grid-cont">
 														<div>
-															<b>Gender</b>
+															<b>Gender*</b>
 															<div style="display: flex">
 																<div>
 																	<input type="radio" id="genderMale" name="gender" value="Male" required>
@@ -580,72 +636,75 @@ $_SESSION['isLoggedIn'] = true;
 															</div>
 														</div>
 														<div class="input-box">
-															<label for="dob"><strong>>Birth Date</strong> </label>
-															<input type="date" id="dob" name="dob" required><br>
+															<label for="dob"><strong>Birth Date*</strong> </label>
+															<input type="date" id="dob" name="dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-1 month')); ?>" required><br>
 														</div>
 														<div class="input-box">
-															<label for="pob"><strong>Birth Place</strong> </label>
-															<input type="text" id="pob" name="pob" required><br>
+															<label for="pob"><strong>Birth Place*</strong> </label>
+															<input type="text" id="pob" name="pob" maxlength="120" placeholder="Taguig City" required><br>
 														</div>
 													</div>
 													<div>
 														<div class="input-box">
-															<label for="address"><strong>Present Address</strong> </label>
-															<input type="text" id="address" name="address" required><br>
+															<label for="address"><strong>Present Address*</strong> </label>
+															<input type="text" id="address" name="address" maxlength="120" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" required><br>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="fatherName"><strong>Father's Name</strong> </label>
-															<input type="text" id="fatherName" name="fatherName" required><br>
+															<label for="fatherName"><strong>Father's Name*</strong> </label>
+															<input type="text" id="fatherName" name="fatherName" maxlength="100" placeholder="Joseph Dela Cruz" title="Format: FirstName LastName" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="fatherPob"><strong>Father's Birth Place</strong> </label>
-															<input type="text" id="fatherPob" name="fatherPob" required><br>
-														</div>
-													</div>
-													<div class="grid-cont">
-														<div class="input-box">
-															<label for="motherName"><strong>Mother's Name</strong> </label>
-															<input type="text" id="motherName" name="motherName" required><br>
-														</div>
-														<div class="input-box">
-															<label for="motherPob"><strong>Mother's Birth Place</strong> </label>
-															<input type="text" id="motherPob" name="motherPob" required><br>
+															<label for="fatherPob"><strong>Father's Birth Place*</strong> </label>
+															<input type="text" id="fatherPob" name="fatherPob" maxlength="120" placeholder="Taguig City" required><br>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="contactNum"><strong>Parent/Guardian's contact number</strong></label>
-															<input type="tel" id="contactNum" name="contactNum" required><br>
+															<label for="motherName"><strong>Mother's Maiden Name*</strong> </label>
+															<input type="text" id="motherName" name="motherName" maxlength="100" placeholder="Maria Tomas" title="Format: FirstName LastName" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="marriage_type"><strong>Parents' type of marriage</strong> </label>
+															<label for="motherPob"><strong>Mother's Birth Place*</strong> </label>
+															<input type="text" id="motherPob" name="motherPob" maxlength="120" placeholder="Makati City" required><br>
+														</div>
+													</div>
+													<div class="grid-cont">
+														<div class="input-box">
+															<label for="contactNum"><strong>Parent/Guardian's Contact Number*</strong></label>
+															<div class="contactnum">
+																<input type="text" name ="mobile1" value="+63" id="" disabled>
+																<input type="tel" id="contactNum" name="contactNum" maxlength="10" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" placeholder="9123456789" pattern="[9]{1}[0-9]{9}" required><br>
+															</div>
+														</div>
+														<div class="input-box">
+															<label for="marriage_type"><strong>Parents' Type of Marriage*</strong> </label>
 															<select id="marriage_type" name="marriage_type">
 																<option value="default" disabled selected hidden></option>
-																<option value="Catholic Marriage">Catholic Marriage</option>											
-																<option value="Civil Marriage">Civil Marriage</option>
+																<option value="Catholic Marriage" title="Catholic Marriage = married in church and officiated by a priest">Catholic Marriage</option>											
+																<option value="Civil Marriage" title="Civil Marriage = married in court and officiated by a lawyer">Civil Marriage</option>
 															</select>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="godfatherName"><strong>Godfather's name</strong> </label>
-															<input type="text" id="godfatherName" name="godfatherName" required><br>
+															<label for="godfatherName"><strong>Godfather's Name*</strong> </label>
+															<input type="text" id="godfatherName" name="godfatherName" placeholder="Francis Dela Cruz" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="godfatherAddress"><strong>Godfather's address</strong> </label>
-															<input type="text" id="godfatherAddress" name="godfatherAddress" required><br>
+															<label for="godfatherAddress"><strong>Godfather's Address*</strong> </label>
+															<input type="text" id="godfatherAddress" name="godfatherAddress" placeholder="Taguig City" maxlength="120" required><br>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="godmotherName"><strong>Godmother's name</strong></label>
-															<input type="text" id="godmotherName" name="godmotherName" required><br>
+															<label for="godmotherName"><strong>Godmother's Name*</strong></label>
+															<input type="text" id="godmotherName" name="godmotherName" maxlength="100" placeholder="Teresa Tomas" title="Format: FirstName LastName" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="godmotherAddress"><strong>Godmother's address</strong></label>
-															<input type="text" id="godmotherAddress" name="godmotherAddress" required><br>
+															<label for="godmotherAddress"><strong>Godmother's Address*</strong></label>
+															<input type="text" id="godmotherAddress" name="godmotherAddress" placeholder="Makati City" maxlength="120" required><br>
 														</div>
 													</div>
 													<div>
@@ -653,11 +712,11 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<div class="grid-cont">
 															<div class="input-box">
-																<label for="psa"><strong>Child's PSA Birth Certificate</strong> </label>
+																<label for="psa"><strong>Child's PSA Birth Certificate*</strong> </label>
 																<input type="file" id="psa" name="psa" required><br>
 															</div>
 															<div class="input-box">
-																<label for="marriage_contract"><strong>Marriage Contract of Parents </strong> </label>
+																<label for="marriage_contract"><strong>Marriage Contract of Parents* </strong> </label>
 																<input type="file" id="marriage_contract" name="marriage_contract" required><br>
 															</div>
 														</div>
@@ -701,7 +760,7 @@ $_SESSION['isLoggedIn'] = true;
 								// FUNERAL MASS AND BLESSING FORM
 								else if($event == "Funeral Mass/Blessing"){
 									?>
-									<form action="page_LANDING.php" method="post">
+									<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
 										
 										<?php
 											$funeralst = array("08:00:00", "13:00:00");
@@ -729,7 +788,7 @@ $_SESSION['isLoggedIn'] = true;
 												}
 											}
 											$count_time = 0;?>
-											<div> <strong> Select Available time:</strong> </div>
+											<div> <strong> Select Available Time:</strong> </div>
 											<div class="avtime-container">
 												<?php
 												foreach ($avtime as $i){
@@ -772,77 +831,77 @@ $_SESSION['isLoggedIn'] = true;
 													<b>Name</b>
 													<div class="form-grid-cont">
 														<div class="input-box">
-															<label for="lastName">Last name: </label>
-															<input type="text" id="lastName" name="lastName" required><br>
+															<label for="lastName">Last Name* </label>
+															<input type="text" id="lastName" name="lastName" maxlength="40" placeholder="Dela Cruz" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="firstName">First name: </label>
-															<input type="text" id="firstName" name="firstName" required><br>
+															<label for="firstName">First Name* </label>
+															<input type="text" id="firstName" name="firstName" maxlength="40" placeholder="Juan" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="middleName">Middle name: </label>
-															<input type="text" id="middleName" name="middleName"><br>
+															<label for="middleName">Middle Name </label>
+															<input type="text" id="middleName" name="middleName" maxlength="40" placeholder="Tomas" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 														</div>
 													</div>
 												</div>
 												<div class="form-grid-cont">
 													<div class="input-box">
-														<label for="age"><strong>Age:</strong> </label>
-														<input type="num" id="age" name="age" required><br>
+														<label for="age"><strong>Age*</strong> </label>
+														<input type="num" id="age" name="age" min="0" placeholder="30" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" max="120" maxlength="3" required><br>
 													</div>
 													<div>
-														<b>Gender</b>
+														<b>Gender*</b>
 														<div style="display: flex">
 															<div>
-																<input type="radio" id="genderMale" name="gender" Value="Male"required>
+																<input type="radio" id="genderMale" name="gender" value="Male" required>
 																<label for="genderMale">Male </label> <br>
 															</div>
 															<div>
-																<input type="radio" id="genderFemale" name="gender" Value="Female"required>
+																<input type="radio" id="genderFemale" name="gender" value="Female" required>
 																<label for="genderFemale">Female </label> <br>
 															</div>
 														</div>
 													</div>
 													<div class="input-box">
-														<label for="cause_of_death"><strong>Cause of death</strong></label>
-														<input type="text" id="cause_of_death" name="cause_of_death" required><br>
+														<label for="cause_of_death"><strong>Cause of Death*</strong></label>
+														<input type="text" id="cause_of_death" name="cause_of_death" placeholder="Ischaemic heart disease" title="Please indicate the cause stated on the deceased's death certificate." maxlength="120" required><br>
 													</div>
 													<div class="input-box">
-														<label for="date_of_death"><strong>Date of death</strong></label>
-														<input type="date" name="date_of_death" required><br>
+														<label for="date_of_death"><strong>Date of Death*</strong></label>
+														<input type="date" name="date_of_death" min="<?= date('Y-m-d', strtotime('-1 month')); ?>" max="<?php echo date("Y-m-d"); ?>" required><br>
 													</div>
 													<div class="input-box">
-														<label for="date_of_internment"><strong>Date of internment</strong> </label>
-														<input type="date" id="date_of_internment" name="date_of_internment" required><br>
+														<label for="date_of_internment"><strong>Date of Internment*</strong> </label>
+														<input type="date" id="date_of_internment" name="date_of_internment" min="<?php echo date("Y-m-d"); ?>" max="<?= date('Y-m-d', strtotime('+1 month')); ?>" required><br>
 													</div>
 													<div class="input-box">
-														<label for="place_of_cemetery"><strong>Place of cemetery:</strong> </label>
-														<input type="text" id="place_of_cemetery" name="place_of_cemetery" required><br>
+														<label for="place_of_cemetery"><strong>Place of Cemetery*</strong> </label>
+														<input type="text" id="place_of_cemetery" name="place_of_cemetery" placeholder="Manila American Cemetery and Memorial" maxlength="120" required><br>
 													</div>
 												</div>
 												<div class="grid-cont">
 													<div>
-														<b>Sacrament Received</b>
+														<b>Sacrament Received*</b>
 														<div style="display: flex">
 															<div>
-																<input type="radio" id="sacramentYes" name="sacrament" Value="Yes"required>
+																<input type="radio" id="sacramentYes" name="sacrament" value="Yes" required>
 																<label for="sacramentYes">Yes </label><br>
 															</div>
 															<div>
-																<input type="radio" id="sacramentNo" name="sacrament" Value="No"required>
+																<input type="radio" id="sacramentNo" name="sacrament" value="No" required>
 																<label for="sacramentNo">No </label><br>
 															</div>
 														</div>
 													</div>
 													<div>
-														<b>Casket or urn</b>
-														<div style="display: flex">
+														<b>Casket or Urn*</b>
+														<div style="display: flex" title="Casket is for funeral masses while Urn is for funeral blessings">
 															<div>
-																<input type="radio" id="burialCasket" name="burial" value="Casket"required>
+																<input type="radio" id="burialCasket" name="burial" value="Casket" title="Funeral Mass" required>
 																<label for="burialCasket">Casket </label>
 															</div>
 															<div>
-																<input type="radio" id="burialUrn" name="burial" Value="Urn" required>
+																<input type="radio" id="burialUrn" name="burial" value="Urn" title="Funeral Blessing" required>
 																<label for="burialUrn">Urn </label>
 															</div>
 														</div>
@@ -853,38 +912,41 @@ $_SESSION['isLoggedIn'] = true;
 												</div>
 												<div class="form-grid-cont">
 													<div class="input-box">
-														<label for="deathcert"><strong>Death Certificate </strong> </label>
+														<label for="deathcert"><strong>Death Certificate* </strong> </label>
 														<input type="file" id="deathcert" name="deathcert" required><br>
 													</div>
 												</div>
 												<div class="form-title">
-													<h2>Informant's Information</h2>
+													<h2 title="Informant = person who gave the deceased's death certificate information to the church">Informant's Information</h2>
 												</div>
 												<div>
 													<b>Name</b>
 													<div class="form-grid-cont">
 														<div class="input-box">
-															<label for="informantLastName">Last name: </label>
-															<input type="text" id="informantLastName" name="informantLastName" required><br>
+															<label for="informantLastName">Last Name* </label>
+															<input type="text" id="informantLastName" name="informantLastName" placeholder="San Pedro" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="informantFirstName">First name: </label>
-															<input type="text" id="informantFirstName" name="informantFirstName" required><br>
+															<label for="informantFirstName">First Name* </label>
+															<input type="text" id="informantFirstName" name="informantFirstName" placeholder="Juana" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-														<label for="informantMiddleName">Middle name: </label>
-														<input type="text" id="informantMiddleName" name="informantMiddleName"><br>
+														<label for="informantMiddleName">Middle Name </label>
+														<input type="text" id="informantMiddleName" name="informantMiddleName" placeholder="Agustin" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 														</div>
 													</div>
 												</div>
 												<div class="grid-cont">
 													<div class="input-box">
-														<label for="contactNum"><strong>Contact number</strong></label>
-														<input type="tel" id="contactNum" name="informantContactNum" required><br>
+														<label for="contactNum"><strong>Contact Number*</strong></label>
+														<div class="contactnum">
+															<input type="text" name ="mobile1" value="+63" id="" disabled>
+															<input type="tel" id="contactNum" name="informantContactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+														</div>
 													</div>
 													<div class="input-box">
-														<label for="address"><strong>Present address</strong> </label>
-														<input type="text" id="address" name="informantAddress" required><br>
+														<label for="address"><strong>Present Address*</strong> </label>
+														<input type="text" id="address" name="informantAddress" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
 													</div>
 												</div>
 											</div>
@@ -926,19 +988,21 @@ $_SESSION['isLoggedIn'] = true;
 									?> 
 									<div>
 										<div>
-										<b> Requirements for : <?php echo $event?> </b>
+										<b> Requirements for <?php echo $event?>: </b>
 											<div class="grid-cont">
-												<div>> Birth Certificate & 2x2 ID picture</div>		
-												<div>> Baptismal Certificate (Original copy)</div>		
-												<div>> Confirmation Certificate (original copy)</div>		
-												<div>> Publication  of wedding banns</div>				
+												<div>> Birth Certificate</div>		
+												<div>> Php 100.00</div>		
 											</div>
 											<b> Notes: </b>
 											<div class="grid-cont">
-												<div> > The document should be claimed within the scheduled date </div>
+												<div> > Another person may claim your document as long as they have a copy of your valid ID and an authorization letter. </div>
+												<div> > The document must be claimed during office hours within the scheduled date. </div>
+												<div> > Office hours: </div>
+												<div> &nbsp&nbsp&nbsp Tuesday-Saturday: 8:00 - 11:30 AM || 1:30 - 5:00 PM </div>
+												<div> &nbsp&nbsp&nbsp Sunday: 8:00 - 12:00 NN </div>
 											</div>
 										</div>
-										<form action="page_LANDING.php" method="post">
+										<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
 											<div class="form-cont">
 												<div class="form-content">
 													<div class="form-title">
@@ -956,39 +1020,51 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Name</b>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="lastName">Last name: </label>
-																<input type="text" id="lastName" name="lastName" required><br>
+																<label for="lastName">Last Name* </label>
+																<input type="text" id="lastName" name="lastName" maxlength="40" placeholder="Dela Cruz" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="firstName">First name: </label>
-																<input type="text" id="firstName" name="firstName" required><br>
+																<label for="firstName">First Name* </label>
+																<input type="text" id="firstName" name="firstName" maxlength="40" placeholder="Juan" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="middleName">Middle name: </label>
-																<input type="text" id="middleName" name="middleName"><br>
+																<label for="middleName">Middle Name </label>
+																<input type="text" id="middleName" name="middleName" maxlength="40" placeholder="Tomas" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 															</div>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="dob"><strong>Date of birth</strong></label>
-															<input type="date" id="dob" name="dob" required> <br>
+															<label for="dob"><strong>Birth Date*</strong></label>
+															<input type="date" id="dob" name="dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-1 month')); ?>" required> <br>
 														</div>
 														<div class="input-box">
-															<label for="contactNum"><strong> Contact number</strong></label>
-															<input type="tel" id="contactNum" name="ContactNum" required><br>
+															<label for="contactNum"><strong>Contact Number*</strong></label>
+															<div class="contactnum">
+																<input type="text" name ="mobile1" value="+63" id="" disabled>
+																<input type="tel" id="contactNum" name="ContactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+															</div>
 														</div>
 														<div class="input-box">
-															<label for="fname"><strong>Father's Name</strong> </label>
-															<input type="text" id="fname" name="fname" required><br>
+															<label for="fname"><strong>Father's Name*</strong> </label>
+															<input type="text" id="fname" name="fname" maxlength="100" placeholder="Joseph Dela Cruz" title="Format: FirstName LastName" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="mname"><strong>Mother's Name</strong> </label>
-															<input type="text" id="mname" name="mname" required><br>
+															<label for="mname"><strong>Mother's Name*</strong> </label>
+															<input type="text" id="mname" name="mname" maxlength="100" placeholder="Maria Tomas" title="Format: FirstName LastName" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
-															<label for="purpose"><strong>Purpose</strong> </label>
-															<input type="text" id="purpose" name="purpose" required><br>
+															<label for="purpose"><strong>Purpose*</strong> </label>
+															<input type="text" id="purpose" name="purpose" placeholder="Wedding Requirement" maxlength="120" required><br>
+														</div>
+													</div>
+													<div>
+														<h2>Soft Copy of Requirements</h2>
+													</div>
+													<div class="form-grid-cont">
+														<div class="input-box">
+															<label for="birthcert"><strong>Birth Certificate* </strong> </label>
+															<input type="file" id="birthcert" name="birthcert" required><br>
 														</div>
 													</div>
 													<div class="lower-form">
@@ -1031,19 +1107,23 @@ $_SESSION['isLoggedIn'] = true;
 								?>
 									<div>
 										<div>
-										<b> Requirements for : <?php echo $event?> </b>
+										<b> Requirements for <?php echo $event?>: </b>
 											<div class="grid-cont">
-												<div>> Birth Certificate & 2x2 ID picture</div>		
-												<div>> Baptismal Certificate (Original copy)</div>		
-												<div>> Confirmation Certificate (original copy)</div>		
-												<div>> Publication  of wedding banns</div>				
+												<div>> Birth Certificate</div>		
+												<div>> Barangay Certificate</div>		
+												<div>> Kawan Certificate</div>		
+												<div>> Php 100.00</div>				
 											</div>
 											<b> Notes: </b>
 											<div class="grid-cont">
-												<div> > The document should be claimed within the scheduled date </div>
+												<div> > Another person may claim your document as long as they have a copy of your valid ID and an authorization letter. </div>
+												<div> > The document must be claimed during office hours within the scheduled date. </div>
+												<div> > Office hours: </div>
+												<div> &nbsp&nbsp&nbsp Tuesday-Saturday: 8:00 - 11:30 AM || 1:30 - 5:00 PM </div>
+												<div> &nbsp&nbsp&nbsp Sunday: 8:00 - 12:00 NN </div>
 											</div>
 										</div>
-										<form action="page_LANDING.php" method="post">
+										<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
 											<div class="form-cont">
 												<div class="form-content">
 													<div class="form-title">
@@ -1053,31 +1133,51 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Name</b>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="lastName">Last name: </label>
-																<input type="text" id="lastName" name="lastName" required><br>
+																<label for="lastName">Last Name* </label>
+																<input type="text" id="lastName" name="lastName" placeholder="Dela Cruz" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="firstName">First name: </label>
-																<input type="text" id="firstName" name="firstName" required><br>
+																<label for="firstName">First Name* </label>
+																<input type="text" id="firstName" name="firstName" placeholder="Juan" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="middleName">Middle name: </label>
-																<input type="text" id="middleName" name="middleName"><br>
+																<label for="middleName">Middle Name </label>
+																<input type="text" id="middleName" name="middleName" placeholder="Tomas" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 															</div>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="dob"><strong>Date of birth</strong></label>
-															<input type="date" id="dob" name="dob" required> <br>
+															<label for="dob"><strong>Birth Date*</strong></label>
+															<input type="date" id="dob" name="dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required> <br>
 														</div>
 														<div class="input-box">
-															<label for="contactNum"><strong> Contact number</strong></label>
-															<input type="tel" id="contactNum" name="ContactNum" required><br>
+															<label for="contactNum"><strong>Contact Number*</strong></label>
+															<div class="contactnum">
+																<input type="text" name ="mobile1" value="+63" id="" disabled>
+																<input type="tel" id="contactNum" name="ContactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+															</div>
 														</div>
 														<div class="input-box">
-															<label for="purpose"><strong>Purpose</strong> </label>
-															<input type="text" id="purpose" name="purpose" required><br>
+															<label for="purpose"><strong>Purpose*</strong> </label>
+															<input type="text" id="purpose" name="purpose" placeholder="Board Exam Requirement" maxlength="100" required><br>
+														</div>
+													</div>
+													<div>
+														<h2>Soft Copy of Requirements</h2>
+													</div>
+													<div class="form-grid-cont">
+														<div class="input-box">
+															<label for="birthcert"><strong>Birth Certificate* </strong> </label>
+															<input type="file" id="birthcert" name="birthcert" required><br>
+														</div>
+														<div class="input-box">
+															<label for="barangaycert"><strong>Barangay Certificate* </strong> </label>
+															<input type="file" id="barangaycert" name="barangaycert" required><br>
+														</div>
+														<div class="input-box">
+															<label for="kawancert"><strong>Kawan Certificate* </strong> </label>
+															<input type="file" id="kawancert" name="kawancert" required><br>
 														</div>
 													</div>
 													<div class="lower-form">
@@ -1120,19 +1220,21 @@ $_SESSION['isLoggedIn'] = true;
 									?> 
 									<div>
 										<div>
-										<b> Requirements for : <?php echo $event?> </b>
+										<b> Requirements for <?php echo $event?>: </b>
 											<div class="grid-cont">
-												<div>> Birth Certificate & 2x2 ID picture</div>		
-												<div>> Baptismal Certificate (Original copy)</div>		
-												<div>> Confirmation Certificate (original copy)</div>		
-												<div>> Publication  of wedding banns</div>				
+												<div>> Birth Certificate</div>		
+												<div>> Php 100.00</div>			
 											</div>
 											<b> Notes: </b>
 											<div class="grid-cont">
-												<div> > The document should be claimed within the scheduled date </div>
+												<div> > Another person may claim your document as long as they have a copy of your valid ID and an authorization letter. </div>
+												<div> > The document must be claimed during office hours within the scheduled date. </div>
+												<div> > Office hours: </div>
+												<div> &nbsp&nbsp&nbsp Tuesday-Saturday: 8:00 - 11:30 AM || 1:30 - 5:00 PM </div>
+												<div> &nbsp&nbsp&nbsp Sunday: 8:00 - 12:00 NN </div>
 											</div>
 										</div>
-										<form action="page_LANDING.php" method="post">
+										<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
 											<div class="form-cont">
 												<div class="form-content">
 													<div class="form-title">
@@ -1142,35 +1244,47 @@ $_SESSION['isLoggedIn'] = true;
 														<b>Name</b>
 														<div class="form-grid-cont">
 															<div class="input-box">
-																<label for="lastName">Last name: </label>
-																<input type="text" id="lastName" name="lastName" required><br>
+																<label for="lastName">Last Name* </label>
+																<input type="text" id="lastName" name="lastName" placeholder="Dela Cruz" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="firstName">First name: </label>
-																<input type="text" id="firstName" name="firstName" required><br>
+																<label for="firstName">First Name* </label>
+																<input type="text" id="firstName" name="firstName" placeholder="Juan" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 															</div>
 															<div class="input-box">
-																<label for="middleName">Middle name: </label>
-																<input type="text" id="middleName" name="middleName"><br>
+																<label for="middleName">Middle Name </label>
+																<input type="text" id="middleName" name="middleName" placeholder="Tomas" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 															</div>
 														</div>
 													</div>
 													<div class="grid-cont">
 														<div class="input-box">
-															<label for="dob"><strong>Date of birth</strong></label>
-															<input type="date" id="dob" name="dob" required> <br>
+															<label for="dob"><strong>Birth Date*</strong></label>
+															<input type="date" id="dob" name="dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-1 month')); ?>" required> <br>
 														</div>
 														<div class="input-box">
-															<label for="contactNum"><strong> Contact number</strong></label>
-															<input type="tel" id="contactNum" name="ContactNum" required><br>
+															<label for="contactNum"><strong>Contact Number*</strong></label>
+															<div class="contactnum">
+																<input type="text" name ="mobile1" value="+63" id="" disabled>
+																<input type="tel" id="contactNum" name="ContactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+															</div>
 														</div>
 														<div class="input-box">
-															<label for="address"><strong>Address</strong> </label>
-															<input type="text" id="address" name="address" required><br>
+															<label for="address"><strong>Present Address*</strong> </label>
+															<input type="text" id="address" name="address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="150" required><br>
 														</div>
 														<div class="input-box">
-															<label for="purpose"><strong>Purpose</strong> </label>
-															<input type="text" id="purpose" name="purpose" required><br>
+															<label for="purpose"><strong>Purpose*</strong> </label>
+															<input type="text" id="purpose" name="purpose" placeholder="Baptism at another church" maxlength="120" required><br>
+														</div>
+													</div>
+													<div>
+														<h2>Soft Copy of Requirements</h2>
+													</div>
+													<div class="form-grid-cont">
+														<div class="input-box">
+															<label for="birthcert"><strong>Birth Certificate* </strong> </label>
+															<input type="file" id="birthcert" name="birthcert" required><br>
 														</div>
 													</div>
 													<div class="lower-form">
@@ -1220,14 +1334,14 @@ $_SESSION['isLoggedIn'] = true;
 									<div><h1> Date: <?php echo $formated_date?></h1></div>
 								</div>
 								<?php
-								$intention = array("06:00:00","07:00:00","09:00:00","16:30:00","17:00:00", "18:00:00");
+								$intention = array("06:00:00","07:30:00","09:00:00","16:30:00","17:00:00", "18:00:00","18:10:00","19:15:00");
 								$count_time = 0; ?>
 								<form action="page_LANDING.php" method="post">
 									<div><b>Time Available: </b></div>
 									<div class="rd-cont">
 										<?php 
 											foreach ($intention as $i){
-												if($day != "Sunday"){
+												if($day != "Sunday" && $day != "Saturday"){
 													if($i == "18:00:00"){
 														?><div>
 															<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
@@ -1235,18 +1349,27 @@ $_SESSION['isLoggedIn'] = true;
 														</div>
 														<?php
 													} 
+												} else if($day == "Saturday"){
+													if($i == "06:00:00" || $i == "17:00:00" || $i == "18:10:00" || $i == "19:15:00" ){
+														?><div>
+															<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
+															<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+														</div>
+														<?php
+													} 
+												} else if($day == "Sunday"){
+													if($i != "18:10:00" && $i != "19:15:00" ){
+														?><div>
+															<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
+															<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
+														</div>
+														<?php
+													} 
 												} else {
-													?><div>
-														<input type="radio" id="<?php echo 'rtime'.$count_time ?>" name="rdtime" value="<?php echo $i?>">
-														<label for="<?php echo 'rtime'.$count_time ?>"><?php echo date("h:ia", strtotime($i)) ?></label><br>
-													</div>
-													<?php
 												}
 												$count_time++;
 											}
-
 										?> 
-
 									</div>
 									<b> Notes: </b>
 									> Mass Intention Fee: Donation <br>
@@ -1255,26 +1378,29 @@ $_SESSION['isLoggedIn'] = true;
 										<div class="form-content">
 											<div class="grid-cont">
 												<div class="input-box">
-													<label for="contactNum">Contact number: </label>
-													<input type="tel" id="contactNum" name="contactNum" required><br>
+													<label for="contactNum"><strong>Contact Number*</strong></label>
+													<div class="contactnum">
+														<input type="text" name ="mobile1" value="+63" id="" disabled>
+														<input type="tel" id="contactNum" name="contactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+													</div>
 												</div>
 												<div>
-													<b> Purpose: </b>
+													<b> Purpose* </b>
 													<div class="input-box">
 														<div>
-															<input type="checkbox" name="purposes" id="Thanksgiving" value="Thanksgiving">
+															<input type="radio" name="purposes" id="Thanksgiving" value="Thanksgiving">
 															<label for="Thanksgiving">Thanksgiving</label><br>
 														</div>
 														<div>
-															<input type="checkbox" name="purposes" id="Healing" value="Healing/Recovery">
+															<input type="radio" name="purposes" id="Healing" value="Healing/Recovery">
 															<label for="Healing">Healing/Recovery</label><br>
 														</div>
 														<div>
-															<input type="checkbox" name="purposes" id="SpecialInt" value="Special Intention">
+															<input type="radio" name="purposes" id="SpecialInt" value="Special Intention">
 															<label for="SpecialInt">Special Intention</label><br>
 														</div>
 														<div>
-															<input type="checkbox" name="purposes" id="Soul" value="Soul">
+															<input type="radio" name="purposes" id="Soul" value="Soul">
 															<label for="Soul">Soul</label><br>
 														</div>
 													</div>
@@ -1282,10 +1408,8 @@ $_SESSION['isLoggedIn'] = true;
 											</div>
 											<div>
 												<div class="input-box">
-													<label for="names">Name/s: </label>
-													<textarea name = "names">
-														Enter details here...
-													</textarea>
+													<label for="names"><strong>Name/s</strong></label>
+													<textarea name="names" rows="3" style="resize: none" placeholder="Name/s of for whom the mass intention is for"></textarea>
 												</div>
 											</div>
 											<br>
@@ -1335,38 +1459,78 @@ $_SESSION['isLoggedIn'] = true;
 								</div>
 								<form action="page_LANDING.php" method="post">
 									<b> Notes: </b>
+									> Since blessings are based on the priest's schedule, the church will contact you on the final time of your blessing. <br>
+									> If scheduling a Car or Motorcycle Blessing, please bring your vehicle to the church at the agreed upon time. <br>
 									> Blessing Fee: Donation <br>
-									> Barangay Pembo and Rizal only <br>
 									
 									<div class="form-cont">
 										<div class="form-content">
 											<div class="grid-cont">
 												<div class="input-box">
-													<label for="contactNum">Contact number: </label>
-													<input type="tel" id="contactNum" name="contactNum" required><br>
+													<label for="contactNum"><strong>Contact Number*</strong></label>
+													<div class="contactnum">
+														<input type="text" name ="mobile1" value="+63" id="" disabled>
+														<input type="tel" id="contactNum" name="contactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+													</div>
 												</div>
-												<div>
-													<b> Type of Blessing </b>
+											</div>
+											<br>
+											<div>
+												<b> Type of Blessing* </b>
+												<div class="grid-cont-four">
 													<div class="input-box">
 														<div>
-															<input type="radio" id="HouseBlessing" name="blessingType" value="House Blessing" required>
+															<input type="radio" id="HouseBlessing" name="blessingType" value="House Blessing" onclick="showDiv()" required>
 															<label for="HouseBlessing">House Blessing </label> <br>
 														</div>
+													</div>
+													<div class="input-box">
 														<div>
-															<input type="radio" id="CarBlessing" name="blessingType" value="Car Blessing" required>
+															<input type="radio" id="CarBlessing" name="blessingType" value="Car Blessing" onclick="showDiv()" required>
 															<label for="CarBlessing">Car Blessing </label> <br>
 														</div>
+													</div>
+													<div class="input-box">
 														<div>
-															<input type="radio" id="MotorcycleBlessing" name="blessingType" value="Motorcycle Blessing" required>
+															<input type="radio" id="MotorcycleBlessing" name="blessingType" value="Motorcycle Blessing" onclick="showDiv()" required>
 															<label for="MotorcycleBlessing">Motorcycle Blessing </label> <br>
 														</div>
+													</div>
+													<div class="input-box">
 														<div>
-															<input type="radio" id="StoreBlessing" name="blessingType" value="Store Blessing" required>
+															<input type="radio" id="StoreBlessing" name="blessingType" value="Store Blessing" onclick="showDiv()" required>
 															<label for="StoreBlessing">Store Blessing </label> <br>
 														</div>
 													</div>
 												</div>
+												<div class="grid-cont-four">
+													<div class="input-box" id="houseAddDiv" style="display: none">
+														<div>
+															<label for="address">House Address* </label> <br>
+															<textarea id="addressHouse" rows="3" cols="30" style="resize: none" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" name="address" required></textarea>
+														</div>
+													</div>
+													<div class="input-box" id="emptyDiv1" style="display: none">
+														<div>
+														</div>
+													</div>
+													<div class="input-box" id="emptyDiv2" style="display: none">
+														<div>
+														</div>
+													</div>
+													<div class="input-box" id="emptyDiv3" style="display: none">
+														<div>
+														</div>
+													</div>
+													<div class="input-box" id="storeAddDiv"style="display: none">
+														<div>
+															<label for="address">Store Address* </label> <br>
+															<textarea id="addressStore" rows="3" cols="30" style="resize: none" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" name="address" required></textarea>
+														</div>
+													</div>
+												</div>
 											</div>
+											<br>
 											<div class="lower-form">
 												<div class="button-cont">
 													<button type="reset" class="clear" onclick="openForm(clearForm)" id="clear">Clear</button>
@@ -1400,8 +1564,6 @@ $_SESSION['isLoggedIn'] = true;
 										</div>
 									</div>
 								</form>
-								
-									
 									<?php
 								} 
 						} 
@@ -1467,4 +1629,3 @@ $_SESSION['isLoggedIn'] = true;
 </body>
 
 </html>
-

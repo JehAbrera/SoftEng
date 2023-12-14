@@ -229,6 +229,13 @@ input{
 	grid-column-gap: 23px;
 	grid-row-gap: 7px;
 }
+.grid-cont-four, .Event-grid-cont{
+	display: grid;
+	width: 100%;
+	grid-template-columns: repeat(4, 1fr);
+	grid-column-gap: 23px;
+	grid-row-gap: 7px;
+}
 .form-grid-cont{
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);

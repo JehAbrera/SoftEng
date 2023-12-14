@@ -29,47 +29,287 @@ const openLogin = () => {
     }
 }
 
-
 function chooseEvent() {
-    var ddChooseEvent = document.getElementById("ddEvent").value;
+	var ddChooseEvent = document.getElementById("ddEvent").value;
 
     if(ddChooseEvent === "default"){
-		document.getElementById("specificSpecial").style.display = 'block';
-		document.getElementById("specificMassInt").style.display = 'block';
-        document.getElementById("specificBlessing").style.display = 'block';
-        document.getElementById("specificDocument").style.display = 'block';
-		document.getElementById("chooseCal").style.display = 'block';
-		document.getElementById("submitbtn").style.display = 'block';
+		//do nothing
     }
 	else {
 		document.getElementById("specificSpecial").style.display = 'none';
-    document.getElementById("specificDocument").style.display = 'none';
-		document.getElementById("chooseCal").style.display = 'none';
-		document.getElementById("submitbtn").style.display = 'none';
+		document.getElementById("specificDocument").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("submitButton").style.display = 'none';
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateIntBless").removeAttribute('required');
 		if(ddChooseEvent === "Special Event"){
-			document.getElementById("specificSpecial").style.display = 'block';			
+			document.getElementById("specificSpecial").style.display = 'block';		
+			document.getElementById("ddDocument").selectedIndex = 0;
+			document.getElementById("calDateFuner").value = "";
 		}
 		else if(ddChooseEvent === "Mass Intention" || ddChooseEvent === "Blessing"){
-			document.getElementById("chooseCal").style.display = 'block';
-      document.getElementById("submitbtn").style.display = 'block';
+			document.getElementById("chooseCalIntBless").style.display = 'block';
+			document.getElementById("chooseCalWed").style.display = 'none';
+			document.getElementById("chooseCalBap").style.display = 'none';
+			document.getElementById("chooseCalFuner").style.display = 'none';
+			document.getElementById("submitButton").style.display = 'block';
+			document.getElementById("ddDocument").selectedIndex = 0;
+			document.getElementById("ddSpecialEvent").selectedIndex = 0;
+			document.getElementById("calDateWed").removeAttribute('required');
+			document.getElementById("calDateBap").removeAttribute('required');
+			document.getElementById("calDateFuner").removeAttribute('required');
+			document.getElementById("calDateWed").value = "";
+			document.getElementById("calDateBap").value = "";
+			document.getElementById("calDateFuner").value = "";
 		}
 		else if(ddChooseEvent === "Document Request"){
 			document.getElementById("specificDocument").style.display = 'block';
-    }
-  }
+			document.getElementById("chooseCalWed").style.display = 'none';
+			document.getElementById("chooseCalBap").style.display = 'none';
+			document.getElementById("chooseCalFuner").style.display = 'none';
+			document.getElementById("submitButton").style.display = 'none';
+			document.getElementById("ddSpecialEvent").selectedIndex = 0;
+			document.getElementById("calDateWed").removeAttribute('required');
+			document.getElementById("calDateBap").removeAttribute('required');
+			document.getElementById("calDateFuner").removeAttribute('required');
+			document.getElementById("calDateWed").value = "";
+			document.getElementById("calDateBap").value = "";
+			document.getElementById("calDateFuner").value = "";
+		}
+	}
 }
 
-
-function openCalendar() {
-    var typeSpecial = document.getElementById("ddSpecialEvent").value;
-
+function openCalendarSpe() {
+	var typeSpecial = document.getElementById("ddSpecialEvent").value;
+	
     if(typeSpecial === "default"){
-		document.getElementById("chooseCal").style.display = 'none';
+		document.getElementById("chooseCalIntBless").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateWed").value = "";
+		document.getElementById("calDateBap").value = "";
+		document.getElementById("calDateFuner").value = "";
+    }
+	else if(typeSpecial === "Wedding") {
+		document.getElementById("chooseCalWed").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("ddDocument").selectedIndex = 0;
+		document.getElementById("calDateWed").setAttribute('required', '');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateBap").value = "";
+		document.getElementById("calDateFuner").value = "";
+    }
+	else if(typeSpecial === "Baptism") {
+		document.getElementById("chooseCalBap").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("ddDocument").selectedIndex = 0;
+		document.getElementById("calDateBap").setAttribute('required', '');
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateWed").value = "";
+		document.getElementById("calDateFuner").value = "";
+    }
+	else if(typeSpecial === "Funeral Mass/Blessing") {
+		document.getElementById("chooseCalFuner").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("ddDocument").selectedIndex = 0;
+		document.getElementById("calDateFuner").setAttribute('required', '');
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateWed").value = "";
+		document.getElementById("calDateBap").value = "";
     }
 	else {
-		document.getElementById("chooseCal").style.display = 'block';
-		document.getElementById("submitbtn").style.display = 'block';
+		// do nothing
     }
+}
+
+function openCalendarDoc() {
+	var typeDoc = document.getElementById("ddDocument").value;
+	
+    if(typeDoc === "default"){
+		// do nothing
+    }
+	else {
+		document.getElementById("chooseCalIntBless").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("ddSpecialEvent").selectedIndex = 0;
+	}
+}
+
+function chooseEventView() {
+	var ddChooseEventView = document.getElementById("ddEvent").value;
+
+    if(ddChooseEventView === "default"){
+		//do nothing
+    }
+	else {
+		document.getElementById("specificSpecial").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("submitButton").style.display = 'none';
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateIntBless").removeAttribute('required');
+		if(ddChooseEventView === "Special Event"){
+			document.getElementById("specificSpecial").style.display = 'block';
+			document.getElementById("calDateIntBless").removeAttribute('required');
+			document.getElementById("calDateWed").setAttribute('required', '');
+			document.getElementById("calDateBap").setAttribute('required', '');
+			document.getElementById("calDateFuner").setAttribute('required', '');
+			document.getElementById("calDateWed").value = "";
+			document.getElementById("calDateBap").value = "";
+			document.getElementById("calDateFuner").value = "";
+		}
+		else if(ddChooseEventView === "Mass Intention" || ddChooseEventView === "Blessing"){
+			document.getElementById("chooseCalIntBless").style.display = 'block';
+			document.getElementById("chooseCalWed").style.display = 'none';
+			document.getElementById("chooseCalBap").style.display = 'none';
+			document.getElementById("chooseCalFuner").style.display = 'none';
+			document.getElementById("submitButton").style.display = 'block';
+			document.getElementById("ddSpecialEvent").selectedIndex = 0;
+			document.getElementById("calDateIntBless").setAttribute('required', '');
+			document.getElementById("calDateWed").removeAttribute('required');
+			document.getElementById("calDateBap").removeAttribute('required');
+			document.getElementById("calDateFuner").removeAttribute('required');
+			document.getElementById("calDateWed").value = "";
+			document.getElementById("calDateBap").value = "";
+			document.getElementById("calDateFuner").value = "";
+		}
+	}
+}
+
+function openCalendarSpeView() {
+	var typeSpecialView = document.getElementById("ddSpecialEvent").value;
+	
+    if(typeSpecialView === "default"){
+		document.getElementById("chooseCalIntBless").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateWed").value = "";
+		document.getElementById("calDateBap").value = "";
+		document.getElementById("calDateFuner").value = "";
+    }
+	else if(typeSpecialView === "Wedding") {
+		document.getElementById("chooseCalWed").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateIntBless").removeAttribute('required');
+		document.getElementById("calDateWed").setAttribute('required', '');
+		document.getElementById("calDateBap").value = "";
+		document.getElementById("calDateFuner").value = "";
+    }
+	else if(typeSpecialView === "Baptism") {
+		document.getElementById("chooseCalBap").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("chooseCalFuner").style.display = 'none';
+		document.getElementById("calDateBap").setAttribute('required', '');
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateFuner").removeAttribute('required');
+		document.getElementById("calDateIntBless").removeAttribute('required');
+		document.getElementById("calDateWed").value = "";
+		document.getElementById("calDateFuner").value = "";
+    }
+	else if(typeSpecialView === "Funeral Mass/Blessing") {
+		document.getElementById("chooseCalFuner").style.display = 'block';
+		document.getElementById("submitButton").style.display = 'block';
+		document.getElementById("chooseCalIntBless").style.display = 'none';
+		document.getElementById("chooseCalWed").style.display = 'none';
+		document.getElementById("chooseCalBap").style.display = 'none';
+		document.getElementById("calDateFuner").setAttribute('required', '');
+		document.getElementById("calDateWed").removeAttribute('required');
+		document.getElementById("calDateBap").removeAttribute('required');
+		document.getElementById("calDateIntBless").removeAttribute('required');
+		document.getElementById("calDateWed").value = "";
+		document.getElementById("calDateBap").value = "";
+    }
+	else {
+		// do nothing
+    }
+}
+
+function showDiv() {
+	// radio buttons
+	var radio1 = document.getElementById("HouseBlessing");
+	var radio2 = document.getElementById("CarBlessing");
+	var radio3 = document.getElementById("MotorcycleBlessing");
+	var radio4 = document.getElementById("StoreBlessing");
+	
+	// divs
+	var div1 = document.getElementById("houseAddDiv");
+	var div2 = document.getElementById("emptyDiv1");
+	var div3 = document.getElementById("emptyDiv2");
+	var div4 = document.getElementById("emptyDiv3");
+	var div5 = document.getElementById("storeAddDiv");
+	
+	// address elements
+	var houseAdd = document.getElementById("addressHouse");
+	var storeAdd = document.getElementById("addressStore");
+	
+	if (radio1.checked == true) {
+		div1.style.display = "block";
+		div2.style.display = "none";
+		div3.style.display = "none";
+		div4.style.display = "none";
+		div5.style.display = "none";
+		houseAdd.required = true;
+		storeAdd.required = false;
+	}
+	else if (radio4.checked == true) {
+		div1.style.display = "none";
+		div2.style.display = "block";
+		div3.style.display = "block";
+		div4.style.display = "block";
+		div5.style.display = "block";
+		houseAdd.required = false;
+		storeAdd.required = true;
+	}
+	else {
+		div1.style.display = "none";
+		div2.style.display = "none";
+		div3.style.display = "none";
+		div4.style.display = "none";
+		div5.style.display = "none";
+		houseAdd.required = false;
+		storeAdd.required = false;
+	}
 }
 
 const openForm = item => {
@@ -94,7 +334,7 @@ const openForm = item => {
 
 /*Everything except weekend days
 const validate = (dateString, val) => {
-	const day = (new Date(dateString)).getDay();
+const day = (new Date(dateString)).getDay();
   if (val == "Special") {
 	  if (day==1 || day==0) {
 		return false;
