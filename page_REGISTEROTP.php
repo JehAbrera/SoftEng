@@ -63,7 +63,7 @@ session_start();
                         <button type="submit" name="submitOTP">Submit</button>
                         </form>
                         <form action="sendOTP.php" method="post">
-                            <span id="resend"><input type="submit" name="submit" value="submit"></span>
+                            <span id="resend"><input type="submit" name="submit" value="Resend OTP"></span>
                         </form>
                     </div>
             </div>
@@ -72,7 +72,7 @@ session_start();
     <script>
         const resend = document.getElementById('resend');
         window.addEventListener("DOMContentLoaded", () => {
-            let count = 25;
+            let count = 5;
             const update = () => {
                 resend.innerText = 'Resend OTP in ' + count;
             }
@@ -83,7 +83,7 @@ session_start();
                     count--;
                     setTimeout(countdown, 1000);
                 } else {
-                    resend.innerHTML = '<input type="submit" name="submit" value="submit">';
+                    resend.innerHTML = '<input type="submit" name="submit" value="Resend OTP">';
                 }
             }
 

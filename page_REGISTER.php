@@ -55,7 +55,7 @@ session_start();
                     <form method="POST" action="validationREGISTER.php">
                         <div class="form-input">
                             <span>Last Name</span>
-                            <input type="text" name="lname" id="lname" pattern="[a-zA-Z.\s\-]*" required>
+                            <input type="text" name="lname" id="lname" pattern="[a-zA-Z.\s\-\ñ]*" required="require">
                         </div>
                         <div class="form-input">
                             <span>First Name</span>
@@ -64,8 +64,8 @@ session_start();
                         <div class="form-input">
                             <span>Mobile Number</span>
                             <div class="contactnum">
-                                <input type="text" name="mobile1" value="+63" id="" disabled>
-                                <input type="tel" name="mobile" id="mobile">
+                                <input type="text" name="mobile1" value="+63" id="" readonly>
+                                <input type="tel" name="mobile" pattern="9[0-9]{9}" maxlength="10" onkeypress="return isNumber(event)" id="mobile" required>
                             </div>
                         </div>
                         <div class="form-input">
@@ -81,15 +81,15 @@ session_start();
                         <div class="form-input">
                             <span>Password</span>
                             <div class="password-space">
-                                <input type="password" name="password" id="password" onkeyup="checkPass()">
-                                <i class="fa-solid fa-eye"></i>
+                                <input type="password" name="password" id="password" onkeyup="checkPass()" required>
+                                <i class="fa-solid fa-eye" id="viewPass" onclick="toggle(password,viewPass)"></i>
                             </div>
                         </div>
                         <div class="form-input">
                             <span>Confirm Password</span>
                             <div class="password-space">
-                                <input type="password" name="conpassword" id="cpass" onkeyup="checkConfirm()">
-                                <i class="fa-solid fa-eye"></i>
+                                <input type="password" name="conpassword" id="cpass" onkeyup="checkConfirm()" required>
+                                <i class="fa-solid fa-eye" id="viewCPass" onclick="toggle(cpass,viewCPass)"></i>
                             </div>
                         </div>
                         <div class="error pass" id="errorPass">Passwords do not match</div>
@@ -109,24 +109,28 @@ session_start();
                             <button type="button" onclick="openForm(clearForm)" id="clear">Clear</button>
                             <button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
                         </div>
-                        <div class="popupForm" id="clearForm">
-                            <div class="icon-box"></div>
-                            <div class="headertext-box">
-                                Are you sure you want to clear?
-                            </div>
-                            <div class="form-btnarea">
-                                <button type="button" onclick="openForm(clearForm)">No</button>
-                                <button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+                        <div id="clearForm">
+                            <div class="popupForm">
+                                <div class="icon-box"></div>
+                                <div class="headertext-box">
+                                    Are you sure you want to clear?
+                                </div>
+                                <div class="form-btnarea">
+                                    <button type="button" onclick="openForm(clearForm)">No</button>
+                                    <button type="reset" onclick="openForm(clearForm), clearReq()">Yes</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="popupForm" id="submitForm">
-                            <div class="icon-box"></div>
-                            <div class="headertext-box">
-                                Are you sure you want to submit?
-                            </div>
-                            <div class="form-btnarea">
-                                <button type="button" onclick="openForm(submitForm)">No</button>
-                                <button type="submit" name="submitReg" value="submit">Yes</button>
+                        <div id="submitForm">
+                            <div class="popupForm">
+                                <div class="icon-box"></div>
+                                <div class="headertext-box">
+                                    Are you sure you want to submit?
+                                </div>
+                                <div class="form-btnarea">
+                                    <button type="button" onclick="openForm(submitForm)">No</button>
+                                    <button type="submit" name="submitReg" value="submit">Yes</button>
+                                </div>
                             </div>
                         </div>
                     </form>

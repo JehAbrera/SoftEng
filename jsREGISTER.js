@@ -9,16 +9,10 @@ const openForm = item => {
     if (document.getElementById(item.id).style.display == "none" || document.getElementById(item.id).style.display == "") {
         document.getElementById(item.id).style.display = "flex";
 
-        for (var index = 0; index < inputArray.length; index++)
-            inputArray[index].readOnly = true;
-
         submit.disabled = true;
         clear.disabled = true;
     } else {
         document.getElementById(item.id).style.display = "none";
-
-        for (var index = 0; index < inputArray.length; index++)
-            inputArray[index].readOnly = false;
 
         submit.disabled = false;
         clear.disabled = false;
@@ -108,5 +102,26 @@ const checkConfirm = () => {
         document.getElementById("errorPass").style.display = "block";
     } else if (password.value == cpass.value || cpass.value.length == 0) {
         document.getElementById("errorPass").style.display = "none";
+    }
+}
+
+const isNumber = evt => {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
+function toggle(input,icon) {
+    var pass = document.getElementById(input.id);
+    var eye = document.getElementById(icon.id);
+    if (pass.type == "password") {
+        pass.type = "text";
+        eye.className = "fa-solid fa-eye-slash";
+    } else {
+        pass.type = "password";
+        eye.className = "fa-solid fa-eye";
     }
 }
