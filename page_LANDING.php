@@ -73,11 +73,7 @@
 					$targetFilePath = $folder . $subFolder . "/" . $array[$a];
 					$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 					
-					if(!in_array($fileType, $allowTypes)){
-						$_SESSION['invalidImage'] = true;
-						header('Location: page_SCHEDULEEVENT.php');
-					}
-					else {
+					if(in_array($fileType, $allowTypes)){
 						move_uploaded_file($array2[$a], $targetFilePath);
 					}
 				}
@@ -135,11 +131,7 @@
 					$targetFilePath = $folder . $subFolder . "/" . $array[$a];
 					$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 					
-					if(!in_array($fileType, $allowTypes)){
-						$_SESSION['invalidImage'] = true;
-						header('Location: page_SCHEDULEEVENT.php');
-					}
-					else {
+					if(in_array($fileType, $allowTypes)){
 						move_uploaded_file($array2[$a], $targetFilePath);
 					}
 				}
@@ -195,11 +187,7 @@
 				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
 				$targetFilePath = $folder . $subFolder . "/" . $deathcert;
 				$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-				if(!in_array($fileType, $allowTypes)){
-					$_SESSION['invalidImage'] = true;
-					header('Location: page_SCHEDULEEVENT.php');
-				}
-				else {
+				if(in_array($fileType, $allowTypes)){
 					move_uploaded_file($_FILES["deathcert"]["tmp_name"], $targetFilePath);
 				}
 
@@ -280,11 +268,7 @@
 				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
 				$targetFilePath = $folder . $subFolder . "/" . $birthcert;
 				$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-				if(!in_array($fileType, $allowTypes)){
-					$_SESSION['invalidImage'] = true;
-					header('Location: page_SCHEDULEEVENT.php');
-				}
-				else {
+				if(in_array($fileType, $allowTypes)){
 					move_uploaded_file($_FILES["birthcert"]["tmp_name"], $targetFilePath);
 				}
 				
@@ -321,11 +305,7 @@
 					$targetFilePath = $folder . $subFolder . "/" . $array[$a];
 					$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 					
-					if(!in_array($fileType, $allowTypes)){
-						$_SESSION['invalidImage'] = true;
-						header('Location: page_SCHEDULEEVENT.php');
-					}
-					else {
+					if(in_array($fileType, $allowTypes)){
 						move_uploaded_file($array2[$a], $targetFilePath);
 					}
 				}
@@ -357,11 +337,7 @@
 				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
 				$targetFilePath = $folder . $subFolder . "/" . $birthcert;
 				$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-				if(!in_array($fileType, $allowTypes)){
-					$_SESSION['invalidImage'] = true;
-					header('Location: page_SCHEDULEEVENT.php');
-				}
-				else {
+				if(in_array($fileType, $allowTypes)){
 					move_uploaded_file($_FILES["birthcert"]["tmp_name"], $targetFilePath);
 				}
 				

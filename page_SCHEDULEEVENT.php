@@ -357,23 +357,23 @@ $_SESSION['isLoggedIn'] = true;
 														<div class="form-grid-cont">
 															<div class="input-box">
 																<label for="groom_idpic"><strong>2x2 ID Picture* </strong> </label>
-																<input type="file" id="groom_idpic" name="groom_idpic" accept="image/*" required><br>
+																<input type="file" id="groom_idpic" name="groom_idpic" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="groom_psa"><strong>PSA Birth Certificate* </strong> </label>
-																<input type="file" id="groom_psa" name="groom_psa" accept="image/*" required><br>
+																<input type="file" id="groom_psa" name="groom_psa" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="groom_cenomar"><strong>CENOMAR (Certificate of No Marriage)* </strong> </label>
-																<input type="file" id="groom_cenomar" name="groom_cenomar" accept="image/*" required><br>
+																<input type="file" id="groom_cenomar" name="groom_cenomar" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="groom_baptismal"><strong>Baptismal Certificate* </strong> </label>
-																<input type="file" id="groom_baptismal" name="groom_baptismal" accept="image/*" required><br>
+																<input type="file" id="groom_baptismal" name="groom_baptismal" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="groom_confirmation"><strong>Confirmation Certificate* </strong> </label>
-																<input type="file" id="groom_confirmation" name="groom_confirmation" accept="image/*" required><br>
+																<input type="file" id="groom_confirmation" name="groom_confirmation" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 														</div>
 													</div>
@@ -450,23 +450,23 @@ $_SESSION['isLoggedIn'] = true;
 														<div class="form-grid-cont">
 															<div class="input-box">
 																<label for="bride_idpic"><strong>2x2 ID Picture* </strong> </label>
-																<input type="file" id="bride_idpic" name="bride_idpic" accept="image/*" required><br>
+																<input type="file" id="bride_idpic" name="bride_idpic" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="bride_psa"><strong>PSA Birth Certificate* </strong> </label>
-																<input type="file" id="bride_psa" name="bride_psa" accept="image/*" required><br>
+																<input type="file" id="bride_psa" name="bride_psa" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="bride_cenomar"><strong>CENOMAR (Certificate of No Marriage)* </strong> </label>
-																<input type="file" id="bride_cenomar" name="bride_cenomar" accept="image/*" required><br>
+																<input type="file" id="bride_cenomar" name="bride_cenomar" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="bride_baptismal"><strong>Baptismal Certificate* </strong> </label>
-																<input type="file" id="bride_baptismal" name="bride_baptismal" accept="image/*" required><br>
+																<input type="file" id="bride_baptismal" name="bride_baptismal" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="bride_confirmation"><strong>Confirmation Certificate* </strong> </label>
-																<input type="file" id="bride_confirmation" name="bride_confirmation" accept="image/*" required><br>
+																<input type="file" id="bride_confirmation" name="bride_confirmation" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 														</div>
 													</div>
@@ -477,7 +477,7 @@ $_SESSION['isLoggedIn'] = true;
 														<div class="form-grid-cont">
 															<div class="input-box">
 																<label for="couple_contract"><strong>Marriage License or Live-In License (Article 34) or Marriage Contract (Civil Marriage)* </strong> </label>
-																<input type="file" id="couple_contract" name="couple_contract" title="Please submit only one (1) of the listed documents." accept="image/*" required><br>
+																<input type="file" id="couple_contract" name="couple_contract" title="Please submit only one (1) of the listed documents." accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 														</div>
 													</div>
@@ -595,7 +595,7 @@ $_SESSION['isLoggedIn'] = true;
 															> White dress or polo and pants for the child <br>
 															> Any colors for the parents and sponsors <br>
 															> The Godfather (Ninong) and Godmother (Ninang) must be at least 18 years of age. <br>
-															> Only baptized Catholics are eligible to be chosen as Godfathers (Ninong) and Godmothers (Ninang). <br>/div>
+															> Only baptized Catholics are eligible to be chosen as Godfathers (Ninong) and Godmothers (Ninang). <br>
 													</div>
 												<br>
 											</div>
@@ -713,11 +713,11 @@ $_SESSION['isLoggedIn'] = true;
 														<div class="grid-cont">
 															<div class="input-box">
 																<label for="psa"><strong>Child's PSA Birth Certificate*</strong> </label>
-																<input type="file" id="psa" name="psa" required><br>
+																<input type="file" id="psa" name="psa" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 															<div class="input-box">
 																<label for="marriage_contract"><strong>Marriage Contract of Parents* </strong> </label>
-																<input type="file" id="marriage_contract" name="marriage_contract" required><br>
+																<input type="file" id="marriage_contract" name="marriage_contract" accept="image/*" onchange="validateFileType(this.id)" required><br>
 															</div>
 														</div>
 													<div class="lower-form">
@@ -913,7 +913,7 @@ $_SESSION['isLoggedIn'] = true;
 												<div class="form-grid-cont">
 													<div class="input-box">
 														<label for="deathcert"><strong>Death Certificate* </strong> </label>
-														<input type="file" id="deathcert" name="deathcert" required><br>
+														<input type="file" id="deathcert" name="deathcert" accept="image/*" onchange="validateFileType(this.id)" required><br>
 													</div>
 												</div>
 												<div class="form-title">
@@ -1064,7 +1064,7 @@ $_SESSION['isLoggedIn'] = true;
 													<div class="form-grid-cont">
 														<div class="input-box">
 															<label for="birthcert"><strong>Birth Certificate* </strong> </label>
-															<input type="file" id="birthcert" name="birthcert" required><br>
+															<input type="file" id="birthcert" name="birthcert" accept="image/*" onchange="validateFileType(this.id)" required><br>
 														</div>
 													</div>
 													<div class="lower-form">
@@ -1169,15 +1169,15 @@ $_SESSION['isLoggedIn'] = true;
 													<div class="form-grid-cont">
 														<div class="input-box">
 															<label for="birthcert"><strong>Birth Certificate* </strong> </label>
-															<input type="file" id="birthcert" name="birthcert" required><br>
+															<input type="file" id="birthcert" name="birthcert" accept="image/*" onchange="validateFileType(this.id)" required><br>
 														</div>
 														<div class="input-box">
 															<label for="barangaycert"><strong>Barangay Certificate* </strong> </label>
-															<input type="file" id="barangaycert" name="barangaycert" required><br>
+															<input type="file" id="barangaycert" name="barangaycert" accept="image/*" onchange="validateFileType(this.id)" required><br>
 														</div>
 														<div class="input-box">
 															<label for="kawancert"><strong>Kawan Certificate* </strong> </label>
-															<input type="file" id="kawancert" name="kawancert" required><br>
+															<input type="file" id="kawancert" name="kawancert" accept="image/*" onchange="validateFileType(this.id)" required><br>
 														</div>
 													</div>
 													<div class="lower-form">
@@ -1284,7 +1284,7 @@ $_SESSION['isLoggedIn'] = true;
 													<div class="form-grid-cont">
 														<div class="input-box">
 															<label for="birthcert"><strong>Birth Certificate* </strong> </label>
-															<input type="file" id="birthcert" name="birthcert" required><br>
+															<input type="file" id="birthcert" name="birthcert" accept="image/*" onchange="validateFileType(this.id)" required><br>
 														</div>
 													</div>
 													<div class="lower-form">

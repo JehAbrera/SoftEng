@@ -1,0 +1,198 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --btnRed: #FFCCCB;
+    --btnGreen: #90EE90;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Page Styling */
+.registration-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+
+/* left content */
+.left-content {
+    flex: 1;
+    min-height: 100vh;
+    position: relative;
+    background: url(Photos/Background-Registration.jpg) no-repeat fixed;
+    background-size: 50% 100vh;
+}
+.content-wrapper {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+	justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.heading-wrapper {
+    display: flex;
+}
+.heading-wrapper * {
+    color: var(--white);
+    font-weight: 900;
+    text-align: center;
+}
+.heading-wrapper span {
+    font-size: clamp(1rem, 0.5rem + 1.6vw, 2rem);
+}
+.heading-wrapper span i {
+    font-size: clamp(3rem, 2rem + 3.2vw, 5rem);
+}
+.direction-wrapper {
+    margin-top: 16px;
+    width: 85%;
+    padding-inline: 8px;
+    background: linear-gradient(to bottom left, rgba(225, 225, 225, 0.4), rgba(255, 255, 255, 0.9));
+}
+.direction-wrapper * {
+    text-align: justify;
+    font-weight: 600;
+}
+
+/* right content */
+.right-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.registration-part {
+    font-size: 2rem;
+    font-weight: 900;
+    display: none;
+}
+.otp-card {
+    width: min(90%, 400px);
+    padding: 1rem;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 2px var(--black);
+    position: relative;
+}
+.progress-wrapper {
+    display: flex;
+    justify-content: center;
+}
+.form-heading {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+.info-content {
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
+}
+.otp-input > * {
+    width: 100%;
+}
+.otp-input > span:first-child {
+    font-weight: 600;
+}
+.otp-input > span:nth-child(3) {
+    font-size: 0.7rem;
+    color: red;
+    font-weight: 600;
+}
+.option-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 8px;
+}
+.option-wrapper > span > a {
+    color: blue;
+    text-decoration: none;
+}
+button {
+    cursor: pointer;
+    transition: 0.6s ease;
+}
+button:hover {
+    scale: 1.1;
+}
+.backbtn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    border: none;
+    box-shadow: 0 0 10px 1px grey;
+    background-color: var(--black);
+    border-radius: 50%;
+    width: 2rem;
+    aspect-ratio: 1/1;
+}
+.backbtn i {
+    color: var(--white);
+    font-weight: 900;
+}
+.option-wrapper > button {
+    width: 5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0 0 10px 1px grey;
+    font-weight: 600;
+    color: green;
+    background-color: var(--btnGreen);
+}
+.otp-input > input {
+    padding: 0.25rem 0.5rem;
+}
+
+
+/* screen size control */
+/* query screen size for font change */
+@media screen and (width <= 767px) {
+    .nav-content * {
+        font-size: 0.8rem;
+    }
+    .registration-wrapper {
+        min-height: 100vh;
+        align-items: center;
+        gap: unset;
+        background: url(Photos/Background-Registration.jpg) center/cover no-repeat fixed;
+    }
+    .left-content {
+        display: none;
+    }
+    .right-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .otp-card {
+        background: var(--white);
+    }
+    .registration-part, .registration-part * {
+        display: block;
+        color: var(--white);
+    }
+}

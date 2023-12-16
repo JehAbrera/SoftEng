@@ -160,6 +160,16 @@ function openCalendarDoc() {
 	}
 }
 
+function validateFileType(id) {
+	var selectedFile = document.getElementById(id).files[0];
+	var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/jfif', 'image/tiff', 'image/tif', 'image/avg'];
+
+	if (!allowedTypes.includes(selectedFile.type)) {
+		alert('Invalid file type. Please upload a JPEG, PNG, JPG, GIF, JFIF, TIFF, TIF, or AVG file.');
+		document.getElementById(id).value = '';
+	}
+}
+
 function chooseEventView() {
 	var ddChooseEventView = document.getElementById("ddEvent").value;
 
