@@ -23,11 +23,11 @@
                 $gFather = $_POST["groom_fatherName"];
                 $gMother = $_POST["groom_motherName"];
                 $gReligion = $_POST["groom_religion"];
-                $gid = basename($_FILES['groom_idpic']['name']);
-                $gpsa = basename($_FILES['groom_psa']['name']);
-                $gcenomar = basename($_FILES['groom_cenomar']['name']);
-                $gbaptismal = basename($_FILES['groom_baptismal']['name']);
-                $gconfirmation = basename($_FILES['groom_confirmation']['name']);
+                $gid = $_POST["groom_idpic"];
+                $gpsa = $_POST["groom_psa"];
+                $gcenomar = $_POST["groom_cenomar"];
+                $gbaptismal = $_POST["groom_baptismal"];
+                $gconfirmation = $_POST["groom_confirmation"];
 
                 $bLastName = $_POST["bride_lastName"];
                 $bFirstName = $_POST["bride_firstName"];
@@ -39,13 +39,13 @@
                 $bFather = $_POST["bride_fatherName"];
                 $bMother = $_POST["bride_motherName"];
                 $bReligion = $_POST["bride_religion"];
-                $bid = basename($_FILES['bride_idpic']['name']);
-                $bpsa = basename($_FILES['bride_psa']['name']);
-                $bcenomar = basename($_FILES['bride_cenomar']['name']);
-                $bbaptismal = basename($_FILES['bride_baptismal']['name']);
-                $bconfirmation = basename($_FILES['bride_confirmation']['name']);
-				
-                $ccontract = basename($_FILES['couple_contract']['name']);
+                $bid = $_POST["bride_idpic"];
+                $bpsa = $_POST["bride_psa"];
+                $bcenomar = $_POST["bride_cenomar"];
+                $bbaptismal = $_POST["bride_baptismal"];
+                $bconfirmation = $_POST["bride_confirmation"];
+
+                $ccontract = $_POST["couple_contract"];
 
                 $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleWEDDING', 'sampleWEDDING@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', '$time[0]', '$time[1]', '$Event', 'Pending', '' )";
 			    $resultappointment = mysqli_query($conn, $queryappointment);
@@ -56,27 +56,7 @@
                 while($row = mysqli_fetch_array($resultid)) {
                     $Id = $row[0];
                 }
-				
-				$folder = "uploads/";
-				
-				$subFolder = $gLastName . $bLastName . $Event . $Eventdate;
-				if (!file_exists($folder.$subFolder)) {
-					mkdir($folder.$subFolder, 0777, true);  //create directory if not exist
-				}
-				
-				$array = array($gid,$gpsa,$gcenomar,$gbaptismal,$gconfirmation,$bid,$bpsa,$bcenomar,$bbaptismal,$bconfirmation,$ccontract);
-				$array2 = array($_FILES["groom_idpic"]["tmp_name"],$_FILES["groom_psa"]["tmp_name"],$_FILES["groom_cenomar"]["tmp_name"],$_FILES["groom_baptismal"]["tmp_name"],
-						$_FILES["groom_confirmation"]["tmp_name"],$_FILES["bride_idpic"]["tmp_name"],$_FILES["bride_psa"]["tmp_name"],$_FILES["bride_cenomar"]["tmp_name"],
-						$_FILES["bride_baptismal"]["tmp_name"],$_FILES["bride_confirmation"]["tmp_name"],$_FILES["couple_contract"]["tmp_name"]);
-				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
-				for($a=0; $a<count($array); $a++){
-					$targetFilePath = $folder . $subFolder . "/" . $array[$a];
-					$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-					
-					if(in_array($fileType, $allowTypes)){
-						move_uploaded_file($array2[$a], $targetFilePath);
-					}
-				}
+                echo $Id;
                 
                 $queryWedding = "INSERT INTO wedding_details VALUE('','$Id','$Eventdate', '$time[0]', '$time[1]', '$gLastName', '$gFirstName', '$gMiddleName', '$gContactNum', '$gDob', '$gPob', '$gAddress', '$gFather', '$gMother', '$gReligion','$gid','$gpsa', '$gcenomar','$gbaptismal','$gconfirmation','$bLastName', '$bFirstName', '$bMiddleName', '$bContactNum', '$bDob', '$bPob', '$bAddress', '$bFather', '$bMother', '$bReligion','$bid','$bpsa', '$bcenomar','$bbaptismal','$bconfirmation','$ccontract')";
 			    $resultWedding = mysqli_query($conn, $queryWedding);
@@ -104,8 +84,8 @@
                 $bapGodfAddress = $_POST["godfatherAddress"];
                 $bapGodm = $_POST["godmotherName"];
                 $bapGodmAddress = $_POST["godmotherAddress"];
-				$bappsa = basename($_FILES['psa']['name']);
-                $bapcontract = basename($_FILES['marriage_contract']['name']);
+                $bappsa = $_POST["psa"];
+                $bapcontract = $_POST["marriage_contract"];
 
                 $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleBAPTISM', 'sampleBAPTISM@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', '$time[0]', '$time[1]', '$Event', 'Pending', '' )";
 			    $resultappointment = mysqli_query($conn, $queryappointment);
@@ -116,25 +96,6 @@
                 while($row = mysqli_fetch_array($resultid)) {
                     $foreignId = $row[0];
                 }
-				
-				$folder = "uploads/";
-				
-				$subFolder = $bapFirstName . $bapLastName . $Event . $Eventdate;
-				if (!file_exists($folder.$subFolder)) {
-					mkdir($folder.$subFolder, 0777, true);  //create directory if not exist
-				}
-				
-				$array = array($bappsa,$bapcontract);
-				$array2 = array($_FILES["psa"]["tmp_name"],$_FILES["marriage_contract"]["tmp_name"]);
-				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
-				for($a=0; $a<count($array); $a++){
-					$targetFilePath = $folder . $subFolder . "/" . $array[$a];
-					$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-					
-					if(in_array($fileType, $allowTypes)){
-						move_uploaded_file($array2[$a], $targetFilePath);
-					}
-				}
     
                 $queryBaptism = "INSERT INTO baptism_details VALUE('','$foreignId','$Eventdate', '$time[0]', '$time[1]','$bapLastName','$bapFirstName','$bapMiddleName','$bapGender','$bapDob','$bapPob','$bapAddress','$bapContactNum','$bapFather','$bapFatherPob','$bapMother','$bapMotherPob','$bapMarriage','$bapGodf','$bapGodfAddress','$bapGodm','$bapGodmAddress', '$bappsa', '$bapcontract')";
 			    $resultBaptism = mysqli_query($conn, $queryBaptism);
@@ -155,13 +116,7 @@
                 $deadCause = $_POST["cause_of_death"];
                 $deadSacrament = $_POST["sacrament"];
                 $deadBurial = $_POST["burial"];
-				$deathcert = basename($_FILES['deathcert']['name']);
-				
-				if ($deadBurial == "Casket") {
-					$finalType = "Funeral Mass";
-				} else {
-					$finalType = "Funeral Blessing";
-				}
+                $deathcert = $_POST["deathcert"];
 
                 $infName = $_POST["informantLastName"].",".$_POST["informantFirstName"]." ". $_POST["informantMiddleName"];
                 $infContactNum = $_POST["informantContactNum"];
@@ -176,20 +131,6 @@
                 while($row = mysqli_fetch_array($resultid)) {
                     $foreignId = $row[0];
                 }
-				
-				$folder = "uploads/";
-				
-				$subFolder = $deadFirstName . $deadLastName . $finalType . $Eventdate;
-				if (!file_exists($folder.$subFolder)) {
-					mkdir($folder.$subFolder, 0777, true);  //create directory if not exist
-				}
-				
-				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
-				$targetFilePath = $folder . $subFolder . "/" . $deathcert;
-				$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-				if(in_array($fileType, $allowTypes)){
-					move_uploaded_file($_FILES["deathcert"]["tmp_name"], $targetFilePath);
-				}
 
                 $queryFuneral = "INSERT INTO funeral_details VALUE('','$foreignId','$Eventdate', '$time[0]', '','$deadLastName','$deadFirstName','$deadMiddleName','$deadGender','$deadDod','$deadAge','$deadCause','$deadDoi','$deadCemetery','$infName','$infContactNum','$infAddress','$deadSacrament','$deadBurial', '$deathcert')";
 			    $resultFuneral= mysqli_query($conn, $queryFuneral);
@@ -241,46 +182,12 @@
             $fname = $_POST["firstName"];
             $mname = $_POST["middleName"];
             $contactnum = $_POST["ContactNum"];
-			$birthcert = basename($_FILES['birthcert']['name']);
             if($Event == "Baptismal Certificate" || $Event == "Wedding Certificate" || $Event == "Confirmation Certificate"){
                 $dob = $_POST["dob"];
                 $fathersname = $_POST["fname"];
                 $mothersname = $_POST["mname"];
                 $purpose = $_POST["purpose"];
 
-                $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleDOCUMENT', 'sampleDOCUMENT@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', ' ', '', '$Event', 'Pending', '')";
-                $resultappointment = mysqli_query($conn, $queryappointment);
-                //getting the appointments id to save as foreign key in wedding details
-                $foreignId = 0;
-                $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
-                $resultid = mysqli_query($conn, $queryid);
-                while($row = mysqli_fetch_array($resultid)) {
-                    $foreignId = $row[0];
-                }
-				
-				$folder = "uploads/";
-				
-				$subFolder = $fname . $lname . $Event . $Eventdate;
-				if (!file_exists($folder.$subFolder)) {
-					mkdir($folder.$subFolder, 0777, true);  //create directory if not exist
-				}
-				
-				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
-				$targetFilePath = $folder . $subFolder . "/" . $birthcert;
-				$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-				if(in_array($fileType, $allowTypes)){
-					move_uploaded_file($_FILES["birthcert"]["tmp_name"], $targetFilePath);
-				}
-				
-                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '$fathersname', '$mothersname', '$contactnum', '$purpose', '', '$birthcert', '', '')";
-                $resultDocument = mysqli_query($conn, $queryDocument);
-                //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
-            } else if($Event == "Good Moral Certificate"){
-                $dob = $_POST["dob"];
-                $purpose = $_POST["purpose"];
-				$barangaycert = basename($_FILES['barangaycert']['name']);
-				$kawancert = basename($_FILES['kawancert']['name']);
-				
                 $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleDOCUMENT', 'sampleDOCUMENT@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', ' ', '', '$Event', 'Pending', '' )";
                 $resultappointment = mysqli_query($conn, $queryappointment);
                 //getting the appointments id to save as foreign key in wedding details
@@ -290,27 +197,22 @@
                 while($row = mysqli_fetch_array($resultid)) {
                     $foreignId = $row[0];
                 }
-				
-				$folder = "uploads/";
-				
-				$subFolder = $fname . $lname . $Event . $Eventdate;
-				if (!file_exists($folder.$subFolder)) {
-					mkdir($folder.$subFolder, 0777, true);  //create directory if not exist
-				}
-				
-				$array = array($birthcert,$barangaycert,$kawancert);
-				$array2 = array($_FILES["birthcert"]["tmp_name"],$_FILES["barangaycert"]["tmp_name"],$_FILES["kawancert"]["tmp_name"]);
-				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
-				for($a=0; $a<count($array); $a++){
-					$targetFilePath = $folder . $subFolder . "/" . $array[$a];
-					$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-					
-					if(in_array($fileType, $allowTypes)){
-						move_uploaded_file($array2[$a], $targetFilePath);
-					}
-				}
-				
-                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '', '$birthcert', '$barangaycert', '$kawancert')";
+                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '$fathersname', '$mothersname', '$contactnum', '$purpose', '')";
+                $resultDocument = mysqli_query($conn, $queryDocument);
+                //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
+            } else if($Event == "Good Moral Certificate"){
+                $dob = $_POST["dob"];
+                $purpose = $_POST["purpose"];
+                $queryappointment = "INSERT INTO appointment_details VALUE('', 'sampleDOCUMENT', 'sampleDOCUMENT@yahoo.com', '$dateappointed', '$timeappointed', '$Eventdate', ' ', '', '$Event', 'Pending', '' )";
+                $resultappointment = mysqli_query($conn, $queryappointment);
+                //getting the appointments id to save as foreign key in wedding details
+                $foreignId = 0;
+                $queryid = "SELECT appointment_id FROM appointment_details WHERE appointment_id = LAST_INSERT_ID()";
+                $resultid = mysqli_query($conn, $queryid);
+                while($row = mysqli_fetch_array($resultid)) {
+                    $foreignId = $row[0];
+                }
+                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '')";
                 $resultDocument = mysqli_query($conn, $queryDocument);
                 //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
             } else if($Event == "Permit and No Record") {
@@ -326,35 +228,24 @@
                 while($row = mysqli_fetch_array($resultid)) {
                     $foreignId = $row[0];
                 }
-				
-				$folder = "uploads/";
-				
-				$subFolder = $fname . $lname . $Event . $Eventdate;
-				if (!file_exists($folder.$subFolder)) {
-					mkdir($folder.$subFolder, 0777, true);  //create directory if not exist
-				}
-				
-				$allowTypes = array('jpg','png','jpeg','gif','jfif','tiff','svg','tif');
-				$targetFilePath = $folder . $subFolder . "/" . $birthcert;
-				$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-				if(in_array($fileType, $allowTypes)){
-					move_uploaded_file($_FILES["birthcert"]["tmp_name"], $targetFilePath);
-				}
-				
-                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '$address', '$birthcert', '', '')";
+                $queryDocument = "INSERT INTO document_request_details VALUE('','$foreignId','$Eventdate','$Event', '$fname', '$mname', '$lname', '$dob', '', '', '$contactnum', '$purpose', '$address')";
                 $resultDocument = mysqli_query($conn, $queryDocument);
                 //echo "Please wait 1 to 2 days for schedule approval in ". $Eventtype ;
             }
+            $message1 ="Your Request has been submitted"; 
+            $message2 = "Please wait 1 to 2 days for schedule approval";
 		}
-		$message1 ="Your Request has been submitted"; 
-        $message2 = "Please wait 1 to 2 days for schedule approval";
-    }else if(isset($_POST["sure"])) {
+	} else if(isset($_POST["reasonsubmit"])){
         $id = $_POST["id"];
-        $querycancel = "UPDATE appointment_details SET appointment_status = 'Canceled' WHERE appointment_id = $id";
+        $reason = $_POST["reason"];
+        if($reason == "other"){
+            $reason = $_POST["others"];
+        }
+        $querycancel = "UPDATE appointment_details SET appointment_status = 'Canceled', reason = '$reason' WHERE appointment_id = $id";
         $resultcancel = mysqli_query($conn, $querycancel);
         $message1 = "Appointment has been Canceled";
         $message2 = "Please check the canceled tab if you want to reschedule an appointment";
-	}
+    }
 
 
 ?>
@@ -373,7 +264,7 @@
                 <div> <i class="fa fa-check-circle" style="font-size: 4rem"></i> </div>
                 <div class="title-cont"> <h2><?php echo $message1?></h2> </div>
                 <div class="desc-cont"><?php echo $message2?> </div>
-                <div class="button-cont">  <button type="button" onclick="Appointments.php"> <b>View Appointments</b></button> </div>
+                <div class="button-cont">  <button type="button" onclick="location.href='Appointments.php'"> <b>View Appointments</b></button> </div>
         </div>
         
     </div>
