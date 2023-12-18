@@ -88,6 +88,8 @@ require 'dbconnect.php';
                                     $result = mysqli_query($conn, $query);
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
+                                        $forReason = "again".$id;
+                                        $idseemore = "try".$id;
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
@@ -96,11 +98,13 @@ require 'dbconnect.php';
                                                         <p>Date Appointed: <?php echo $row[3] ?></p>
                                                         <p>Time Appointed: <?php echo $row[4] ?></p>
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
+                                                        <?php echo $forReason?>
+                                                        <?php echo $idseemore?>
                                                     </div>
                                                     <div class="button-cont">
-                                                        <form action="Appointments.php" method="post">
-                                                            <button type="button" class="buttoncancel" onclick="openForm()"> Cancel </button>
-                                                            <div class="popupCover" id="submitForm">
+                                                        <form action="page_LANDING.php" method="post">
+                                                            <button type="button" class="buttoncancel" onclick="openForm(<?php echo $row[0]?>)"> Cancel </button>
+                                                            <!--<div class="popupCover" id="<?php echo $row[0]?>">
                                                                 <div class="popupForm">
                                                                     <div class="icon-box">
                                                                         <i class="fa fa-question-circle" style="font-size: 4rem"></i>
@@ -109,21 +113,73 @@ require 'dbconnect.php';
                                                                         <h2> Are you sure you want to Cancel this appointment? </h2>
                                                                     </div>
                                                                     <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm()">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="sure">Yes</button>
+                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
+                                                                        <button class="buttonresched" type="button" onclick="closeForm(<?php echo $id?>), openForm(<?php echo $forReason ?>)" name="sure">Yes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>-->
+                                                            <div class="popupCover-reason" id="<?php echo $row[0]?>">
+                                                                <div class="popupForm-reason">
+                                                                    <div class="headertext-box">
+                                                                        <h2> Reason/s </h2>
+                                                                        <p>Please provide a reason for the cancellation of your appointment</p>
+                                                                    </div>
+                                                                    <div class="form-area">
+                                                                        <p><strong>Reason for cancelation</strong></p>
+                                                                        <div class="reason-container">
+                                                                            <div class="form-reason">
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="cop" value="Change of Plans" onclick="hideinput()" required> 
+                                                                                    <label for="cop">Change of Plans</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="lop" value="Lack of Preparetion" onclick="hideinput()" required>
+                                                                                    <label for="lop">Lack of Preparetion</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="uta" value="Unable to attend" onclick="hideinput()" required>
+                                                                                    <label for="uta">Unable to attend</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="emerg" value="Emergency" onclick="hideinput()" required>
+                                                                                    <label for="emerg">Emergency</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="cs" value="Conflicting Schedule" onclick="hideinput()" required>
+                                                                                    <label for="cs">Conflicting Schedule</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="ps" value="Personal Stuff" onclick="hideinput()" required>
+                                                                                    <label for="ps">Personal Stuff</label><br>
+                                                                                </div>  
+                                                                            </div>
+                                                                            <div class="other">
+                                                                                <div>
+                                                                                    <input type="radio" name="reason"id="other" value="other" onclick="showinput()" required>
+                                                                                    <label for="other">Other</label><br>
+                                                                                </div>
+                                                                                <div class="other-input" id="otherinput">
+                                                                                    <input type="text" class="othertext" name="others">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="btn-area">
+                                                                        <input type="hidden" name="id" value="<?php echo $row[0]?>">
+                                                                            <button type="button" class="buttoncancel" onclick="closeForm(<?php echo $row[0]?>)"> Cancel</button>
+                                                                            <button type="submit" class="buttonresched" name="reasonsubmit">Submit</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </form>
-                                                        
                                                     </div>
                                                 </div>
                                                 <div class="bot-cont">
                                                     <div class="seemore">
                                                         <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $id?>)">see more</p>
+                                                        <p onclick="seemore(<?php echo $idseemore ?>)"> see more</p>
                                                     </div>
-                                                    <div class="viewmore" id = "<?php echo $id?>" style="display: none">
+                                                    <div class="viewmore" id = "<?php echo $idseemore ?>" style="display: none">
 
                                                         <?php
                                                         if($row[8] == "Wedding"){
@@ -246,7 +302,7 @@ require 'dbconnect.php';
                                                                 </div>
                                                             <?php
                                                             }
-                                                        }else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
+                                                        } else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
                                                             $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
                                                             $resultbless = mysqli_query($conn, $querybless);
                                                             while($row = mysqli_fetch_array($resultbless)) {
@@ -323,6 +379,7 @@ require 'dbconnect.php';
                                         $result = mysqli_query($conn, $query);
                                         while($row = mysqli_fetch_array($result)) {
                                             $id = $row[0];
+                                            $idseemore = "try".$id;
                                             ?>
                                                 <div class="indiv-cont">
                                                     <div class="top-cont">
@@ -333,9 +390,9 @@ require 'dbconnect.php';
                                                             <p>Appointment Type: <?php echo $row[8] ?></p>
                                                         </div>
                                                         <div class="button-cont">
-                                                            <form action="Appointments.php" method="post">
-                                                                <button type="button" class="buttoncancel" onclick="openForm()"> Cancel </button>
-                                                                <div class="popupCover" id="submitForm">
+                                                            <form action="page_LANDING.php" method="post">
+                                                                <button type="button" class="buttoncancel" onclick="openForm(<?php echo $row[0]?>)"> Cancel </button>
+                                                                <!--<div class="popupCover" id="<?php echo $row[0]?>">
                                                                     <div class="popupForm">
                                                                         <div class="icon-box">
                                                                             <i class="fa fa-question-circle" style="font-size: 4rem"></i>
@@ -344,8 +401,61 @@ require 'dbconnect.php';
                                                                             <h2> Are you sure you want to Cancel this appointment? </h2>
                                                                         </div>
                                                                         <div class="form-btnarea">
-                                                                            <button class="buttoncancel" type="button" onclick="closeForm()">No</button>
-                                                                            <button class="buttonresched" type="Submit" name="submitform">Yes</button>
+                                                                            <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
+                                                                            <button class="buttonresched" type="button" onclick="closeForm(<?php echo $id?>), openForm(<?php echo $forReason ?>)" name="sure">Yes</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>-->
+                                                                <div class="popupCover-reason" id="<?php echo $row[0]?>">
+                                                                    <div class="popupForm-reason">
+                                                                        <div class="headertext-box">
+                                                                            <h2> Reason/s </h2>
+                                                                            <p>Please provide a reason for the cancellation of your appointment</p>
+                                                                        </div>
+                                                                        <div class="form-area">
+                                                                            <p><strong>Reason for cancelation</strong></p>
+                                                                            <div class="reason-container">
+                                                                                <div class="form-reason">
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason" id="cop" value="Change of Plans" onclick="hideinput()" required> 
+                                                                                        <label for="cop">Change of Plans</label><br>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason" id="lop" value="Lack of Preparetion" onclick="hideinput()" required>
+                                                                                        <label for="lop">Lack of Preparetion</label><br>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason" id="uta" value="Unable to attend" onclick="hideinput()" required>
+                                                                                        <label for="uta">Unable to attend</label><br>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason" id="emerg" value="Emergency" onclick="hideinput()" required>
+                                                                                        <label for="emerg">Emergency</label><br>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason" id="cs" value="Conflicting Schedule" onclick="hideinput()" required>
+                                                                                        <label for="cs">Conflicting Schedule</label><br>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason" id="ps" value="Personal Stuff" onclick="hideinput()" required>
+                                                                                        <label for="ps">Personal Stuff</label><br>
+                                                                                    </div>  
+                                                                                </div>
+                                                                                <div class="other">
+                                                                                    <div>
+                                                                                        <input type="radio" name="reason"id="other" value="other" onclick="showinput()" required>
+                                                                                        <label for="other">Other</label><br>
+                                                                                    </div>
+                                                                                    <div class="other-input" id="otherinput">
+                                                                                        <input type="text" class="othertext" name="others">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="btn-area">
+                                                                            <input type="hidden" name="id" value="<?php echo $row[0]?>">
+                                                                                <button type="button" class="buttoncancel" onclick="closeForm(<?php echo $row[0]?>)"> Cancel</button>
+                                                                                <button type="submit" class="buttonresched" name="reasonsubmit">Submit</button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -355,9 +465,9 @@ require 'dbconnect.php';
                                                     <div class="bot-cont">
                                                         <div class="seemore">
                                                             <p>Details</p>
-                                                            <p onclick="seemore(<?php echo $id?>)">see more</p>
+                                                            <p onclick="seemore(<?php echo $idseemore ?>)">see more</p>
                                                         </div>
-                                                        <div class="viewmore" id = "<?php echo $id?>" style="display: none">
+                                                        <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
 
                                                             <?php
                                                             if($row[8] == "Wedding"){
@@ -556,6 +666,7 @@ require 'dbconnect.php';
                                     $result = mysqli_query($conn, $query);
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
+                                        $idseemore = "try".$id;
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
@@ -566,9 +677,9 @@ require 'dbconnect.php';
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                     </div>
                                                     <div class="button-cont">
-                                                        <form action="Appointments.php" method="post">
-                                                            <button type="button" class="buttoncancel" onclick="openForm()"> Cancel </button>
-                                                            <div class="popupCover" id="submitForm">
+                                                      <form action="page_LANDING.php" method="post">
+                                                            <button type="button" class="buttoncancel" onclick="openForm(<?php echo $row[0]?>)"> Cancel </button>
+                                                            <!--<div class="popupCover" id="<?php echo $row[0]?>">
                                                                 <div class="popupForm">
                                                                     <div class="icon-box">
                                                                         <i class="fa fa-question-circle" style="font-size: 4rem"></i>
@@ -577,8 +688,61 @@ require 'dbconnect.php';
                                                                         <h2> Are you sure you want to Cancel this appointment? </h2>
                                                                     </div>
                                                                     <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm()">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="submitform">Yes</button>
+                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
+                                                                        <button class="buttonresched" type="button" onclick="closeForm(<?php echo $id?>), openForm(<?php echo $forReason ?>)" name="sure">Yes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>-->
+                                                            <div class="popupCover-reason" id="<?php echo $row[0]?>">
+                                                                <div class="popupForm-reason">
+                                                                    <div class="headertext-box">
+                                                                        <h2> Reason/s </h2>
+                                                                        <p>Please provide a reason for the cancellation of your appointment</p>
+                                                                    </div>
+                                                                    <div class="form-area">
+                                                                        <p><strong>Reason for cancelation</strong></p>
+                                                                        <div class="reason-container">
+                                                                            <div class="form-reason">
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="cop" value="Change of Plans" onclick="hideinput()" required> 
+                                                                                    <label for="cop">Change of Plans</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="lop" value="Lack of Preparetion" onclick="hideinput()" required>
+                                                                                    <label for="lop">Lack of Preparetion</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="uta" value="Unable to attend" onclick="hideinput()" required>
+                                                                                    <label for="uta">Unable to attend</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="emerg" value="Emergency" onclick="hideinput()" required>
+                                                                                    <label for="emerg">Emergency</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="cs" value="Conflicting Schedule" onclick="hideinput()" required>
+                                                                                    <label for="cs">Conflicting Schedule</label><br>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input type="radio" name="reason" id="ps" value="Personal Stuff" onclick="hideinput()" required>
+                                                                                    <label for="ps">Personal Stuff</label><br>
+                                                                                </div>  
+                                                                            </div>
+                                                                            <div class="other">
+                                                                                <div>
+                                                                                    <input type="radio" name="reason"id="other" value="other" onclick="showinput()" required>
+                                                                                    <label for="other">Other</label><br>
+                                                                                </div>
+                                                                                <div class="other-input" id="otherinput">
+                                                                                    <input type="text" class="othertext" name="others">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="btn-area">
+                                                                        <input type="hidden" name="id" value="<?php echo $row[0]?>">
+                                                                            <button type="button" class="buttoncancel" onclick="closeForm(<?php echo $row[0]?>)"> Cancel</button>
+                                                                            <button type="submit" class="buttonresched" name="reasonsubmit">Submit</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -588,9 +752,9 @@ require 'dbconnect.php';
                                                 <div class="bot-cont">
                                                     <div class="seemore">
                                                         <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $id?>)">see more</p>
+                                                        <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
                                                     </div>
-                                                    <div class="viewmore" id = "<?php echo $id?>" style="display: none">
+                                                    <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
 
                                                         <?php
                                                         if($row[8] == "Wedding"){
@@ -789,6 +953,7 @@ require 'dbconnect.php';
                                         $result = mysqli_query($conn, $query);
                                         while($row = mysqli_fetch_array($result)) {
                                             $id = $row[0];
+                                            $idseemore = "try".$id;
                                             ?>
                                                 <div class="indiv-cont">
                                                     <div class="top-cont">
@@ -798,32 +963,13 @@ require 'dbconnect.php';
                                                             <p>Time Appointed: <?php echo $row[4] ?></p>
                                                             <p>Appointment Type: <?php echo $row[8] ?></p>
                                                         </div>
-                                                        <div class="button-cont">
-                                                            <form action="Appointments.php" method="post">
-                                                                <button type="button" class="buttoncancel" onclick="openForm()"> Cancel </button>
-                                                                <div class="popupCover" id="submitForm">
-                                                                    <div class="popupForm">
-                                                                        <div class="icon-box">
-                                                                            <i class="fa fa-question-circle" style="font-size: 4rem"></i>
-                                                                        </div>
-                                                                        <div class="headertext-box">
-                                                                            <h2> Are you sure you want to Cancel this appointment? </h2>
-                                                                        </div>
-                                                                        <div class="form-btnarea">
-                                                                            <button class="buttoncancel" type="button" onclick="closeForm()">No</button>
-                                                                            <button class="buttonresched" type="Submit" name="submitform">Yes</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
                                                     </div>
                                                     <div class="bot-cont">
                                                         <div class="seemore">
                                                             <p>Details</p>
-                                                            <p onclick="seemore(<?php echo $id?>)">see more</p>
+                                                            <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
                                                         </div>
-                                                        <div class="viewmore" id = "<?php echo $id?>" style="display: none">
+                                                        <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
 
                                                             <?php
                                                             if($row[8] == "Wedding"){
@@ -1022,6 +1168,7 @@ require 'dbconnect.php';
                                     $result = mysqli_query($conn, $query);
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
+                                        $idseemore = "try".$id;
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
@@ -1032,9 +1179,9 @@ require 'dbconnect.php';
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                     </div>
                                                     <div class="button-cont">
-                                                        <form action="Appointments.php" method="post">
-                                                            <button type="button" class="buttonresched" onclick="openForm()"> Reschedule </button>
-                                                            <div class="popupCover" id="submitForm">
+                                                        <form action="page_LANDING.php" method="post">
+                                                            <button type="button" class="buttonresched" onclick="openForm(<?php echo $id?>)"> Reschedule </button>
+                                                            <div class="popupCover" id="<?php echo $id?>">
                                                                 <div class="popupForm">
                                                                     <div class="icon-box">
                                                                         <i class="fa fa-question-circle" style="font-size: 4rem"></i>
@@ -1043,8 +1190,8 @@ require 'dbconnect.php';
                                                                         <h2> Are you sure you want to Reschedule this appointment? </h2>
                                                                     </div>
                                                                     <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm()">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="submitform">Yes</button>
+                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
+                                                                        <button class="buttonresched" type="Submit" name="sure">Yes</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1054,9 +1201,9 @@ require 'dbconnect.php';
                                                 <div class="bot-cont">
                                                     <div class="seemore">
                                                         <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $id?>)">see more</p>
+                                                        <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
                                                     </div>
-                                                    <div class="viewmore" id = "<?php echo $id?>" style="display: none">
+                                                    <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
 
                                                         <?php
                                                         if($row[8] == "Wedding"){
@@ -1255,6 +1402,7 @@ require 'dbconnect.php';
                                     $result = mysqli_query($conn, $query);
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
+                                        $idseemore = "try".$id;
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
@@ -1265,9 +1413,9 @@ require 'dbconnect.php';
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                     </div>
                                                     <div class="button-cont">
-                                                        <form action="Appointments.php" method="post">
-                                                            <button type="button" class="buttonresched" onclick="openForm()"> Reschedule </button>
-                                                            <div class="popupCover" id="submitForm">
+                                                        <form action="page_LANDING.php" method="post">
+                                                            <button type="button" class="buttonresched" onclick="openForm(<?php echo $id?>)"> Reschedule </button>
+                                                            <div class="popupCover" id="<?php echo $id?>">
                                                                 <div class="popupForm">
                                                                     <div class="icon-box">
                                                                         <i class="fa fa-question-circle" style="font-size: 4rem"></i>
@@ -1276,8 +1424,8 @@ require 'dbconnect.php';
                                                                         <h2> Are you sure you want to Reschedule this appointment? </h2>
                                                                     </div>
                                                                     <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm()">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="submitform">Yes</button>
+                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
+                                                                        <button class="buttonresched" type="Submit" name="sure">Yes</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1287,9 +1435,9 @@ require 'dbconnect.php';
                                                 <div class="bot-cont">
                                                     <div class="seemore">
                                                         <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $id?>)">see more</p>
+                                                        <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
                                                     </div>
-                                                    <div class="viewmore" id = "<?php echo $id?>" style="display: none">
+                                                    <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
 
                                                         <?php
                                                         if($row[8] == "Wedding"){
@@ -1484,20 +1632,6 @@ require 'dbconnect.php';
                                 }
                             ?>
                             </div>
-
-                            <!--<div class="popupCover" id="canceledConfirm">
-                                <div class="popupForm">
-                                    <div class="icon-box">
-                                        <i class="fa fa-question-circle" style="font-size: 4rem"></i>
-                                    </div>
-                                    <div class="headertext-box">
-                                        <h2> Canceled Successfully </h2>
-                                    </div>
-                                    <div class="form-btnarea">
-                                        <button class="buttonresched" type="button" name="success">Back to View Appointments</button>
-                                    </div>
-                                </div>
-                            </div>-->
                         </div>
                     </div>
                 </div>
