@@ -14,6 +14,7 @@ $_SESSION['isLoggedIn'] = true;
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>SJCP | Schedule Event</title>
+	<link rel="icon" type="image/png" href="tabicon.png">
 </head>
 
 <body>
