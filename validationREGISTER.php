@@ -45,7 +45,7 @@ if (isset($_POST['submitOTP'])) {
         $phone = $_SESSION['phone'];
         $pass = $_SESSION['pass'];
         $encrypt = hash('sha256', $pass);
-        $query = "INSERT into login_userinfo VALUES ('$fname', '$lname', '$email', '$phone', '$encrypt')";
+        $query = "INSERT into login_userinfo VALUES ('Client','$fname', '$lname', '$email', '$phone', '$encrypt')";
         $result = mysqli_query($conn, $query);
         header('Location: page_REGDONE.php');
     }
