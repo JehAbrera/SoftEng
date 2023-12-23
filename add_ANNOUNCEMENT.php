@@ -14,6 +14,7 @@ require 'dbconnect.php';
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>The SJCP - Announcement</title>
+    <link rel="icon" type="image/png" href="tabicon.png">
 </head>
 
 <body>
@@ -47,8 +48,8 @@ require 'dbconnect.php';
                                 <i class="fa-solid fa-circle-exclamation"></i>
                             </div>
                             <div class="headertext-box">
-                                <span>Post Announcement?</span>
-                                <p>Clients of SJCP will be able to view posted announcements in their feed.</p>
+                                <span>Discard changes?</span>
+                                <p>Discarding will not post the current announcment you are making and will not save any changes</p>
                             </div>
                             <div class="form-btnarea">
                                 <button type="button" onclick="openForm(cancel)">No</button>

@@ -21,6 +21,7 @@ $baptismDataPoints = array(
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>The SJCP - Dashboard</title>
+    <link rel="icon" type="image/png" href="tabicon.png">
     <script>
         window.onload = function() {
 
@@ -93,11 +94,14 @@ $baptismDataPoints = array(
                         <div class="appointment-card">
                             <i class="fa-solid fa-calendar-plus"></i>
                             <div>
-                                <span>New</span>
+                                <span>Pending</span>
                                 <span>
                                     <?php
-                                        $newQuery = "";
-                                    ?>0
+                                        $newQuery = "SELECT COUNT(*) FROM appointment_details WHERE appointment_status='Pending'";
+                                        $query1 = mysqli_query($conn, $newQuery);
+                                        $result1 = mysqli_fetch_row($query1);
+                                        echo $result1[0];
+                                    ?>
                                 </span>
                             </div>
                         </div>
@@ -107,7 +111,7 @@ $baptismDataPoints = array(
                                 <span>Today</span>
                                 <span>
                                     <?php
-                                        $nowQuery = "SELECT COUNT(*) FROM appointment_details WHERE date_appointed = 'date(NOW())'";
+                                        $nowQuery = "SELECT COUNT(*) FROM appointment_details WHERE date_appointed = date(NOW())";
                                         $query2 = mysqli_query($conn, $nowQuery);
                                         $result2 = mysqli_fetch_row($query2);
                                         echo $result2[0];

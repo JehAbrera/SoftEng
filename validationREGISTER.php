@@ -7,7 +7,7 @@ if (isset($_POST['submitReg'])) {
     $fname = $_POST["fname"];
     $lname = $_POST["lname"];
     $email = $_POST["email"];
-    $phone = $_POST["mobile1"] + $_POST["mobile"];
+    $phone = $_POST["mobile1"] . $_POST["mobile"];
     $pass = $_POST["password"];
     $fname = ucwords(strtolower($fname));
     $lname = ucwords(strtolower($lname));

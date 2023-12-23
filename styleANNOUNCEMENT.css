@@ -133,13 +133,17 @@ img {
     background-image: var(--grey);
     border-radius: 10px;
 }
-p {
+.para {
     text-align: justify;
-    text-indent: 1rem;
     padding: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.2);
     height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
+}
+.desc-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .main-wrapper {
     display: flex;

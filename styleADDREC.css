@@ -9,6 +9,8 @@
     --white: #F9F6EE;
     --grey: #696969;
     --bggreen: #90EE90;
+    --btnRed: #FFCCCB;
+    --btnGreen: #90EE90;
 }
 * {
     box-sizing: border-box;
@@ -31,14 +33,13 @@ body {
     min-width: 1000px;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
 }
 
 /* Nav Wrapper */
 .nav-wrapper {
     background-color: var(--white);
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,7 +84,10 @@ body {
 /* Body Wrapper */
 .main-content {
     background-color: var(--white);
-    flex: 3.5;
     overflow: hidden auto;
-    padding: 2rem 5%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1%;
 }
+
+/* Main Content */

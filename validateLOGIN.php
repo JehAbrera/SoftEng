@@ -12,18 +12,20 @@ if (!isset($_POST['user_email'])) {
     header('Location: page_HOME.php');
 } else {
     $user_email = strtolower($_POST['user_email']);
-    $query = "SELECT * FROM login_userinfo WHERE email=$user_email";
+    $query = "SELECT * FROM login_userinfo WHERE email='$user_email'";
     $result = mysqli_query($conn, $query);
 
-    if ($result) {
+    if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $user_pass = hash('sha256', $_POST['user_pass']);
 
-        if ($user_pass != $row['password']) {
+        if ($user_pass != $row['user_password']) {
             $_SESSION['isValidPass'] = false;
             header('Location: page_HOME.php');
         } else {
             $_SESSION['isLoggedIn'] = true;
+            $_SESSION['login_email'] = $user_email;
+            header('Location: page_HOME.php');
         }
     } else {
         $_SESSION['isValidEmail'] = false;

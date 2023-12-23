@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+//unset($_SESSION['isLoggedIn']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +14,7 @@ session_start();
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>SJCP HOME</title>
+    <link rel="icon" type="image/png" href="tabicon.png">
 </head>
 
 <body>
@@ -30,22 +34,22 @@ session_start();
                     } else if (!isset($_SESSION['isValidPass'])) {
                     } else if ($_SESSION['isValidPass'] == false) {
                         echo '<span class="error-dialogue"> Your password is incorrect! Please try again.</span>';
-                    }
+                    } 
                     ?>
                 </div>
                 <div class="loginform-wrapper">
                     <form action="validateLOGIN.php" method="post">
                         <span>Email:</span>
                         <div class="form-input">
-                            <input type="text" name="" id="" required>
+                            <input type="text" name="user_email" id="" required>
                         </div>
                         <span>Password: </span>
                         <div class="form-input">
-                            <input type="password" name="" id="" required>
+                            <input type="password" name="user_pass" id="" required>
                             <i class="fa-solid fa-eye" id="pass-icon"></i>
                         </div>
                         <span><a href="" target="_self" rel="noopener noreferrer">Forgot Password?</a></span>
-                        <button type="submit">Log-in</button>
+                        <button type="submit" name="submit">Log-in</button>
                         <span>Don't have an account yet? <a href="" target="_self" rel="noopener noreferrer">Register Now</a></span>
                     </form>
                 </div>
@@ -81,12 +85,14 @@ session_start();
                         <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
                                                     echo 'onclick="openLogin()"';
                                                 } else {
+                                                    echo 'onclick="location.href=page_PROFILE.php"';
                                                 } ?>>
                             View Appointment
                         </div>
                         <div class="nav-item" <?php if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
                                                     echo 'onclick="openLogin()"';
                                                 } else {
+                                                    echo 'onclick="location.href=page_PROFILE.php"';
                                                 } ?>>
                             Search Record
                         </div>
@@ -103,14 +109,15 @@ session_start();
                 <?php
                 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
                     echo '<div class="nav-item" onclick="openLogin()">Login</div>';
-                } else if ($_SESSION['isLoggedIn'] == true) {
-                    echo '<div class="nav-item dropdown">' ?>
-                    <span class="dp-title">Profile <i class="fa-solid fa-angle-down"></i></span>
-                    <div class="dropdown-content">
-                        <div class="nav-item">Profile</div>
-                        <div class="nav-item">Log-Out</div>
+                } else if ($_SESSION['isLoggedIn'] == true) { ?>
+                    <div class="nav-item dropdown">
+                        <span class="dp-title">Profile <i class="fa-solid fa-angle-down"></i></span>
+                        <div class="dropdown-content">
+                            <div class="nav-item" onclick="location.href='page_PROFILE.php'" ;>Profile</div>
+                            <div class="nav-item">Log-Out</div>
+                        </div>
                     </div>
-                <?php '</div>';
+                <?php
                 }
                 ?>
             </div>
@@ -311,6 +318,10 @@ session_start();
             </div>
         </footer>
     </div>
+    <?php
+    /*unset($_SESSION['isValidEmail']);
+    unset($_SESSION['isValidPass']);*/
+    ?>
     <script src="jsHOME.js"></script>
 </body>
 

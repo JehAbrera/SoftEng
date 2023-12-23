@@ -14,6 +14,7 @@ require 'dbconnect.php';
     <!-- Font Awesome Icon Script -->
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>The SJCP - Announcement</title>
+    <link rel="icon" type="image/png" href="tabicon.png">
 </head>
 
 <body>
@@ -53,8 +54,8 @@ require 'dbconnect.php';
                                 <div class="title-heading">Date: <?php echo $row['event_date'] ?></div>
                             </div>
                             <div class="desc-box">
-                                <strong>Description</strong>: <br>
-                                <p><?php echo $row['description'] ?></p>
+                                <strong>Description:</strong> <br>
+                                <div class="para"><?php echo $row['description'] ?></div>
                             </div>
                         </div>
                         <div class="option-wrapper">
