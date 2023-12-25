@@ -14,6 +14,7 @@ require 'dbconnect.php';
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <script src="jsAppointment.js"></script>
     <title>View Appointments</title>
+	<link rel="icon" type="image/png" href="tabicon.png">
 </head>
 
 <body>
@@ -90,13 +91,14 @@ require 'dbconnect.php';
                                         $id = $row[0];
                                         $forReason = "again".$id;
                                         $idseemore = "try".$id;
+                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
                                                     <div>
                                                         <p>Appointment Number: <?php echo $row[0] ?></p>
                                                         <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $row[4] ?></p>
+                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                         <?php echo $forReason?>
                                                         <?php echo $idseemore?>
@@ -380,13 +382,14 @@ require 'dbconnect.php';
                                         while($row = mysqli_fetch_array($result)) {
                                             $id = $row[0];
                                             $idseemore = "try".$id;
+                                            $fixedtime = date("h:i:s A", strtotime($row[4]));
                                             ?>
                                                 <div class="indiv-cont">
                                                     <div class="top-cont">
                                                         <div>
                                                             <p>Appointment Number: <?php echo $row[0] ?></p>
                                                             <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                            <p>Time Appointed: <?php echo $row[4] ?></p>
+                                                            <p>Time Appointed: <?php echo $fixedtime ?></p>
                                                             <p>Appointment Type: <?php echo $row[8] ?></p>
                                                         </div>
                                                         <div class="button-cont">
@@ -667,13 +670,14 @@ require 'dbconnect.php';
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
                                         $idseemore = "try".$id;
+                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
                                                     <div>
                                                         <p>Appointment Number: <?php echo $row[0] ?></p>
                                                         <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $row[4] ?></p>
+                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                     </div>
                                                     <div class="button-cont">
@@ -954,13 +958,14 @@ require 'dbconnect.php';
                                         while($row = mysqli_fetch_array($result)) {
                                             $id = $row[0];
                                             $idseemore = "try".$id;
+                                            $fixedtime = date("h:i:s A", strtotime($row[4]));
                                             ?>
                                                 <div class="indiv-cont">
                                                     <div class="top-cont">
                                                         <div>
                                                             <p>Appointment Number: <?php echo $row[0] ?></p>
                                                             <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                            <p>Time Appointed: <?php echo $row[4] ?></p>
+                                                            <p>Time Appointed: <?php echo $fixedtime ?></p>
                                                             <p>Appointment Type: <?php echo $row[8] ?></p>
                                                         </div>
                                                     </div>
@@ -1169,13 +1174,14 @@ require 'dbconnect.php';
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
                                         $idseemore = "try".$id;
+                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
                                                     <div>
                                                         <p>Appointment Number: <?php echo $row[0] ?></p>
                                                         <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $row[4] ?></p>
+                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                     </div>
                                                     <div class="button-cont">
@@ -1191,7 +1197,7 @@ require 'dbconnect.php';
                                                                     </div>
                                                                     <div class="form-btnarea">
                                                                         <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="sure">Yes</button>
+                                                                        <button class="buttonresched" type="Submit" name="reschedYes">Yes</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1403,13 +1409,14 @@ require 'dbconnect.php';
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
                                         $idseemore = "try".$id;
+                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
                                         ?>
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
                                                     <div>
                                                         <p>Appointment Number: <?php echo $row[0] ?></p>
                                                         <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $row[4] ?></p>
+                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
                                                         <p>Appointment Type: <?php echo $row[8] ?></p>
                                                     </div>
                                                     <div class="button-cont">
@@ -1423,9 +1430,10 @@ require 'dbconnect.php';
                                                                     <div class="headertext-box">
                                                                         <h2> Are you sure you want to Reschedule this appointment? </h2>
                                                                     </div>
+																	<input type="hidden" name="id" value=<?php echo $id; ?>>
                                                                     <div class="form-btnarea">
                                                                         <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="sure">Yes</button>
+                                                                        <button class="buttonresched" type="Submit" name="reschedYes">Yes</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

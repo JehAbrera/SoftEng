@@ -2,35 +2,6 @@
 session_start();
 require 'dbconnect.php';
 $_SESSION['isLoggedIn'] = true;
-
-$id = $_POST['id'];
-
-// Query the database for form data
-$sql = "SELECT * FROM appointment_details WHERE appointment_id='$id'";
-$result = $conn->query($sql);
-$row = mysqli_fetch_array($result);
-
-$app_type = $row["appointment_type"];
-
-$sqlWed = "SELECT * FROM wedding_details WHERE foreign_id='$id'";
-$resultWed = $conn->query($sqlWed);
-$rowWed = mysqli_fetch_array($resultWed);
-
-$sqlBap = "SELECT * FROM baptism_details WHERE foreign_id='$id'";
-$resultBap = $conn->query($sqlBap);
-$rowBap = mysqli_fetch_array($resultBap);
-
-$sqlFun = "SELECT * FROM funeral_details WHERE foreign_id='$id'";
-$resultFun = $conn->query($sqlFun);
-$rowFun = mysqli_fetch_array($resultFun);
-
-$sqlDoc = "SELECT * FROM document_request_details WHERE foreign_id='$id'";
-$resultDoc = $conn->query($sqlDoc);
-$rowDoc = mysqli_fetch_array($resultDoc);
-
-$sqlMint = "SELECT * FROM mass_intention_details WHERE foreign_id='$id'";
-$resultMint = $conn->query($sqlMint);
-$rowMint = mysqli_fetch_array($resultMint);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,120 +78,105 @@ $rowMint = mysqli_fetch_array($resultMint);
                     <div class="events-preference">
 				
 						<!-- SELECT EVENT AND DATE FORM -->
-						<form action="page_RESCHEDULE.php" method="post">
+						<form action="page_LANDING.php" method="post">
 							<div class="select-cont">
 								<?php
-									echo $id;
-									echo $app_type;
-									$evVal = "hotdog";
-									if ($app_type == "Wedding" || $app_type == "Baptism" || $app_type == "Funeral Mass/Blessing") {
-										$evVal = "Special Event";
-									} else if ($app_type == 'Mass Intention') {
-										$evVal = "Mass Intention";
-									} else if($app_type == "House Blessing" || $app_type == "Car Blessing" || $app_type == "Motorcycle Blessing" || $app_type == "Store Blessing") {
-										$evVal = "Blessing";
-									} else {
-										$evVal = "Document Request";
-									}
-									if(!isset($_POST["submitlog"])){
-										?> <div class="events-select-container" id="events-select-container">
+								$id = $_SESSION["id"];
+									if(!isset($_SESSION['abcde'])) {
+											// Query the database for form data
+											$sql = "SELECT * FROM appointment_details WHERE appointment_id='$id'";
+											$result = $conn->query($sql);
+											$row = mysqli_fetch_assoc($result);
+											$app_type = $row["appointment_type"];
+											
+											$evVal = "hotdog";
+											if ($app_type == "Wedding" || $app_type == "Baptism" || $app_type == "Funeral Mass/Blessing") {
+												$evVal = "Special Event";
+											} else if ($app_type == "Mass Intention") {
+												$evVal = "Mass Intention";
+											} else if($app_type == "House Blessing" || $app_type == "Car Blessing" || $app_type == "Motorcycle Blessing" || $app_type == "Store Blessing") {
+												$evVal = "Blessing";
+											} else {
+												$evVal = "Document Request";
+											}?> 
+									        <div class="events-select-container" id="events-select-container">
 												<label for="ddEvent"><strong> Select to Appoint: </strong></label>
 												<input type="text" id="ddEvent" name="ddEvent" value="<?php echo $evVal;?>" readonly>
 											</div>
 											<?php
-									}
-									if ($evVal == "Special Event") {
-										$specVal = $app_type;
-										$showSpec = "display:block";
-										$reqThis = " required";
-									}
-									if ($evVal == "Document Request") {
-										$docVal = $app_type;
-										$showDoc = "display:block";
-										$otherCal = "display:block";
-										$reqThis = " required";
-									}
-									if ($evVal != "Document Request" && $evVal == "Special Event") {
-										$otherCal = "display:block";
-										$reqThis = " required";
-									}
-									if ($evVal != "Special Event"){
-										$showSpec = "display:none";
-									}
-									if ($evVal != "Document Request"){
-										$showDoc = "display:none";
-										$otherCal = "display:none";
-									}
-									if ($app_type == "Wedding"){
-										$wedCal = "display:block";
-										$reqThis = " required";
-									}
-									if ($app_type == "Baptism"){
-										$bapCal = "display:block";
-										$reqThis = " required";
-									}
-									if ($app_type == "Funeral Mass/Blessing"){
-										$funCal = "display:block";
-										$reqThis = " required";
-									}
-									if ($app_type != "Wedding"){
-										$wedCal = "display:none";
-									}
-									if ($app_type != "Baptism"){
-										$bapCal = "display:none";
-									}
-									if ($app_type != "Funeral Mass/Blessing"){
-										$funCal = "display:none";
-									}
+										if ($evVal == "Special Event") {
+											$specVal = $app_type; ?>
+											<div class="events-select-container" id="specificSpecial">
+												<label for="ddSpecialEvent"><strong>Select Special Event:</strong></label>
+												<input type="text" id="ddSpecialEvent" name="Event" value="<?php echo $specVal; ?>" readonly>
+											</div>
+											<?php
+											if ($app_type == "Wedding"){
+											//display wedding calendar 
+											?>
+												<div class="events-select-container" id="chooseCalWed" style="<?php echo $wedCal; ?>">
+													<div class="cal-container">
+														<label for="calDateWed"><strong>Select WedDate:</strong></label>
+														<input type="date" id="calDateWed" name="cal" title="You must schedule your wedding 1-6 months in advance." min="<?= date('Y-m-d', strtotime('+1 month')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required>
+													</div>
+												</div>
+											<?php
+											}
+											if ($app_type == "Baptism"){
+											//display baptism calendar
+											?>
+												<div class="events-select-container" id="chooseCalBap">
+													<div class="cal-container">
+														<label for="calDateBap"><strong>Select Date:</strong></label>
+														<input type="date" id="calDateBap" name="calDateBap" title="You must schedule your baptism at least 1 week before the event." min="<?= date('Y-m-d', strtotime('+1 week')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required>
+													</div>
+												</div>
+											<?php
+											}
+											if ($app_type == "Funeral Mass/Blessing"){
+											//display funeral calendar
+											?>
+												<div class="events-select-container" id="chooseCalIntBless">
+													<div class="cal-container">
+														<label for="calDateIntBless"><strong>Select IBDate:</strong></label>
+														<input type="date" id="calDateIntBless" name="cal" min="<//?= date('Y-m-d', strtotime('+1 day')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required >
+													</div>
+												</div>
+											<?php
+											}
+										}
+										if ($evVal == "Document Request") {
+											 ?>
+											<div class="events-select-container" id="specificDocument">
+													<label for="ddDocument"><strong>Select Document </strong></label>
+													<input type="text" id="ddDocument" name="Event" value="<?php echo $app_type;?>" readonly>
+											</div>
+											<?php
+										} 
+										if($evVal != "Special Event"){
+											?>
+											<div class="events-select-container" id="chooseCalIntBless">
+												<div class="cal-container">
+													<label for="calDateIntBless"><strong>Select IBDate:</strong></label>
+													<input type="date" id="calDateIntBless" name="cal" min="<//?= date('Y-m-d', strtotime('+1 day')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" required>
+												</div>
+											</div>
+											<?php
+										}
+										?>
+										<div class="events-select-container" id="submitButton">
+											<button type="submit" value="submit" name="submitlog" id="submitlog">View Available Time</button>
+										</div>
+									<?php 
+									} 
 									?>
-									<div class="events-select-container" id="specificSpecial" style="<?php echo $showSpec; ?>">
-										<label for="ddSpecialEvent"><strong>Select Special Event:</strong></label>
-										<input type="text" id="ddSpecialEvent" name="Event" value="<?php echo $specVal; ?>" <?php echo '$reqThis'; ?> readonly>
-									</div>
-									<div class="events-select-container" id="specificDocument" style="<?php echo $showDoc; ?>">
-										<label for="ddDocument"><strong>Select Document </strong></label>
-										<input type="text" id="ddDocument" name="Event" value="<?php echo $docVal;?>" <?php echo '$reqThis'; ?> readonly>
-									</div>
-									<div class="events-select-container" id="chooseCalWed" style="<?php echo $wedCal; ?>">
-										<div class="cal-container">
-											<label for="calDateWed"><strong>Select WedDate:</strong></label>
-											<input type="date" id="calDateWed" name="calDateWed" title="You must schedule your wedding 1-6 months in advance." min="<?= date('Y-m-d', strtotime('+1 month')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" <?php echo '$reqThis'; ?> required>
-										</div>
-									</div>
-									<div class="events-select-container" id="chooseCalBap" style="<?php echo $bapCal; ?>">
-										<div class="cal-container">
-											<label for="calDateBap"><strong>Select BapDate:</strong></label>
-											<input type="date" id="calDateBap" name="calDateBap" title="You must schedule your baptism at least 1 week before the event." min="<?= date('Y-m-d', strtotime('+1 week')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" <?php echo '$reqThis'; ?> required>
-										</div>
-									</div>
-									<div class="events-select-container" id="chooseCalFuner" style="<?php echo $funCal; ?>">
-										<div class="cal-container">
-											<label for="calDateFuner"><strong>Select FunDate:</strong></label>
-											<input type="date" id="calDateFuner" name="calDateFuner" title="You must schedule the funeral mass or blessing at least three days before the event." min="<?= date('Y-m-d', strtotime('+3 days')); ?>" max="<?= date('Y-m-d', strtotime('+6 weeks')); ?>" <?php echo '$reqThis'; ?> required>
-										</div>
-									</div>
-									<div class="events-select-container" id="chooseCalIntBless" style="<?php echo $otherCal; ?>">
-										<div class="cal-container">
-											<label for="calDateIntBless"><strong>Select IBDate:</strong></label>
-											<input type="date" id="calDateIntBless" name="calDateIntBless" min="<?= date('Y-m-d', strtotime('+1 day')); ?>" max="<?= date('Y-m-d', strtotime('+6 months')); ?>" <?php echo '$reqThis'; ?> required>
-										</div>
-									</div>
-									<div class="events-select-container" id="submitButton">
-										<button type="submit" value="submit" name="submitlog" id="submitlog">View Available Time</button>
-									</div>
 							</div>
 						</form>
 						
-						<!--
-						so uhh idea lang rn is ibalik sa landing page kaso eon di ako magaling mag session_cache_expire
-						
-						current problem is hindi gumagana si submitlog na button
-						-->
-						
 						<?php
-							if(isset($_POST["submitlog"])){
+							if(isset($_SESSION['abcde'])){
 								?>
-								<div class="back-icon-cont" onclick="location.href='page_RESCHEDULE.php'">
+								<div class="back-icon-cont" onclick="location.href = 'page_RESCHEDULE.php'">
 									<i class="fa-solid fa-arrow-left"> Back </i>
 								</div>
 								<?php
@@ -230,31 +186,21 @@ $rowMint = mysqli_fetch_array($resultMint);
                 </div>
 				<div class="form-container">
 					<?php
-						if(isset($_POST["submitlog"])){
-							$type = $_POST["ddEvent"];
-							if($type == "Special Event") {
-								$event = $_POST["Event"];
-								if ($event == "Wedding") {
-									$date = $_POST["calDateWed"];
-								}
-								else if ($event == "Baptism") {
-									$date = $_POST["calDateBap"];
-								}
-								else {
-									$date = $_POST["calDateFuner"];
-								}
-							}
-							else {
-								$date = $_POST["calDateIntBless"];
-							}
+						if(isset($_SESSION['abcde'])){
+							unset($_SESSION['abcde']);
+							$type = $_SESSION['type'];
+							$event = $_SESSION['event'];
+							$date = $_SESSION['date'];
+							//$id = $_SESSION['id'];
+							
+							
 							$day = date('l', strtotime($date));
-							$_SESSION['type'] = $type;
-							$_SESSION['date'] = $date;
 							//change date format from yyyy-mm-dd to month day, year
 							$formated_date = date('F d, Y', strtotime($date));
+							
 							if($type != "Mass Intention" && $type != "Blessing"){
-								$event = $_POST["Event"];
-								$_SESSION['event'] = $event;
+								//$event = $_POST["Event"];
+								//$_SESSION['event'] = $event;
 								?> 
 								
 								<div class="Event-grid-cont">
@@ -264,7 +210,15 @@ $rowMint = mysqli_fetch_array($resultMint);
 								<?php	
 								// WEDDING FORM
 								if($event == "Wedding"){
-									
+									echo $id;
+									$sqlWed = "SELECT * FROM wedding_details WHERE foreign_id='$id'";
+									$resultWed = $conn->query($sqlWed);
+									if($resultWed->num_rows > 0){
+										$rowWed = mysqli_fetch_assoc($resultWed);
+									} else {
+										echo "No available data!";
+									}
+
 									$weddingst = array("09:00:00", "10:30:00", "14:00:00", "15:30:00");
 									$weddinget = array("10:15:00", "11:45:00", "15:15:00", "16:45:00");
 									//query for retrieving appointments in the same day
@@ -338,6 +292,11 @@ $rowMint = mysqli_fetch_array($resultMint);
 														echo " selected";
 													}
 												}
+												
+												$gNumb = $rowWed["groom_conNum"];
+												$gNumb = substr($gNumb, 3);
+												$bNumb = $rowWed["bride_conNum"];
+												$bNumb = substr($bNumb, 3);
 											?> 
 										</div>
 										
@@ -382,17 +341,11 @@ $rowMint = mysqli_fetch_array($resultMint);
 																</div>
 																<div class="input-box">
 																	<label for="groom_middleName"><strong>Middle Name </strong></label>
-																	<input type="text" id="groom_middleName" name="groom_middleName" value="<?php echo $rowWed["groom_midName"]; ?>" placeholder="Tomas" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
+																	<input type="text" id="groom_middleName" name="groom_middleName" value="<?php echo $rowWed["groom_midName"]; ?>" placeholder="Tomas" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 																</div>
 															</div>
 														</div>
 														<div class="form-grid-cont">
-															<?php
-																$gNumb = $rowWed["groom_conNum"];
-																$gNumb = substr($gNumb, 3);
-																$bNumb = $rowWed["bride_conNum"];
-																$bNumb = substr($bNumb, 3);
-															?>
 															<div class="input-box">
 																<label for="groom_contactNum"><strong>Contact Number* </strong></label>
 																<div class="contactnum">
@@ -598,7 +551,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 												</div>
 												<div class="form-btnarea">
 													<button type="button" onclick="openForm(submitForm)">No</button>
-													<button type="Submit" name="submitform">Yes</button>
+													<button type="Submit" name="updateform">Yes</button>
 												</div>
 											</div>
 										</div>
@@ -609,8 +562,12 @@ $rowMint = mysqli_fetch_array($resultMint);
 								}
 								
 								// BAPTISM FORM
-								else if($event == "Baptism"){ ?> 
-										<?php
+								else if($event == "Baptism"){ 
+								 
+										$sqlBap = "SELECT * FROM baptism_details WHERE foreign_id='$id'";
+										$resultBap = $conn->query($sqlBap);
+										$rowBap = mysqli_fetch_assoc($resultBap);
+
 										$baptismst = array("09:00:00", "10:00:00", "11:00:00", "14:00:00", "15:00:00");
 										$baptismet = array("09:45:00", "10:45:00", "11:45:00", "14:45:00", "15:45:00");
 										//query for retrieving appointments in the same day
@@ -664,7 +621,9 @@ $rowMint = mysqli_fetch_array($resultMint);
 														<?php
 														$count_time++;
 													}
-											
+													
+													$contnum = $rowBap["contNum"];
+													$contnum = substr($contnum, 3);
 												?> 
 											</div>
 											<div class="req-cont">
@@ -762,7 +721,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 															<label for="contactNum"><strong>Parent/Guardian's Contact Number*</strong></label>
 															<div class="contactnum">
 																<input type="text" name ="mobile1" value="+63" id="" disabled>
-																<input type="tel" id="contactNum" name="contactNum" maxlength="10" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" placeholder="9123456789" pattern="[9]{1}[0-9]{9}" required><br>
+																<input type="tel" id="contactNum" name="contactNum" value="<?php echo $contnum; ?>" maxlength="10" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" placeholder="9123456789" pattern="[9]{1}[0-9]{9}" required><br>
 															</div>
 														</div>
 														<div class="input-box">
@@ -836,7 +795,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 													</div>
 													<div class="form-btnarea">
 														<button type="button" onclick="openForm(submitForm)">No</button>
-														<button type="Submit" name="submitform">Yes</button>
+														<button type="Submit" name="updateform">Yes</button>
 													</div>
 												</div>
 											</div>
@@ -850,6 +809,10 @@ $rowMint = mysqli_fetch_array($resultMint);
 									<form action="page_LANDING.php" method="post" enctype="multipart/form-data">
 										
 										<?php
+											$sqlFun = "SELECT * FROM funeral_details WHERE foreign_id='$id'";
+											$resultFun = $conn->query($sqlFun);
+											$rowFun = mysqli_fetch_assoc($resultFun);
+
 											$funeralst = array("08:00:00", "13:00:00");
 											
 											//query for retrieving appointments in the same day
@@ -1011,15 +974,15 @@ $rowMint = mysqli_fetch_array($resultMint);
 													<div class="form-grid-cont">
 														<div class="input-box">
 															<label for="informantLastName">Last Name* </label>
-															<input type="text" id="informantLastName" name="informantLastName" value="<?php echo $rowFun["informName"]; ?>" placeholder="San Pedro" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
+															<input type="text" id="informantLastName" name="informantLastName" value="<?php echo $rowFun["informLast"]; ?>" placeholder="San Pedro" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
 															<label for="informantFirstName">First Name* </label>
-															<input type="text" id="informantFirstName" name="informantFirstName" value="<?php echo $rowFun["informName"]; ?>" placeholder="Juana" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
+															<input type="text" id="informantFirstName" name="informantFirstName" value="<?php echo $rowFun["informFirst"]; ?>" placeholder="Juana" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
 														</div>
 														<div class="input-box">
 														<label for="informantMiddleName">Middle Name </label>
-														<input type="text" id="informantMiddleName" name="informantMiddleName" value="<?php echo $rowFun["informName"]; ?>" placeholder="Agustin" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
+														<input type="text" id="informantMiddleName" name="informantMiddleName" value="<?php echo $rowFun["informMid"]; ?>" placeholder="Agustin" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
 														</div>
 													</div>
 												</div>
@@ -1065,13 +1028,17 @@ $rowMint = mysqli_fetch_array($resultMint);
 												</div>
 												<div class="form-btnarea">
 													<button type="button" onclick="openForm(submitForm)">No</button>
-													<button type="Submit" name="submitform">Yes</button>
+													<button type="Submit" name="updateform">Yes</button>
 												</div>
 											</div>
 										</div>
 									</form>
 									<?php
 								}else if($event == "Baptismal Certificate" || $event == "Wedding Certificate" || $event == "Confirmation Certificate"){
+
+									$sqlDoc = "SELECT * FROM document_request_details WHERE foreign_id='$id'";
+									$resultDoc = $conn->query($sqlDoc);
+									$rowDoc = mysqli_fetch_assoc($resultDoc);
 									?> 
 									<div>
 										<div>
@@ -1182,7 +1149,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 													</div>
 													<div class="form-btnarea">
 														<button type="button" onclick="openForm(submitForm)">No</button>
-														<button type="Submit" name="submitform">Yes</button>
+														<button type="Submit" name="updateform">Yes</button>
 													</div>
 												</div>
 											</div>
@@ -1191,6 +1158,9 @@ $rowMint = mysqli_fetch_array($resultMint);
 									
 									<?php
 								} else if($event == "Good Moral Certificate"){
+									$sqlDoc = "SELECT * FROM document_request_details WHERE foreign_id='$id'";
+									$resultDoc = $conn->query($sqlDoc);
+									$rowDoc = mysqli_fetch_assoc($resultDoc);
 								?>
 									<div>
 										<div>
@@ -1295,7 +1265,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 													</div>
 													<div class="form-btnarea">
 														<button type="button" onclick="openForm(submitForm)">No</button>
-														<button type="Submit" name="submitform">Yes</button>
+														<button type="Submit" name="updateform">Yes</button>
 													</div>
 												</div>
 											</div>
@@ -1304,6 +1274,9 @@ $rowMint = mysqli_fetch_array($resultMint);
 									
 								<?php
 								} else if($event == "Permit and No Record"){
+									$sqlDoc = "SELECT * FROM document_request_details WHERE foreign_id='$id'";
+									$resultDoc = $conn->query($sqlDoc);
+									$rowDoc = mysqli_fetch_assoc($resultDoc);
 									?> 
 									<div>
 										<div>
@@ -1347,13 +1320,13 @@ $rowMint = mysqli_fetch_array($resultMint);
 													<div class="grid-cont">
 														<div class="input-box">
 															<label for="dob"><strong>Birth Date*</strong></label>
-															<input type="date" id="dob" name="dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-1 month')); ?>" required> <br>
+															<input type="date" id="dob" name="dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-1 month')); ?>" value="<?php echo $rowDoc["dob"]; ?>"required> <br>
 														</div>
 														<div class="input-box">
 															<label for="contactNum"><strong>Contact Number*</strong></label>
 															<div class="contactnum">
 																<input type="text" name ="mobile1" value="+63" id="" disabled>
-																<input type="tel" id="contactNum" name="ContactNum" maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
+																<input type="tel" id="contactNum" name="ContactNum" value="<?php echo $rowDoc["contactNum"]; ?>"  maxlength="10" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="[9]{1}[0-9]{9}" required><br>
 															</div>
 														</div>
 														<div class="input-box">
@@ -1402,7 +1375,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 													</div>
 													<div class="form-btnarea">
 														<button type="button" onclick="openForm(submitForm)">No</button>
-														<button type="Submit" name="submitform">Yes</button>
+														<button type="Submit" name="updateform">Yes</button>
 													</div>
 												</div>
 											</div>
@@ -1415,6 +1388,9 @@ $rowMint = mysqli_fetch_array($resultMint);
 								}
 							}
 							else if($type == "Mass Intention"){ 
+								$sqlMint = "SELECT * FROM mass_intention_details WHERE foreign_id='$id'";
+								$resultMint = $conn->query($sqlMint);
+								$rowMint = mysqli_fetch_assoc($resultMint);
 								?>
 								<div class="Event-grid-cont">
 									<div><h1> Event: <?php echo $type?></h1></div>
@@ -1529,7 +1505,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 											</div>
 											<div class="form-btnarea">
 												<button type="button" onclick="openForm(submitForm)">No</button>
-												<button type="Submit" name="submitform">Yes</button>
+												<button type="Submit" name="updateform">Yes</button>
 											</div>
 										</div>
 									</div>
@@ -1646,7 +1622,7 @@ $rowMint = mysqli_fetch_array($resultMint);
 											</div>
 											<div class="form-btnarea">
 												<button type="button" onclick="openForm(submitForm)">No</button>
-												<button type="Submit" name="submitform">Yes</button>
+												<button type="Submit" name="updateform">Yes</button>
 											</div>
 										</div>
 									</div>
