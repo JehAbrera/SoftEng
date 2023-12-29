@@ -11,6 +11,7 @@
     --bggreen: #90EE90;
     --btnRed: #FFCCCB;
     --btnGreen: #90EE90;
+    --lightergrey: #cccccc;
 }
 * {
     box-sizing: border-box;
@@ -30,100 +31,107 @@ body {
 /* Content Wrapper */
 .content-wrapper {
     width: 100%;
-    min-width: 1000px;
+    min-width: 1300px;
     height: 100vh;
     overflow: hidden;
-    display: grid;
-    grid-template-columns: 1fr 4fr;
+    display: flex;
 }
 
 /* Nav Wrapper */
 .nav-wrapper {
-    background-color: var(--white);
+    overflow: hidden;
+    z-index: 10;
+    background-color: var(--brown);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 3rem 0;
+    padding: 0rem;
     gap: 3rem;
-    border-right: 2px solid var(--black);
+    width: 0px;
+    transition: 0.1s ease-in-out;
+    position: relative;
+}
+.nav-wrapper * {
+    color: var(--white);
 }
 .icon-wrapper {
-    font-size: clamp(1.25rem, 0.7143rem + 1.7143vw, 2rem);
+    font-size: clamp(0.8rem, 0.5143rem + 0.9143vw, 1.2rem);
     font-weight: 900;
+
 }
 .nav-items {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    width: 100%;
 }
-.nav-items > button {
-    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
+.nav-items > div {
+    padding: 1rem 0.5rem;
     cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    border: unset;
-    font-weight: 600;
-    box-shadow: 0 2px 10px var(--grey);
-    transition: 200ms ease-in;
 }
-.nav-items > button:not(.active-btn) {
-    background-color: var(--pink);
-}
-/* Active Button */
+/* Active Div */
 .active-btn {
-    background-color: var(--brown);
+    background-color: rgba(255, 255, 255, 0.3);
     color: var(--white);
+    border-radius: 5px;
 }
-/* Button Hover */
-.nav-items > button:not(.active-btn):hover {
-    background-color: var(--brown);
-    color: var(--white);
+/* Div Hover */
+.nav-items > div:hover {
+    background-color: rgba(255, 255, 255, 0.3);
 }
+
 
 
 /* Body Wrapper */
 .main-content {
     background-color: var(--white);
+    width: 100%;
     overflow: hidden auto;
     display: flex;
     flex-direction: column;
+}
+.main-content > *:not(.record-heading) {
     padding: 1rem 1%;
 }
 
 /* Main Content */
 .record-heading {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 7vh;
+    background-color: var(--brown);
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 1rem 1rem;
+}
+.internal-heading, .internal-heading * {
+    font-size: 1.3rem;
+    color: var(--white);
 }
 .record-filter {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1%;
-    margin-bottom: 4vh;
+    margin-left: 3rem;
+    display: flex;
+    gap: 1rem;
+    color: var(--white);
 }
 .record-filter > button {
-    padding: 0.5rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    background-color: var(--pink);
+    font-size: 0.8rem;
+    background-color: var(--brown);
     border: none;
-    outline: 1px solid var(--black);
     cursor: pointer;
     transition: 0.4s ease-in-out;
-    border-radius: 10px;
+    color: var(--white);
 }
 .record-filter > button:hover {
-    background-color: var(--brown);
     color: var(--white);
+    text-decoration: underline;
 }
 .search-filter {
     display: flex;
     justify-content: space-between;
 }
 .search-filter input, .search-filter select {
-    padding: 0.5rem;
+    padding: 0 0.5rem;
     font-size: 1rem;
 }
 .record-view {
@@ -136,72 +144,76 @@ body {
     margin: 3rem 0 1rem;
     padding: 0 1rem;
 }
+.close-nav {
+    position: absolute;
+    top: 1rem;
+    right: 2%;
+    font-size: 1.5rem;
+}
 
 /* Table */
 table {
     width: 100%;
     table-layout: fixed;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--white);
 }
 th, td {
-    padding: 0.5rem 0;
-    text-align: center;
+    padding: 0.5rem;
 }
 th {
-    background-color: var(--bggreen);
+    background-color: gainsboro;
+    color: var(--black);
+    text-align: center;
+}
+tr {
+    font-size: 0.8rem;
 }
 table, th, td {
-    border: 1px solid var(--black);
+    border: 0;
     border-collapse: collapse;
 }
+tr:nth-child(odd) {
+    background-color: #e8e8e8;
+}
 tr:hover {
-    background-color: var(--btnRed);
+    background-color: gainsboro;
 }
 .action-btn {
     display: flex;
-    padding: 0 0.5rem;
+    justify-content: space-evenly;
 }
 .action-btn > button {
-    flex: 1;
+    border: unset;
+    width: 2rem;
+    aspect-ratio: 1/1;
+    overflow: hidden;
     font-weight: 600;
     cursor: pointer;
     height: 100%;
-    padding: 0.5rem 0;
+}
+.no-record {
+    text-align: center;
 }
 
 /* Add new btn */
 .add-btn {
     position: fixed;
-    top: 1rem;
+    z-index: 10;
+    top: 2rem;
     right: 2%;
-    width: 3rem;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
+    padding: 0.5rem;
+    border-radius: 5px;
     cursor: pointer;
     border: none;
-    background-color: var(--brown);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--lightergrey);
     transition: 0.4s ease-in-out;
 }
-.add-btn > i {
-    color: var(--white);
-    font-weight: 900;
-    font-size: 1.5rem;
-}
-.add-btn:hover {
-    box-shadow: 0 2px 10px;
-    width: auto;
-    aspect-ratio: unset;
-    border-radius: unset;
-    border-radius: 25px;
-    padding: 1rem;
-    scale: 1.1;
-}
-.add-btn:hover::after {
-    animation: fade-in 0.9s ease-in-out;
-    display: flex;
-    width: 5rem;
-    background-color: var(--brown);
-    color: var(--white);
-    content: 'Add Record';
+.add-btn * {
+    color: var(--black);
 }
 
 /* Popup View */
@@ -286,39 +298,20 @@ tr:hover {
     scale: 1.1;
 }
 
-
-
-/***/
-
-@keyframes fade-in {
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-webkit-keyframes fade-in {
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-
 /* Pagination Styling */
 .pagination {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 4px;
     margin-top: 1rem;
 }
 .pagination > a {
     display: block;
-    width: 2rem;
+    font-size: 0.8rem;
+    width: 1.5rem;
     aspect-ratio: 1/1;
-    background-color: var(--btnGreen);
+    background-color: gainsboro;
     text-align: center;
     text-decoration: none;
     color: blue;

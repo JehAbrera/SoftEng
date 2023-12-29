@@ -21,28 +21,32 @@ require 'dbconnect.php';
     <div class="content-wrapper">
         <!-- Nav Wrapper -->
         <!-- Add active class on active button of current page -->
-        <div class="nav-wrapper">
+        <div class="nav-wrapper" id="sideNav">
+            <i class="fa-solid fa-angles-left close-nav" onclick="openNav()"></i>
             <div class="icon-wrapper">
                 <i class="fa-solid fa-church"></i> SJCP
             </div>
             <div class="nav-items">
-                <button>Dashboard</button>
-                <button>Add Announcement</button>
-                <button class="active-btn">Records</button>
-                <button>Appointments</button>
-                <button>Log-out</button>
+                <div><i class="fa-solid fa-chart-line"></i>&nbspDashboard</div>
+                <div><i class="fa-solid fa-newspaper"></i>&nbspAnnouncements</div>
+                <div class="active-btn"><i class="fa-solid fa-file-pen"></i>&nbspRecords</div>
+                <div><i class="fa-solid fa-calendar-check"></i>&nbspAppointments</div>
+                <div><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbspLog-out</div>
             </div>
         </div>
 
         <!-- Main Content Wrapper -->
         <div class="main-content">
-            <div class="record-heading">SJCP Records</div>
-            <form class="record-filter" action="recordHandler.php" method="post">
-                <button type="submit" name="recordSub" value="Baptism">Baptism</button>
-                <button type="submit" name="recordSub" value="Confirmation">Confirmation</button>
-                <button type="submit" name="recordSub" value="Wedding">Wedding</button>
-                <button type="submit" name="recordSub" value="Funeral">Funeral Mass</button>
-            </form>
+            <div class="record-heading">
+                <div class="internal-heading" onclick="openNav()" id="openNav"><i class="fa-solid fa-bars"></i></div>
+                <div class="internal-heading">SJCP Records</div>
+                <form class="record-filter" action="recordHandler.php" method="post">
+                    <button type="submit" name="recordSub" value="Baptism">Baptism</button>&nbsp/&nbsp
+                    <button type="submit" name="recordSub" value="Confirmation">Confirmation</button>&nbsp/&nbsp
+                    <button type="submit" name="recordSub" value="Wedding">Wedding</button>&nbsp/&nbsp
+                    <button type="submit" name="recordSub" value="Funeral">Funeral Mass</button>&nbsp/&nbsp
+                </form>
+            </div>
             <?php
             if (isset($_SESSION['recordFilter'])) {
                 $event = $_SESSION['recordFilter'];
@@ -79,7 +83,7 @@ require 'dbconnect.php';
                     </div>
                     <div class="for-search" id="forBDate">
                         <div>
-                            <?php if (isset($_SESSION['recordFilter']) && $_SESSION['recordFilter'] == 'Funeral') { ?>
+                            <?php if (isset($_SESSION['recordFilter']) && $_SESSION['recordFilter'] != 'Funeral') { ?>
                                 <span>Select Birthdate:&nbsp</span>
                             <?php } else { ?>
                                 <span>Select Date of Death:&nbsp</span>
@@ -127,9 +131,9 @@ require 'dbconnect.php';
                     // Query for Baptism
                     if ($event == 'Baptism') { ?>
                         <tr>
-                            <th>Date of Baptism</th>
-                            <th>Date of Birth</th>
-                            <th>Name</th>
+                            <th colspan="2">Date of Baptism</th>
+                            <th colspan="2">Date of Birth</th>
+                            <th colspan="2">Name</th>
                             <th>Actions</th>
                         </tr>
                         <?php
@@ -160,31 +164,31 @@ require 'dbconnect.php';
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) { ?>
                                 <tr>
-                                    <td><?php echo $row['event_date'] ?></td>
-                                    <td><?php echo $row['birthdate'] ?></td>
-                                    <td><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['event_date'])) ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['birthdate'])) ?></td>
+                                    <td colspan="2"><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
                                     <form action="fillDb.php" method="post">
                                         <?php $view = $row['baptism_id']; ?>
                                         <input type="hidden" name="eventId" value="<?php echo $view ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'">View More</button><button type="submit">Edit</button>
+                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button><button type="submit"><i class="fa-solid fa-pencil"></i></button>
                                             </div>
                                         </td>
                                     </form>
                                 </tr>
                         <?php }
                         } else {
-                            echo "<td colspan=4>No records available.</td>";
+                            echo "<td class='no-record' colspan='7'>No records available.</td>";
                         }
                         ?>
 
                         <!-- Query for Confirmation -->
                     <?php } else if ($event == 'Confirmation') { ?>
                         <tr>
-                            <th>Date of Confirmation</th>
-                            <th>Date of Birth</th>
-                            <th>Name</th>
+                            <th colspan="2">Date of Confirmation</th>
+                            <th colspan="2">Date of Birth</th>
+                            <th colspan="2">Name</th>
                             <th>Actions</th>
                         </tr>
                         <?php
@@ -215,30 +219,30 @@ require 'dbconnect.php';
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) { ?>
                                 <tr>
-                                    <td><?php echo $row['confirmation_date'] ?></td>
-                                    <td><?php echo $row['dob'] ?></td>
-                                    <td><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['confirmation_date'])) ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['dob'])) ?></td>
+                                    <td colspan="2"><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
                                     <form action="fillDb.php" method="post">
                                         <input type="hidden" name="eventId" value="<?php echo $row['confirmation_id'] ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="submit">View More</button><button type="submit">Edit</button>
+                                                <button type="submit">Details</button><button type="submit">Edit</button>
                                             </div>
                                         </td>
                                     </form>
                                 </tr>
                         <?php }
                         } else {
-                            echo "<td colspan=4>No records available.</td>";
+                            echo "<td class='no-record' colspan='7'>No records available.</td>";
                         }
                         ?>
 
                         <!-- Query for Wedding -->
                     <?php } else if ($event == 'Wedding') { ?>
                         <tr>
-                            <th>Date of Wedding</th>
-                            <th>Groom's Name</th>
-                            <th>Bride's Name</th>
+                            <th colspan="2">Date of Wedding</th>
+                            <th colspan="2">Groom's Name</th>
+                            <th colspan="2">Bride's Name</th>
                             <th>Actions</th>
                         </tr>
                         <?php
@@ -265,30 +269,30 @@ require 'dbconnect.php';
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) { ?>
                                 <tr>
-                                    <td><?php echo $row['event_date'] ?></td>
-                                    <td><?php echo $row['groom_lastName'] . ", " . $row['groom_firstName'] ?></td>
-                                    <td><?php echo $row['bride_lastName'] . ", " . $row['bride_firstName'] ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['event_date'])) ?></td>
+                                    <td colspan="2"><?php echo $row['groom_lastName'] . ", " . $row['groom_firstName'] ?></td>
+                                    <td colspan="2"><?php echo $row['bride_lastName'] . ", " . $row['bride_firstName'] ?></td>
                                     <form action="" method="post">
                                         <input type="hidden" name="eventId" value="<?php echo $row['wedding_id'] ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="submit">View More</button><button type="submit">Edit</button>
+                                                <button type="submit">Details</button><button type="submit">Edit</button>
                                             </div>
                                         </td>
                                     </form>
                                 </tr>
                         <?php }
                         } else {
-                            echo "<td colspan=4>No records available.</td>";
+                            echo "<td class='no-record' colspan='7'>No records available.</td>";
                         }
                         ?>
 
                         <!-- Query for Funeral -->
                     <?php } else if ($event == 'Funeral') { ?>
                         <tr>
-                            <th>Funeral Blessing Date</th>
-                            <th>Date of Death</th>
-                            <th>Name</th>
+                            <th colspan="2">Funeral Blessing Date</th>
+                            <th colspan="2">Date of Death</th>
+                            <th colspan="2">Name</th>
                             <th>Actions</th>
                         </tr>
                         <?php
@@ -319,21 +323,21 @@ require 'dbconnect.php';
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) { ?>
                                 <tr>
-                                    <td><?php echo $row['event_date'] ?></td>
-                                    <td><?php echo $row['date_of_death'] ?></td>
-                                    <td><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['event_date'])) ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['date_of_death'])) ?></td>
+                                    <td colspan="2"><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
                                     <form action="fillDb.php" method="post">
                                         <input type="hidden" name="eventId" value="<?php echo $row['funeral_id'] ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="submit">View More</button><button type="submit">Edit</button>
+                                                <button type="submit">Details</button><button type="submit">Edit</button>
                                             </div>
                                         </td>
                                     </form>
                                 </tr>
                         <?php }
                         } else {
-                            echo "<td colspan=4>No records available.</td>";
+                            echo "<td class='no-record' colspan='7'>No records available.</td>";
                         }
                         ?>
                     <?php } ?>
@@ -638,7 +642,7 @@ require 'dbconnect.php';
                     </div>
                 </div>
             <?php } ?>
-            <button onclick="location.href = 'add_RECORDS.php'" class="add-btn"><i class="fa-solid fa-plus"></i></button>
+            <button onclick="location.href = 'add_RECORDS.php'" class="add-btn"><i class="fa-solid fa-plus"></i>&nbsp<span>Add Record</span></button>
         </div>
     </div>
     <script src="jsRECORDS.js"></script>
