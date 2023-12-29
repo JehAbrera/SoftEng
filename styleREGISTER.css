@@ -92,13 +92,37 @@ body {
     width: min(90%, 400px);
     padding: 1rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
     box-shadow: 0 0 15px 2px var(--black);
     position: relative;
 }
 .progress-wrapper {
-    display: flex;
-    justify-content: center;
+    align-self: center;
+    width: 50%;
+    position: relative;
+}
+.progress:nth-child(1) {
+    position: absolute;
+    top: 0;
+    width: 1rem;
+    left: 0;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    z-index: 1;
+    background-color: blue;
+}
+.progress:nth-child(3) {
+    border: 1px solid var(--black);
+    width: 1rem;
+    right: 0;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    background-color: white;
 }
 .form-heading {
     width: 100%;
@@ -150,7 +174,7 @@ button {
     cursor: pointer;
     transition: 0.6s ease;
 }
-button:hover {
+button:hover:not(#clearBtn) {
     scale: 1.1;
 }
 .backbtn {
@@ -184,7 +208,7 @@ button:hover {
     box-shadow: 0 0 10px grey;
     font-weight: 600;
 }
-.button-area button:first-child, .form-btnarea button:first-child {
+.form-btnarea button:first-child {
     background-color: var(--btnRed);
     color: red;
 }
@@ -204,6 +228,17 @@ button:hover {
 }
 .contactnum input:nth-child(2) {
     flex: 8;
+}
+#clearBtn {
+    border: none;
+    color: var(--black);
+    box-shadow: none;
+    background-color: #e8e8e8;
+    transition: unset;
+}
+#clearBtn:hover {
+    color: red;
+    text-decoration: underline;
 }
 
 /* popup form */ 
@@ -262,7 +297,7 @@ button:hover {
         gap: 1rem;
     }
     .form-wrapper {
-        background: var(--white);
+        background: white;
     }
     .registration-part, .registration-part * {
         display: block;

@@ -114,7 +114,7 @@ session_start();
                         <span class="dp-title">Profile <i class="fa-solid fa-angle-down"></i></span>
                         <div class="dropdown-content">
                             <div class="nav-item" onclick="location.href='page_PROFILE.php'" ;>Profile</div>
-                            <div class="nav-item">Log-Out</div>
+                            <div class="nav-item" onclick="location.href='logoutCall.php'">Log-Out</div>
                         </div>
                     </div>
                 <?php

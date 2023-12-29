@@ -9,13 +9,9 @@ const openForm = item => {
     if (document.getElementById(item.id).style.display == "none" || document.getElementById(item.id).style.display == "") {
         document.getElementById(item.id).style.display = "flex";
 
-        submit.disabled = true;
-        clear.disabled = true;
     } else {
         document.getElementById(item.id).style.display = "none";
 
-        submit.disabled = false;
-        clear.disabled = false;
     }
 }
 
@@ -123,5 +119,15 @@ function toggle(input,icon) {
     } else {
         pass.type = "password";
         eye.className = "fa-solid fa-eye";
+    }
+}
+
+function checkReq() {
+    const password = document.getElementById('password');
+    const submitReg = document.getElementById('regSub');
+    if (password.value.length >= 8 && password.value.match(passReq2) && password.value.match(passReq3)) {
+        submitReg.disabled = "false";
+    } else {
+        submitReg.disabled = "true";
     }
 }

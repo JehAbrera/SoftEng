@@ -43,11 +43,13 @@ session_start();
                 <span><i class="fa-solid fa-church"></i> User Registration</span>
             </div>
             <div class="form-wrapper">
-                <button class="backbtn">
+                <button class="backbtn" onclick="location.href = 'page_HOME.php'">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
                 <div class="progress-wrapper">
-                    progress here
+                    <div class="progress"></div>
+                    <hr>
+                    <div class="progress"></div>
                 </div>
                 <div class="form-heading">
                     <span>Account Information</span>
@@ -107,8 +109,8 @@ session_start();
                             </div>
                         </div>
                         <div class="button-area">
-                            <button type="button" onclick="openForm(clearForm)" id="clear">Clear</button>
-                            <button type="button" onclick="openForm(submitForm)" id="submit">Submit</button>
+                            <button type="button" id="clearBtn" onclick="openForm(clearForm)" id="clear">Clear</button>
+                            <button type="button" onclick="openForm(submitForm), checkReq()" id="submit">Submit</button>
                         </div>
                         <div id="clearForm">
                             <div class="popupForm">
@@ -130,7 +132,7 @@ session_start();
                                 </div>
                                 <div class="form-btnarea">
                                     <button type="button" onclick="openForm(submitForm)">No</button>
-                                    <button type="submit" name="submitReg" value="submit">Yes</button>
+                                    <button type="submit" id="regSub" name="submitReg" value="submit">Yes</button>
                                 </div>
                             </div>
                         </div>

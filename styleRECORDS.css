@@ -231,7 +231,7 @@ tr:hover {
 }
 .view-card {
     background-color: var(--white);
-    max-height: 100vh;
+    max-height: 90vh;
     overflow-y: scroll;
     border-radius: 20px;
     height: auto;
@@ -262,7 +262,6 @@ tr:hover {
     font-weight: 600;
 }
 .inner-view-heading1 > span, .inner-view-heading2 > span {
-    background-color: rgba(0, 0, 0, 0.2);
 }
 .inner-view-content1, .inner-view-content2 {
     margin-bottom: 1rem;

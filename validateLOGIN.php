@@ -25,6 +25,7 @@ if (!isset($_POST['user_email'])) {
         } else {
             $_SESSION['isLoggedIn'] = true;
             $_SESSION['login_email'] = $user_email;
+            $_SESSION['access'] = $row['userType'];
             header('Location: page_HOME.php');
         }
     } else {

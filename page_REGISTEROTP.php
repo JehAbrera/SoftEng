@@ -33,11 +33,13 @@ session_start();
                 <span><i class="fa-solid fa-church"></i> Finish Registration</span>
             </div>
             <div class="otp-card">
-                <button class="backbtn">
+                <button class="backbtn" onclick="location.href='page_REGISTER.php'">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
                 <div class="progress-wrapper">
-                    progress here
+                    <div class="progress"></div>
+                    <hr>
+                    <div class="progress"></div>
                 </div>
                 <div class="form-heading">
                     <span>Verify Account</span>
@@ -45,7 +47,8 @@ session_start();
                 <div class="info-content">
                     <p style="text-align: center;">
                         Please enter the verification code that was sent to
-                        your email <strong><?php //echo $_SESSION['email'] ?></strong>. The code is
+                        your email <strong><?php //echo $_SESSION['email'] 
+                                            ?></strong>. The code is
                         valid for 30 minutes.
                     </p>
                 </div>
@@ -62,13 +65,13 @@ session_start();
                     </div>
                     <div class="option-wrapper">
                         <button type="submit" name="submitOTP">Submit</button>
-                        </form>
-                        <form action="sendOTP.php" method="post">
-                            <span id="resend"><input type="submit" name="submit" value="Resend OTP"></span>
-                        </form>
-                    </div>
+                </form>
+                <form action="sendOTP.php" method="post">
+                    <span id="resend"><input type="submit" name="submit" value="Resend OTP"></span>
+                </form>
             </div>
-        </section>
+    </div>
+    </section>
     </div>
     <script>
         const resend = document.getElementById('resend');
