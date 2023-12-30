@@ -1,0 +1,272 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #696969;
+    --bggreen: #90EE90;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Content Styling */
+/* Content Wrapper */
+.content-wrapper {
+    width: 100%;
+    min-width: 1000px;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+/* Nav Wrapper */
+.nav-wrapper {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 0;
+    gap: 3rem;
+    border-right: 2px solid var(--black);
+}
+.icon-wrapper {
+    font-size: clamp(1.25rem, 0.7143rem + 1.7143vw, 2rem);
+    font-weight: 900;
+}
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.nav-items > button {
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: unset;
+    font-weight: 600;
+    box-shadow: 0 2px 10px var(--grey);
+    transition: 200ms ease-in;
+}
+.nav-items > button:not(.active-btn) {
+    background-color: var(--pink);
+}
+/* Active Button */
+.active-btn {
+    background-color: var(--brown);
+    color: var(--white);
+}
+/* Button Hover */
+.nav-items > button:not(.active-btn):hover {
+    background-color: var(--brown);
+    color: var(--white);
+}
+
+
+/* Body Wrapper */
+.main-content-wrapper {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    height: auto;
+    overflow: auto;
+}
+
+/* Main content */
+.main-content{
+    width: 100%;
+}
+
+.dropdown{
+    width: auto;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+}
+
+.upper{
+    margin-bottom: 2rem;
+}
+
+.status-btn{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.button{
+    width: 19%;
+    font-size: clamp(0.5rem, 0.25rem + 0.8vw, 1rem);
+}
+.indiv-cont{
+    margin: 0 0 1rem 0;
+    background-color: whitesmoke;
+}
+.top-cont{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+.bot-cont{
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem;
+}
+.seemore{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background-color: rgb(232, 232, 232);
+}
+.pointer{
+    cursor: pointer;
+}
+.viewmore{
+    padding: 1rem;
+    background-color: rgb(232, 232, 232);
+}
+.display-details-bi{
+    display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+.button-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.buttoncancel{
+    background-color: rgba(255, 0, 0, 0.2);
+    color: red;
+    width: auto;
+    border-radius: 25px;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+.buttonresched{
+    background-color: rgba(0,0,255, 0.2);
+    color: blue;
+    width: auto;
+    border-radius: 25px;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.recorded{
+    background-color: var(--grey);
+    color: lightgray;
+    width: auto;
+    border-radius: 25px;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.popupCover{
+    z-index: 900;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    position: fixed;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+.popupForm {
+	width: min(90%, 500px);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    border: 1px solid var(--black);
+    box-shadow: 0 0 20px var(--black);
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: var(--white);
+    padding: 2rem;
+}
+/*for pop up*/
+.popupCover-reason{
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    position: fixed;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+.popupForm-reason {
+	width: min(90%, 700px);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    border: 1px solid var(--black);
+    box-shadow: 0 0 20px var(--black);
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: var(--white);
+
+}
+.reason-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+.form-reason{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 20px;
+
+}.headertext-box{
+    text-align: justify; /* For Edge */
+    -moz-text-align-last: center; /* For Firefox prior 58.0 */
+    text-align-last: center;
+} 
+.other{
+    display: flex;
+    flex-direction: column;
+}
+.othertext{
+    border: none;
+    border-bottom: 1px solid black;
+}
+.other-input{
+    display: none;
+}
+.form-area{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+}
+.btn-area{
+    display: flex;
+    justify-content: space-around;
+}
