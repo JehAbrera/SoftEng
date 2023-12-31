@@ -40,12 +40,12 @@ require 'dbconnect.php';
             <div class="record-heading">
                 <div class="internal-heading" onclick="openNav()" id="openNav"><i class="fa-solid fa-bars"></i></div>
                 <div class="internal-heading"><span id="sjcp"><i class="fa-solid fa-church"></i>&nbspSJCP</span> Records</div>
-                <form class="record-filter" action="recordHandler.php" method="post">
+                <!--<form class="record-filter" action="recordHandler.php" method="post">
                     <button type="submit" name="recordSub" value="Baptism">Baptism</button>&nbsp/&nbsp
                     <button type="submit" name="recordSub" value="Confirmation">Confirmation</button>&nbsp/&nbsp
                     <button type="submit" name="recordSub" value="Wedding">Wedding</button>&nbsp/&nbsp
                     <button type="submit" name="recordSub" value="Funeral">Funeral Mass</button>&nbsp/&nbsp
-                </form>
+                </form>-->
             </div>
             <?php
             if (isset($_SESSION['recordFilter'])) {
@@ -102,7 +102,9 @@ require 'dbconnect.php';
                 </div>
             </form>
             <div class="record-view">
-                <div class="view-header">
+                <div class="filter-cont">
+                    <span>Filter by:&nbsp</span>
+                    <div class="view-header" onclick="showoption()">
                     <?php
                     //unset($_SESSION['searchFilter']);
                     if ($event == 'Funeral') {
@@ -111,6 +113,14 @@ require 'dbconnect.php';
                         echo $event;
                     }
                     ?>
+                    <i class="fa-solid fa-caret-down"></i>
+                    <form class="record-filter" id="options" action="recordHandler.php" method="post">
+                        <button type="submit" name="recordSub" value="Baptism">Baptism</button>
+                        <button type="submit" name="recordSub" value="Confirmation">Confirmation</button>
+                        <button type="submit" name="recordSub" value="Wedding">Wedding</button>
+                        <button type="submit" name="recordSub" value="Funeral">Funeral Mass</button>
+                    </form>
+                </div>
                 </div>
                 <table>
                     <?php
