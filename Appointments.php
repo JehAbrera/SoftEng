@@ -30,25 +30,25 @@ require 'dbconnect.php';
                 <div class="top-icon" onclick="triggerSideNav()">
                     <i class="fa-solid fa-bars"></i>
                 </div>
-                <div class="nav-item">Home</div>
-                <div class="nav-item">FAQs</div>
+                <div class="nav-item" onclick="window.location.href='page_HOME.php'">Home</div>
+                <div class="nav-item" onclick="window.location.href='page_FAQ.php'">FAQs</div>
                 <div class="nav-item dropdown">
                     <span class=".nav-item.active">Services <i class="fa-solid fa-angle-down"></i></span>
                     <div class="dropdown-content">
-                        <div class="nav-item">View Services</div>
-                        <div class="nav-item">Set Appointment</div>
-                        <div class="nav-item">View Appointment</div>
+                        <div class="nav-item" onclick="window.location.href='Services.php'">View Services</div>
+                        <div class="nav-item" onclick="window.location.href='page_SCHEDULEEVENT.php'">Set Appointment</div>
+                        <div class="nav-item" onclick="window.location.href='Appointments.php'">View Appointment</div>
                         <div class="nav-item">Search Record</div>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <span class="dp-title">Events <i class="fa-solid fa-angle-down"></i></span>
                     <div class="dropdown-content">
-                        <div class="nav-item">Announcements</div>
-                        <div class="nav-item">Calendar</div>
+                        <div class="nav-item" onclick="window.location.href='page_VIEWANNOUNCEMENT.php'">Announcements</div>
+                        <div class="nav-item" onclick="window.location.href='page_VIEWSCHEDULES.php'">Calendar</div>
                     </div>
                 </div>
-                <div class="nav-item">About Us</div>
+                <div class="nav-item" onclick="window.location.href='Aboutus.php'">About Us</div>
                 <?php
                 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] == false) {
                     echo '<div class="nav-item">Login</div>';
@@ -74,52 +74,115 @@ require 'dbconnect.php';
             <section class = "content-container">
                 <div class="body-content">
                     <form action="Appointments.php" method="get">
-                        <button type="submit" name="status" value="pending">PENDING</button>
-                        <button type="submit" name="status" value="accepted">ACCEPTED</button>
-                        <button type="submit" name="status" value="completed">COMPLETED</button>
-                        <button type="submit" name="status" value="rejected">REJECTED</button>
-                        <button type="submit" name="status" value="canceled">CANCELED</button>
+                        <button type="submit" name="status" value="Pending">PENDING</button>
+                        <button type="submit" name="status" value="Accepted">ACCEPTED</button>
+                        <button type="submit" name="status" value="Completed">COMPLETED</button>
+                        <button type="submit" name="status" value="Rejected">REJECTED</button>
+                        <button type="submit" name="status" value="Canceled">CANCELED</button>
                     </form>
                     <div class="details">
                             <?php 
                                 if (!isset($_GET['status'])){
-                                    $query = "SELECT * FROM appointment_details WHERE appointment_status = 'Pending'";
-                                        echo'<div class="details-container">
-                                            <h2>PENDING</h2>';
-                                    $result = mysqli_query($conn, $query);
+                                    $status = "Pending";
+                                } else {
+                                    $status = $_GET['status'];
+                                }
+                                $query = "SELECT * FROM appointment_details WHERE appointment_status = '$status'";
+                                $sql = "SELECT COUNT(*) AS total FROM appointment_details WHERE appointment_status = '$status'"?>
+                                        <div class="details-container">
+                                            <h2><?php echo $status?></h2>
+                                <?php $result = mysqli_query($conn, $query);
                                     while($row = mysqli_fetch_array($result)) {
                                         $id = $row[0];
                                         $forReason = "again".$id;
                                         $idseemore = "try".$id;
+                                        $cancelconf = "cancel".$id;
+                                        $resched = "resched".$id;
                                         $fixedtime = date("h:i:s A", strtotime($row[4]));
+
+                                       
+                                        // Number of Record per Page
+                                        $recordsPerPage = 30;
+
+
+                                        // Current page number
+                                        if (isset($_GET['page'])) {
+                                            $currentPage = $_GET['page'];
+                                        } else {
+                                            $currentPage = 1;
+                                        }
+
+                                        // Calculate the starting record index
+                                        $startFrom = ($currentPage - 1) * $recordsPerPage;
+
                                         ?>
+                                        
                                             <div class="indiv-cont">
                                                 <div class="top-cont">
                                                     <div>
-                                                        <p>Appointment Number: <?php echo $row[0] ?></p>
-                                                        <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
-                                                        <p>Appointment Type: <?php echo $row[8] ?></p>
-                                                        <?php echo $forReason?>
-                                                        <?php echo $idseemore?>
+                                                        <table>
+                                                            <tr>
+                                                                <td><p>Reference Number:</p> </td>
+                                                                <td><?php echo $row[1] ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><p>Date Appointed:</p></td>
+                                                                <td><?php echo $row[4] ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><p>Time Appointed:</p></td>
+                                                                <td><?php echo $fixedtime ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><p>Appointment Type:</p></td>
+                                                                <td><?php echo $row[9] ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><button type="button" class="viewmore"> View more</button></td>
+                                                            </tr>
+                                                        </table>
+                                                        <?php //echo $forReason?>
+                                                        <?php //secho $idseemore?>
                                                     </div>
                                                     <div class="button-cont">
                                                         <form action="page_LANDING.php" method="post">
-                                                            <button type="button" class="buttoncancel" onclick="openForm(<?php echo $row[0]?>)"> Cancel </button>
-                                                            <!--<div class="popupCover" id="<?php echo $row[0]?>">
+                                                            <?php if($status == "Completed"){ ?>
+                                                                <!-- no button to show-->
+                                                            <?php } else if($status == "Rejected" || $status == "Canceled"){ ?>
+                                                                <button type="button" class="buttonresched" onclick="openForm('<?php echo $resched?>')"> Reschedule </button>
+                                                            <?php } else { ?>
+                                                                <button type="button" class="buttoncancel" onclick="openForm('<?php echo $cancelconf?>')"> Cancel </button>
+                                                            <?php } ?>
+                                                            <input type="hidden" name="id" value="<?php echo $row[0]?>">
+                                                            <div class="popupCover" id="<?php echo $cancelconf?>">
                                                                 <div class="popupForm">
                                                                     <div class="icon-box">
                                                                         <i class="fa fa-question-circle" style="font-size: 4rem"></i>
                                                                     </div>
                                                                     <div class="headertext-box">
-                                                                        <h2> Are you sure you want to Cancel this appointment? </h2>
+                                                                        <h2> Are you sure you want to Cancel this appointment? <?php echo $row[0]?></h2>
+                                                                        <p>You appointment will be no longer in something somethnig</p>
                                                                     </div>
                                                                     <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                        <button class="buttonresched" type="button" onclick="closeForm(<?php echo $id?>), openForm(<?php echo $forReason ?>)" name="sure">Yes</button>
+                                                                        <button class="buttoncancel" type="button" onclick="closeForm('<?php echo $cancelconf?>')">No</button>
+                                                                        <button class="buttonresched" type="button" onclick="closeForm('<?php echo $cancelconf?>'), openForm('<?php echo $row[0]?>')" name="sure">Yes</button>
                                                                     </div>
                                                                 </div>
-                                                            </div>-->
+                                                            </div>
+                                                            <div class="popupCover" id="<?php echo $resched?>">
+                                                                <div class="popupForm">
+                                                                    <div class="icon-box">
+                                                                        <i class="fa fa-question-circle" style="font-size: 4rem"></i>   
+                                                                    </div>
+                                                                    <div class="headertext-box">
+                                                                        <h2> Are you sure you want to Reschedule this appointment? </h2>
+                                                                    </div>
+                                                                    <div class="form-btnarea">
+                                                                        <button class="buttoncancel" type="button" onclick="closeForm('<?php echo $resched?>')">No</button>
+                                                                        <button class="buttonresched" type="Submit" name="reschedYes">Yes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <div class="popupCover-reason" id="<?php echo $row[0]?>">
                                                                 <div class="popupForm-reason">
                                                                     <div class="headertext-box">
@@ -166,8 +229,7 @@ require 'dbconnect.php';
                                                                             </div>
                                                                         </div>
                                                                         <div class="btn-area">
-                                                                        <input type="hidden" name="id" value="<?php echo $row[0]?>">
-                                                                            <button type="button" class="buttoncancel" onclick="closeForm(<?php echo $row[0]?>)"> Cancel</button>
+                                                                            <button type="button" class="buttoncancel" onclick="closeForm('<?php echo $row[0]?>')"> Cancel</button>
                                                                             <button type="submit" class="buttonresched" name="reasonsubmit">Submit</button>
                                                                         </div>
                                                                     </div>
@@ -176,1472 +238,36 @@ require 'dbconnect.php';
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="bot-cont">
-                                                    <div class="seemore">
-                                                        <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $idseemore ?>)"> see more</p>
-                                                    </div>
-                                                    <div class="viewmore" id = "<?php echo $idseemore ?>" style="display: none">
-
-                                                        <?php
-                                                        if($row[8] == "Wedding"){
-                                                            $querywed = "SELECT * FROM wedding_details WHERE foreign_id = '$id'";
-                                                            $resultwed = mysqli_query($conn, $querywed);
-                                                            while($row = mysqli_fetch_array($resultwed)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Groom's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span> <span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                </div>
-                                                                <h4>Brides's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[20],",",$row[21]," ", $row[22];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[23] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[24] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[25]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[26] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[29] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[27]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[28]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptism"){
-                                                          
-                                                            $querybap = "SELECT * FROM baptism_details WHERE foreign_id = '$id'";
-                                                            $resultbap = mysqli_query($conn, $querybap);
-                                                            while($row = mysqli_fetch_array($resultbap)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Child's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                </div>
-                                                                <h4>Parents's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Father's Place of Birth: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[15]?></span></div>
-                                                                    <div><span><strong>Mother's Place of Birth: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                    <div><span><strong>Marriage Type  </strong></span><span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Parent Contact Number:  </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                </div>
-                                                                <h4>BodFather's and GodMother's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>GodFather's Name:  </strong></span><span><?php echo $row[18]?></span></div>
-                                                                    <div><span><strong>GodFather's Address: </strong></span><span><?php echo $row[19] ?></span></div>
-                                                                    <div><span><strong>GodMother's Name:  </strong></span><span><?php echo $row[20]?></span></div>
-                                                                    <div><span><strong>GodMother's Address: </strong></span><span><?php echo $row[21] ?></span></div>
-                                                                </div>
-
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Funeral Mass/Blessing"){
-                                                            $queryfun = "SELECT * FROM funeral_details WHERE foreign_id = '$id'";
-                                                            $resultfun = mysqli_query($conn, $queryfun);
-                                                            while($row = mysqli_fetch_array($resultfun)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Deceased's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Age: </strong></span><span><?php echo $row[10] ?></span></div>
-                                                                    <div><span><strong>Date of Death:  </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Cause of Death: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Internment Date: </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                    <div><span><strong>Place of Cemetery:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Sacrament Received:  </strong></span> <span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Burial:  </strong></span> <span><?php echo $row[18]?></span></div>
-                                                                </div>
-                                                                <h4>Informant's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[14]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[15] ?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Mass Intention"){
-                                                            $querymass = "SELECT * FROM mass_intention_details WHERE foreign_id = '$id'";
-                                                            $resultmass = mysqli_query($conn, $querymass);
-                                                            while($row = mysqli_fetch_array($resultmass)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Purpose: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Names: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Motorcycle Blessing" ||$row[8] == "Car Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptismal Certificate" ||$row[8] == "Wedding Certificate" || $row[8] == "Confirmation Certificate"){   
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong> Father's Name: </strong></span><span><?php echo $row[8]?></span></div>
-                                                                    <div><span><strong> Mother's Name: </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Good Moral Certificate") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        else if($row[8] == "Permit and No Record") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <?php
                                     }
-                                }
-                                if (isset($_GET['status'])){
-                                    if ($_GET['status'] == "pending"){
-                                        $query = "SELECT * FROM appointment_details WHERE appointment_status = 'Pending'";
-                                        echo'<div class="details-container">
-                                            <h2>PENDING</h2>';
-                                        $result = mysqli_query($conn, $query);
-                                        while($row = mysqli_fetch_array($result)) {
-                                            $id = $row[0];
-                                            $idseemore = "try".$id;
-                                            $fixedtime = date("h:i:s A", strtotime($row[4]));
-                                            ?>
-                                                <div class="indiv-cont">
-                                                    <div class="top-cont">
-                                                        <div>
-                                                            <p>Appointment Number: <?php echo $row[0] ?></p>
-                                                            <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                            <p>Time Appointed: <?php echo $fixedtime ?></p>
-                                                            <p>Appointment Type: <?php echo $row[8] ?></p>
-                                                        </div>
-                                                        <div class="button-cont">
-                                                            <form action="page_LANDING.php" method="post">
-                                                                <button type="button" class="buttoncancel" onclick="openForm(<?php echo $row[0]?>)"> Cancel </button>
-                                                                <!--<div class="popupCover" id="<?php echo $row[0]?>">
-                                                                    <div class="popupForm">
-                                                                        <div class="icon-box">
-                                                                            <i class="fa fa-question-circle" style="font-size: 4rem"></i>
-                                                                        </div>
-                                                                        <div class="headertext-box">
-                                                                            <h2> Are you sure you want to Cancel this appointment? </h2>
-                                                                        </div>
-                                                                        <div class="form-btnarea">
-                                                                            <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                            <button class="buttonresched" type="button" onclick="closeForm(<?php echo $id?>), openForm(<?php echo $forReason ?>)" name="sure">Yes</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>-->
-                                                                <div class="popupCover-reason" id="<?php echo $row[0]?>">
-                                                                    <div class="popupForm-reason">
-                                                                        <div class="headertext-box">
-                                                                            <h2> Reason/s </h2>
-                                                                            <p>Please provide a reason for the cancellation of your appointment</p>
-                                                                        </div>
-                                                                        <div class="form-area">
-                                                                            <p><strong>Reason for cancelation</strong></p>
-                                                                            <div class="reason-container">
-                                                                                <div class="form-reason">
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason" id="cop" value="Change of Plans" onclick="hideinput()" required> 
-                                                                                        <label for="cop">Change of Plans</label><br>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason" id="lop" value="Lack of Preparetion" onclick="hideinput()" required>
-                                                                                        <label for="lop">Lack of Preparetion</label><br>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason" id="uta" value="Unable to attend" onclick="hideinput()" required>
-                                                                                        <label for="uta">Unable to attend</label><br>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason" id="emerg" value="Emergency" onclick="hideinput()" required>
-                                                                                        <label for="emerg">Emergency</label><br>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason" id="cs" value="Conflicting Schedule" onclick="hideinput()" required>
-                                                                                        <label for="cs">Conflicting Schedule</label><br>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason" id="ps" value="Personal Stuff" onclick="hideinput()" required>
-                                                                                        <label for="ps">Personal Stuff</label><br>
-                                                                                    </div>  
-                                                                                </div>
-                                                                                <div class="other">
-                                                                                    <div>
-                                                                                        <input type="radio" name="reason"id="other" value="other" onclick="showinput()" required>
-                                                                                        <label for="other">Other</label><br>
-                                                                                    </div>
-                                                                                    <div class="other-input" id="otherinput">
-                                                                                        <input type="text" class="othertext" name="others">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="btn-area">
-                                                                            <input type="hidden" name="id" value="<?php echo $row[0]?>">
-                                                                                <button type="button" class="buttoncancel" onclick="closeForm(<?php echo $row[0]?>)"> Cancel</button>
-                                                                                <button type="submit" class="buttonresched" name="reasonsubmit">Submit</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <div class="bot-cont">
-                                                        <div class="seemore">
-                                                            <p>Details</p>
-                                                            <p onclick="seemore(<?php echo $idseemore ?>)">see more</p>
-                                                        </div>
-                                                        <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
-
-                                                            <?php
-                                                            if($row[8] == "Wedding"){
-                                                                $querywed = "SELECT * FROM wedding_details WHERE foreign_id = '$id'";
-                                                                $resultwed = mysqli_query($conn, $querywed);
-                                                                while($row = mysqli_fetch_array($resultwed)) {
-                                                                ?> 
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <h4>Groom's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                        <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                        <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong>Present Address: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                        <div><span><strong>Religion: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                        <div><span><strong>Father's Name:  </strong></span> <span><?php echo $row[12]?></span></div>
-                                                                        <div><span><strong>Mothers's Name:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                    </div>
-                                                                    <h4>Brides's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[20],",",$row[21]," ", $row[22];?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[23] ?></span></div>
-                                                                        <div><span><strong>Birth Date: </strong></span><span><?php echo $row[24] ?></span></div>
-                                                                        <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[25]?></span></div>
-                                                                        <div><span><strong>Present Address: </strong></span><span><?php echo $row[26] ?></span></div>
-                                                                        <div><span><strong>Religion: </strong></span><span><?php echo $row[29] ?></span></div>
-                                                                        <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[27]?></span></div>
-                                                                        <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[28]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Baptism"){
-                                                            
-                                                                $querybap = "SELECT * FROM baptism_details WHERE foreign_id = '$id'";
-                                                                $resultbap = mysqli_query($conn, $querybap);
-                                                                while($row = mysqli_fetch_array($resultbap)) {
-                                                                ?> 
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <h4>Child's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                        <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                        <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                        <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong>Present Address </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    </div>
-                                                                    <h4>Parents's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[13]?></span></div>
-                                                                        <div><span><strong>Father's Place of Birth: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                        <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[15]?></span></div>
-                                                                        <div><span><strong>Mother's Place of Birth: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                        <div><span><strong>Marriage Type  </strong></span><span><?php echo $row[17]?></span></div>
-                                                                        <div><span><strong>Parent Contact Number:  </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                    </div>
-                                                                    <h4>BodFather's and GodMother's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>GodFather's Name:  </strong></span><span><?php echo $row[18]?></span></div>
-                                                                        <div><span><strong>GodFather's Address: </strong></span><span><?php echo $row[19] ?></span></div>
-                                                                        <div><span><strong>GodMother's Name:  </strong></span><span><?php echo $row[20]?></span></div>
-                                                                        <div><span><strong>GodMother's Address: </strong></span><span><?php echo $row[21] ?></span></div>
-                                                                    </div>
-
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Funeral Mass/Blessing"){
-                                                                $queryfun = "SELECT * FROM funeral_details WHERE foreign_id = '$id'";
-                                                                $resultfun = mysqli_query($conn, $queryfun);
-                                                                while($row = mysqli_fetch_array($resultfun)) {
-                                                                ?> 
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <h4>Deceased's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                        <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                        <div><span><strong>Age: </strong></span><span><?php echo $row[10] ?></span></div>
-                                                                        <div><span><strong>Date of Death:  </strong></span><span><?php echo $row[9]?></span></div>
-                                                                        <div><span><strong>Cause of Death: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                        <div><span><strong>Internment Date: </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                        <div><span><strong>Place of Cemetery:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                        <div><span><strong>Sacrament Received:  </strong></span> <span><?php echo $row[17]?></span></div>
-                                                                        <div><span><strong>Burial:  </strong></span> <span><?php echo $row[18]?></span></div>
-                                                                    </div>
-                                                                    <h4>Informant's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[14]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[15] ?></span></div>
-                                                                        <div><span><strong>Address: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Mass Intention"){
-                                                                $querymass = "SELECT * FROM mass_intention_details WHERE foreign_id = '$id'";
-                                                                $resultmass = mysqli_query($conn, $querymass);
-                                                                while($row = mysqli_fetch_array($resultmass)) {
-                                                                ?>
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                        <div><span><strong>Purpose: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                        <div><span><strong>Names: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Motorcycle Blessing" ||$row[8] == "Car Blessing"){
-                                                                $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                                $resultbless = mysqli_query($conn, $querybless);
-                                                                while($row = mysqli_fetch_array($resultbless)) {
-                                                                ?>
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                        <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            }else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
-                                                                $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                                $resultbless = mysqli_query($conn, $querybless);
-                                                                while($row = mysqli_fetch_array($resultbless)) {
-                                                                ?>
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                        <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                        <div><span><strong>Address: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Baptismal Certificate" ||$row[8] == "Wedding Certificate" || $row[8] == "Confirmation Certificate"){   
-                                                                $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                                $resultcert = mysqli_query($conn, $querycert);
-                                                                while($row = mysqli_fetch_array($resultcert)) {
-                                                                ?>
-                                                                    <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                        <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                        <div><span><strong> Father's Name: </strong></span><span><?php echo $row[8]?></span></div>
-                                                                        <div><span><strong> Mother's Name: </strong></span><span><?php echo $row[9]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Good Moral Certificate") {
-                                                                $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                                $resultcert = mysqli_query($conn, $querycert);
-                                                                while($row = mysqli_fetch_array($resultcert)) {
-                                                                ?>
-                                                                    <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                        <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            }
-                                                            else if($row[8] == "Permit and No Record") {
-                                                                $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                                $resultcert = mysqli_query($conn, $querycert);
-                                                                while($row = mysqli_fetch_array($resultcert)) {
-                                                                ?>
-                                                                    <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                        <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong>Address: </strong></span><span><?php echo $row[12]?></span></div>
-                                                                        <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php
-                                        }
-                                        }
-                                        if ($_GET['status'] == "accepted"){
-                                            $query = "SELECT * FROM appointment_details WHERE appointment_status = 'Accepted'";
-                                        echo'<div class="details-container">
-                                            <h2>Accepted</h2>';
-                                    $result = mysqli_query($conn, $query);
-                                    while($row = mysqli_fetch_array($result)) {
-                                        $id = $row[0];
-                                        $idseemore = "try".$id;
-                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
-                                        ?>
-                                            <div class="indiv-cont">
-                                                <div class="top-cont">
-                                                    <div>
-                                                        <p>Appointment Number: <?php echo $row[0] ?></p>
-                                                        <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
-                                                        <p>Appointment Type: <?php echo $row[8] ?></p>
-                                                    </div>
-                                                    <div class="button-cont">
-                                                      <form action="page_LANDING.php" method="post">
-                                                            <button type="button" class="buttoncancel" onclick="openForm(<?php echo $row[0]?>)"> Cancel </button>
-                                                            <!--<div class="popupCover" id="<?php echo $row[0]?>">
-                                                                <div class="popupForm">
-                                                                    <div class="icon-box">
-                                                                        <i class="fa fa-question-circle" style="font-size: 4rem"></i>
-                                                                    </div>
-                                                                    <div class="headertext-box">
-                                                                        <h2> Are you sure you want to Cancel this appointment? </h2>
-                                                                    </div>
-                                                                    <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                        <button class="buttonresched" type="button" onclick="closeForm(<?php echo $id?>), openForm(<?php echo $forReason ?>)" name="sure">Yes</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>-->
-                                                            <div class="popupCover-reason" id="<?php echo $row[0]?>">
-                                                                <div class="popupForm-reason">
-                                                                    <div class="headertext-box">
-                                                                        <h2> Reason/s </h2>
-                                                                        <p>Please provide a reason for the cancellation of your appointment</p>
-                                                                    </div>
-                                                                    <div class="form-area">
-                                                                        <p><strong>Reason for cancelation</strong></p>
-                                                                        <div class="reason-container">
-                                                                            <div class="form-reason">
-                                                                                <div>
-                                                                                    <input type="radio" name="reason" id="cop" value="Change of Plans" onclick="hideinput()" required> 
-                                                                                    <label for="cop">Change of Plans</label><br>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <input type="radio" name="reason" id="lop" value="Lack of Preparetion" onclick="hideinput()" required>
-                                                                                    <label for="lop">Lack of Preparetion</label><br>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <input type="radio" name="reason" id="uta" value="Unable to attend" onclick="hideinput()" required>
-                                                                                    <label for="uta">Unable to attend</label><br>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <input type="radio" name="reason" id="emerg" value="Emergency" onclick="hideinput()" required>
-                                                                                    <label for="emerg">Emergency</label><br>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <input type="radio" name="reason" id="cs" value="Conflicting Schedule" onclick="hideinput()" required>
-                                                                                    <label for="cs">Conflicting Schedule</label><br>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <input type="radio" name="reason" id="ps" value="Personal Stuff" onclick="hideinput()" required>
-                                                                                    <label for="ps">Personal Stuff</label><br>
-                                                                                </div>  
-                                                                            </div>
-                                                                            <div class="other">
-                                                                                <div>
-                                                                                    <input type="radio" name="reason"id="other" value="other" onclick="showinput()" required>
-                                                                                    <label for="other">Other</label><br>
-                                                                                </div>
-                                                                                <div class="other-input" id="otherinput">
-                                                                                    <input type="text" class="othertext" name="others">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="btn-area">
-                                                                        <input type="hidden" name="id" value="<?php echo $row[0]?>">
-                                                                            <button type="button" class="buttoncancel" onclick="closeForm(<?php echo $row[0]?>)"> Cancel</button>
-                                                                            <button type="submit" class="buttonresched" name="reasonsubmit">Submit</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="bot-cont">
-                                                    <div class="seemore">
-                                                        <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
-                                                    </div>
-                                                    <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
-
-                                                        <?php
-                                                        if($row[8] == "Wedding"){
-                                                            $querywed = "SELECT * FROM wedding_details WHERE foreign_id = '$id'";
-                                                            $resultwed = mysqli_query($conn, $querywed);
-                                                            while($row = mysqli_fetch_array($resultwed)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Groom's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span> <span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                </div>
-                                                                <h4>Brides's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[20],",",$row[21]," ", $row[22];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[23] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[24] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[25]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[26] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[29] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[27]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[28]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptism"){
-                                                          
-                                                            $querybap = "SELECT * FROM baptism_details WHERE foreign_id = '$id'";
-                                                            $resultbap = mysqli_query($conn, $querybap);
-                                                            while($row = mysqli_fetch_array($resultbap)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Child's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                </div>
-                                                                <h4>Parents's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Father's Place of Birth: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[15]?></span></div>
-                                                                    <div><span><strong>Mother's Place of Birth: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                    <div><span><strong>Marriage Type  </strong></span><span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Parent Contact Number:  </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                </div>
-                                                                <h4>BodFather's and GodMother's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>GodFather's Name:  </strong></span><span><?php echo $row[18]?></span></div>
-                                                                    <div><span><strong>GodFather's Address: </strong></span><span><?php echo $row[19] ?></span></div>
-                                                                    <div><span><strong>GodMother's Name:  </strong></span><span><?php echo $row[20]?></span></div>
-                                                                    <div><span><strong>GodMother's Address: </strong></span><span><?php echo $row[21] ?></span></div>
-                                                                </div>
-
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Funeral Mass/Blessing"){
-                                                            $queryfun = "SELECT * FROM funeral_details WHERE foreign_id = '$id'";
-                                                            $resultfun = mysqli_query($conn, $queryfun);
-                                                            while($row = mysqli_fetch_array($resultfun)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Deceased's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Age: </strong></span><span><?php echo $row[10] ?></span></div>
-                                                                    <div><span><strong>Date of Death:  </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Cause of Death: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Internment Date: </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                    <div><span><strong>Place of Cemetery:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Sacrament Received:  </strong></span> <span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Burial:  </strong></span> <span><?php echo $row[18]?></span></div>
-                                                                </div>
-                                                                <h4>Informant's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[14]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[15] ?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Mass Intention"){
-                                                            $querymass = "SELECT * FROM mass_intention_details WHERE foreign_id = '$id'";
-                                                            $resultmass = mysqli_query($conn, $querymass);
-                                                            while($row = mysqli_fetch_array($resultmass)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Purpose: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Names: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Motorcycle Blessing" ||$row[8] == "Car Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptismal Certificate" ||$row[8] == "Wedding Certificate" || $row[8] == "Confirmation Certificate"){   
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong> Father's Name: </strong></span><span><?php echo $row[8]?></span></div>
-                                                                    <div><span><strong> Mother's Name: </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Good Moral Certificate") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        else if($row[8] == "Permit and No Record") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php
-                                    }
-                                        }
-                                        if ($_GET['status'] == "completed"){
-                                            $query = "SELECT * FROM appointment_details WHERE appointment_status = 'Completed'";
-                                            echo'<div class="details-container">
-                                                <h2>Completed</h2>';
-                                        $result = mysqli_query($conn, $query);
-                                        while($row = mysqli_fetch_array($result)) {
-                                            $id = $row[0];
-                                            $idseemore = "try".$id;
-                                            $fixedtime = date("h:i:s A", strtotime($row[4]));
-                                            ?>
-                                                <div class="indiv-cont">
-                                                    <div class="top-cont">
-                                                        <div>
-                                                            <p>Appointment Number: <?php echo $row[0] ?></p>
-                                                            <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                            <p>Time Appointed: <?php echo $fixedtime ?></p>
-                                                            <p>Appointment Type: <?php echo $row[8] ?></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="bot-cont">
-                                                        <div class="seemore">
-                                                            <p>Details</p>
-                                                            <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
-                                                        </div>
-                                                        <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
-
-                                                            <?php
-                                                            if($row[8] == "Wedding"){
-                                                                $querywed = "SELECT * FROM wedding_details WHERE foreign_id = '$id'";
-                                                                $resultwed = mysqli_query($conn, $querywed);
-                                                                while($row = mysqli_fetch_array($resultwed)) {
-                                                                ?> 
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <h4>Groom's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                        <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                        <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong>Present Address: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                        <div><span><strong>Religion: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                        <div><span><strong>Father's Name:  </strong></span> <span><?php echo $row[12]?></span></div>
-                                                                        <div><span><strong>Mothers's Name:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                    </div>
-                                                                    <h4>Brides's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[20],",",$row[21]," ", $row[22];?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[23] ?></span></div>
-                                                                        <div><span><strong>Birth Date: </strong></span><span><?php echo $row[24] ?></span></div>
-                                                                        <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[25]?></span></div>
-                                                                        <div><span><strong>Present Address: </strong></span><span><?php echo $row[26] ?></span></div>
-                                                                        <div><span><strong>Religion: </strong></span><span><?php echo $row[29] ?></span></div>
-                                                                        <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[27]?></span></div>
-                                                                        <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[28]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Baptism"){
-                                                            
-                                                                $querybap = "SELECT * FROM baptism_details WHERE foreign_id = '$id'";
-                                                                $resultbap = mysqli_query($conn, $querybap);
-                                                                while($row = mysqli_fetch_array($resultbap)) {
-                                                                ?> 
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <h4>Child's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                        <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                        <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                        <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong>Present Address </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    </div>
-                                                                    <h4>Parents's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[13]?></span></div>
-                                                                        <div><span><strong>Father's Place of Birth: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                        <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[15]?></span></div>
-                                                                        <div><span><strong>Mother's Place of Birth: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                        <div><span><strong>Marriage Type  </strong></span><span><?php echo $row[17]?></span></div>
-                                                                        <div><span><strong>Parent Contact Number:  </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                    </div>
-                                                                    <h4>BodFather's and GodMother's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>GodFather's Name:  </strong></span><span><?php echo $row[18]?></span></div>
-                                                                        <div><span><strong>GodFather's Address: </strong></span><span><?php echo $row[19] ?></span></div>
-                                                                        <div><span><strong>GodMother's Name:  </strong></span><span><?php echo $row[20]?></span></div>
-                                                                        <div><span><strong>GodMother's Address: </strong></span><span><?php echo $row[21] ?></span></div>
-                                                                    </div>
-
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Funeral Mass/Blessing"){
-                                                                $queryfun = "SELECT * FROM funeral_details WHERE foreign_id = '$id'";
-                                                                $resultfun = mysqli_query($conn, $queryfun);
-                                                                while($row = mysqli_fetch_array($resultfun)) {
-                                                                ?> 
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <h4>Deceased's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                        <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                        <div><span><strong>Age: </strong></span><span><?php echo $row[10] ?></span></div>
-                                                                        <div><span><strong>Date of Death:  </strong></span><span><?php echo $row[9]?></span></div>
-                                                                        <div><span><strong>Cause of Death: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                        <div><span><strong>Internment Date: </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                        <div><span><strong>Place of Cemetery:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                        <div><span><strong>Sacrament Received:  </strong></span> <span><?php echo $row[17]?></span></div>
-                                                                        <div><span><strong>Burial:  </strong></span> <span><?php echo $row[18]?></span></div>
-                                                                    </div>
-                                                                    <h4>Informant's</h4>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name:  </strong></span><span><?php echo $row[14]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[15] ?></span></div>
-                                                                        <div><span><strong>Address: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Mass Intention"){
-                                                                $querymass = "SELECT * FROM mass_intention_details WHERE foreign_id = '$id'";
-                                                                $resultmass = mysqli_query($conn, $querymass);
-                                                                while($row = mysqli_fetch_array($resultmass)) {
-                                                                ?>
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                        <div><span><strong>Purpose: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                        <div><span><strong>Names: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Motorcycle Blessing" ||$row[8] == "Car Blessing"){
-                                                                $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                                $resultbless = mysqli_query($conn, $querybless);
-                                                                while($row = mysqli_fetch_array($resultbless)) {
-                                                                ?>
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                        <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            }else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
-                                                                $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                                $resultbless = mysqli_query($conn, $querybless);
-                                                                while($row = mysqli_fetch_array($resultbless)) {
-                                                                ?>
-                                                                    <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                    <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                        <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                        <div><span><strong>Address: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Baptismal Certificate" ||$row[8] == "Wedding Certificate" || $row[8] == "Confirmation Certificate"){   
-                                                                $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                                $resultcert = mysqli_query($conn, $querycert);
-                                                                while($row = mysqli_fetch_array($resultcert)) {
-                                                                ?>
-                                                                    <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                        <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                        <div><span><strong> Father's Name: </strong></span><span><?php echo $row[8]?></span></div>
-                                                                        <div><span><strong> Mother's Name: </strong></span><span><?php echo $row[9]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            } else if($row[8] == "Good Moral Certificate") {
-                                                                $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                                $resultcert = mysqli_query($conn, $querycert);
-                                                                while($row = mysqli_fetch_array($resultcert)) {
-                                                                ?>
-                                                                    <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                        <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            }
-                                                            else if($row[8] == "Permit and No Record") {
-                                                                $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                                $resultcert = mysqli_query($conn, $querycert);
-                                                                while($row = mysqli_fetch_array($resultcert)) {
-                                                                ?>
-                                                                    <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div class="display-details-bi">
-                                                                        <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                        <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                        <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                        <div><span><strong>Address: </strong></span><span><?php echo $row[12]?></span></div>
-                                                                        <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php
-                                        }
-                                    }
-                                    if ($_GET['status'] == "rejected"){
-                                        $query = "SELECT * FROM appointment_details WHERE appointment_status = 'Rejected'";
-                                        echo'<div class="details-container">
-                                            <h2>Rejected</h2>';
-                                    $result = mysqli_query($conn, $query);
-                                    while($row = mysqli_fetch_array($result)) {
-                                        $id = $row[0];
-                                        $idseemore = "try".$id;
-                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
-                                        ?>
-                                            <div class="indiv-cont">
-                                                <div class="top-cont">
-                                                    <div>
-                                                        <p>Appointment Number: <?php echo $row[0] ?></p>
-                                                        <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
-                                                        <p>Appointment Type: <?php echo $row[8] ?></p>
-                                                    </div>
-                                                    <div class="button-cont">
-                                                        <form action="page_LANDING.php" method="post">
-                                                            <button type="button" class="buttonresched" onclick="openForm(<?php echo $id?>)"> Reschedule </button>
-                                                            <div class="popupCover" id="<?php echo $id?>">
-                                                                <div class="popupForm">
-                                                                    <div class="icon-box">
-                                                                        <i class="fa fa-question-circle" style="font-size: 4rem"></i>
-                                                                    </div>
-                                                                    <div class="headertext-box">
-                                                                        <h2> Are you sure you want to Reschedule this appointment? </h2>
-                                                                    </div>
-                                                                    <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="reschedYes">Yes</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="bot-cont">
-                                                    <div class="seemore">
-                                                        <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
-                                                    </div>
-                                                    <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
-
-                                                        <?php
-                                                        if($row[8] == "Wedding"){
-                                                            $querywed = "SELECT * FROM wedding_details WHERE foreign_id = '$id'";
-                                                            $resultwed = mysqli_query($conn, $querywed);
-                                                            while($row = mysqli_fetch_array($resultwed)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Groom's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span> <span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                </div>
-                                                                <h4>Brides's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[20],",",$row[21]," ", $row[22];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[23] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[24] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[25]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[26] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[29] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[27]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[28]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptism"){
-                                                          
-                                                            $querybap = "SELECT * FROM baptism_details WHERE foreign_id = '$id'";
-                                                            $resultbap = mysqli_query($conn, $querybap);
-                                                            while($row = mysqli_fetch_array($resultbap)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Child's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                </div>
-                                                                <h4>Parents's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Father's Place of Birth: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[15]?></span></div>
-                                                                    <div><span><strong>Mother's Place of Birth: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                    <div><span><strong>Marriage Type  </strong></span><span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Parent Contact Number:  </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                </div>
-                                                                <h4>BodFather's and GodMother's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>GodFather's Name:  </strong></span><span><?php echo $row[18]?></span></div>
-                                                                    <div><span><strong>GodFather's Address: </strong></span><span><?php echo $row[19] ?></span></div>
-                                                                    <div><span><strong>GodMother's Name:  </strong></span><span><?php echo $row[20]?></span></div>
-                                                                    <div><span><strong>GodMother's Address: </strong></span><span><?php echo $row[21] ?></span></div>
-                                                                </div>
-
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Funeral Mass/Blessing"){
-                                                            $queryfun = "SELECT * FROM funeral_details WHERE foreign_id = '$id'";
-                                                            $resultfun = mysqli_query($conn, $queryfun);
-                                                            while($row = mysqli_fetch_array($resultfun)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Deceased's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Age: </strong></span><span><?php echo $row[10] ?></span></div>
-                                                                    <div><span><strong>Date of Death:  </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Cause of Death: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Internment Date: </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                    <div><span><strong>Place of Cemetery:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Sacrament Received:  </strong></span> <span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Burial:  </strong></span> <span><?php echo $row[18]?></span></div>
-                                                                </div>
-                                                                <h4>Informant's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[14]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[15] ?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Mass Intention"){
-                                                            $querymass = "SELECT * FROM mass_intention_details WHERE foreign_id = '$id'";
-                                                            $resultmass = mysqli_query($conn, $querymass);
-                                                            while($row = mysqli_fetch_array($resultmass)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Purpose: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Names: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Motorcycle Blessing" ||$row[8] == "Car Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptismal Certificate" ||$row[8] == "Wedding Certificate" || $row[8] == "Confirmation Certificate"){   
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong> Father's Name: </strong></span><span><?php echo $row[8]?></span></div>
-                                                                    <div><span><strong> Mother's Name: </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Good Moral Certificate") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        else if($row[8] == "Permit and No Record") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php
-                                        }
-                                    }
-                                    if ($_GET['status'] == "canceled"){
-                                        $query = "SELECT * FROM appointment_details WHERE appointment_status = 'Canceled'";
-                                        echo'<div class="details-container">
-                                            <h2>Canceled</h2>';
-                                    $result = mysqli_query($conn, $query);
-                                    while($row = mysqli_fetch_array($result)) {
-                                        $id = $row[0];
-                                        $idseemore = "try".$id;
-                                        $fixedtime = date("h:i:s A", strtotime($row[4]));
-                                        ?>
-                                            <div class="indiv-cont">
-                                                <div class="top-cont">
-                                                    <div>
-                                                        <p>Appointment Number: <?php echo $row[0] ?></p>
-                                                        <p>Date Appointed: <?php echo $row[3] ?></p>
-                                                        <p>Time Appointed: <?php echo $fixedtime ?></p>
-                                                        <p>Appointment Type: <?php echo $row[8] ?></p>
-                                                    </div>
-                                                    <div class="button-cont">
-                                                        <form action="page_LANDING.php" method="post">
-                                                            <button type="button" class="buttonresched" onclick="openForm(<?php echo $id?>)"> Reschedule </button>
-                                                            <div class="popupCover" id="<?php echo $id?>">
-                                                                <div class="popupForm">
-                                                                    <div class="icon-box">
-                                                                        <i class="fa fa-question-circle" style="font-size: 4rem"></i>
-                                                                    </div>
-                                                                    <div class="headertext-box">
-                                                                        <h2> Are you sure you want to Reschedule this appointment? </h2>
-                                                                    </div>
-																	<input type="hidden" name="id" value=<?php echo $id; ?>>
-                                                                    <div class="form-btnarea">
-                                                                        <button class="buttoncancel" type="button" onclick="closeForm(<?php echo $id?>)">No</button>
-                                                                        <button class="buttonresched" type="Submit" name="reschedYes">Yes</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="bot-cont">
-                                                    <div class="seemore">
-                                                        <p>Details</p>
-                                                        <p onclick="seemore(<?php echo $idseemore?>)">see more</p>
-                                                    </div>
-                                                    <div class="viewmore" id = "<?php echo $idseemore?>" style="display: none">
-
-                                                        <?php
-                                                        if($row[8] == "Wedding"){
-                                                            $querywed = "SELECT * FROM wedding_details WHERE foreign_id = '$id'";
-                                                            $resultwed = mysqli_query($conn, $querywed);
-                                                            while($row = mysqli_fetch_array($resultwed)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Groom's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span> <span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                </div>
-                                                                <h4>Brides's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[20],",",$row[21]," ", $row[22];?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[23] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[24] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[25]?></span></div>
-                                                                    <div><span><strong>Present Address: </strong></span><span><?php echo $row[26] ?></span></div>
-                                                                    <div><span><strong>Religion: </strong></span><span><?php echo $row[29] ?></span></div>
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[27]?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[28]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptism"){
-                                                          
-                                                            $querybap = "SELECT * FROM baptism_details WHERE foreign_id = '$id'";
-                                                            $resultbap = mysqli_query($conn, $querybap);
-                                                            while($row = mysqli_fetch_array($resultbap)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Child's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Birth Date: </strong></span><span><?php echo $row[9] ?></span></div>
-                                                                    <div><span><strong>Birth Place:  </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Present Address </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                </div>
-                                                                <h4>Parents's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Father's Name:  </strong></span><span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Father's Place of Birth: </strong></span><span><?php echo $row[14] ?></span></div>
-                                                                    <div><span><strong>Mothers's Name:  </strong></span><span><?php echo $row[15]?></span></div>
-                                                                    <div><span><strong>Mother's Place of Birth: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                    <div><span><strong>Marriage Type  </strong></span><span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Parent Contact Number:  </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                </div>
-                                                                <h4>BodFather's and GodMother's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>GodFather's Name:  </strong></span><span><?php echo $row[18]?></span></div>
-                                                                    <div><span><strong>GodFather's Address: </strong></span><span><?php echo $row[19] ?></span></div>
-                                                                    <div><span><strong>GodMother's Name:  </strong></span><span><?php echo $row[20]?></span></div>
-                                                                    <div><span><strong>GodMother's Address: </strong></span><span><?php echo $row[21] ?></span></div>
-                                                                </div>
-
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Funeral Mass/Blessing"){
-                                                            $queryfun = "SELECT * FROM funeral_details WHERE foreign_id = '$id'";
-                                                            $resultfun = mysqli_query($conn, $queryfun);
-                                                            while($row = mysqli_fetch_array($resultfun)) {
-                                                            ?> 
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <h4>Deceased's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[5],",",$row[6]," ", $row[7];?></span></div>
-                                                                    <div><span><strong>Gender: </strong></span><span><?php echo $row[8] ?></span></div>
-                                                                    <div><span><strong>Age: </strong></span><span><?php echo $row[10] ?></span></div>
-                                                                    <div><span><strong>Date of Death:  </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Cause of Death: </strong></span><span><?php echo $row[11] ?></span></div>
-                                                                    <div><span><strong>Internment Date: </strong></span><span><?php echo $row[12] ?></span></div>
-                                                                    <div><span><strong>Place of Cemetery:  </strong></span> <span><?php echo $row[13]?></span></div>
-                                                                    <div><span><strong>Sacrament Received:  </strong></span> <span><?php echo $row[17]?></span></div>
-                                                                    <div><span><strong>Burial:  </strong></span> <span><?php echo $row[18]?></span></div>
-                                                                </div>
-                                                                <h4>Informant's</h4>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name:  </strong></span><span><?php echo $row[14]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[15] ?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[16] ?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Mass Intention"){
-                                                            $querymass = "SELECT * FROM mass_intention_details WHERE foreign_id = '$id'";
-                                                            $resultmass = mysqli_query($conn, $querymass);
-                                                            while($row = mysqli_fetch_array($resultmass)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Purpose: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Names: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Motorcycle Blessing" ||$row[8] == "Car Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }else if($row[8] == "House Blessing" ||$row[8] == "Store Blessing"){
-                                                            $querybless = "SELECT * FROM blessing_details WHERE foreign_id = '$id'";
-                                                            $resultbless = mysqli_query($conn, $querybless);
-                                                            while($row = mysqli_fetch_array($resultbless)) {
-                                                            ?>
-                                                                <div><span><strong>Event's Date: </strong></span><span><?php echo $row[3]?></span></div>
-                                                                <div><span><strong>Event's Time: </strong></span><span><?php echo $row[4]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                    <div><span><strong>Type of Blessing: </strong></span><span><?php echo $row[5]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[6]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Baptismal Certificate" ||$row[8] == "Wedding Certificate" || $row[8] == "Confirmation Certificate"){   
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong> Father's Name: </strong></span><span><?php echo $row[8]?></span></div>
-                                                                    <div><span><strong> Mother's Name: </strong></span><span><?php echo $row[9]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        } else if($row[8] == "Good Moral Certificate") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        else if($row[8] == "Permit and No Record") {
-                                                            $querycert = "SELECT * FROM document_request_details WHERE foreign_id = '$id'";
-                                                            $resultcert = mysqli_query($conn, $querycert);
-                                                            while($row = mysqli_fetch_array($resultcert)) {
-                                                            ?>
-                                                                <div><span><strong>Claiming Date: </strong></span><span><?php echo $row[2]?></span></div>
-                                                                <div class="display-details-bi">
-                                                                    <div><span><strong>Name: </strong></span><span><?php echo $row[4],", ",$row[5]," ", $row[6] ?></span></div>
-                                                                    <div><span><strong>Date of Birth: </strong></span><span><?php echo $row[7]?></span></div>
-                                                                    <div><span><strong>Contact Number: </strong></span><span><?php echo $row[10]?></span></div>
-                                                                    <div><span><strong>Address: </strong></span><span><?php echo $row[12]?></span></div>
-                                                                    <div><span><strong> Purpose: </strong></span><span><?php echo $row[11]?></span></div>
-
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php
-                                        }
-                                    }
-                                }
                             ?>
                             </div>
                         </div>
                     </div>
+                     <!-- Pagination Link Creation -->
+                <?php
+
+                    // Pagination links
+                    $result = $conn->query($sql);
+                    $row = $result->fetch_assoc();
+                    $totalRecords = $row["total"];
+                    $totalPages = ceil($totalRecords / $recordsPerPage);
+
+                    echo "<div class='pagination'>";
+
+                    if ($totalPages > 1) {
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            if ($i == $currentPage) {
+                                echo "<a class='active' href='?page=$i'>$i $totalRecords </a> ";
+                            } else {
+                                echo "<a href='?page=$i'>$i</a> ";
+                            }
+                        }
+                    }
+
+                    echo "</div>";
+                    ?>
                 </div>
             </section>
 
