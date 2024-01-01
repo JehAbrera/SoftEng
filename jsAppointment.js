@@ -20,12 +20,3 @@ function hideinput() {
     text.style.display = "none";
     text.disabled = true;
 }
-
-function seemore(id){
-    if( document.getElementById(id.id).style.display == "block"){
-        document.getElementById(id.id).style.display = "none"
-    } else {
-        document.getElementById(id.id).style.display = "block"
-    }
-    
-}

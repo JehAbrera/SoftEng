@@ -154,7 +154,7 @@ body {
 .main-content {
     height: 60vh;
     width: 100%;
-    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url(images/header.png) center/cover no-repeat;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url(Photos/header.png) center/cover no-repeat;
     display: flex;
     align-items: center;
 }
@@ -214,9 +214,14 @@ h1{
     background-color: #f0eded;
     padding: 0 1rem;
 }
-.seemore{
-    display: flex;
-    justify-content: space-between;
+.viewmore{
+    width: auto;
+    border: none;
+    color: blue;
+    background-color: transparent;
+}
+.viewmore:hover{
+    color: white;
 }
 .display-details-bi{
     display: grid;
@@ -249,7 +254,7 @@ button{
     border-radius: 25px;
     border: none;
     padding: 0 1rem;
-
+    cursor: pointer;
 }
 .buttonresched{
     background-color: rgba(0,0,255, 0.2);
@@ -258,6 +263,7 @@ button{
     border-radius: 25px;
     border: none;
     padding: 0 1rem;
+    cursor: pointer;
 }
 i{
     color: blue;
@@ -292,6 +298,9 @@ i{
 .form{
     display:flex; 
     flex-direction: column;
+}
+td{
+    padding-right: 1rem;
 }
 
 .popupCover-reason{
@@ -420,5 +429,116 @@ i{
     .foot-info, .footer-addwrap {
         font-size: 0.6rem;
     }
+}
+
+/* Popup View */
+.view-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.view-card {
+    background-color: var(--white);
+    max-height: 100vh;
+    overflow-y: scroll;
+    border-radius: 20px;
+    height: auto;
+    box-shadow: 0 0 10px var(--black);
+    padding: 1rem;
+    width: min(100%, 900px);
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+.view-heading{
+    margin: 1rem 0;
+    font-size: 2rem;
+    font-weight: 600;
+}
+.inner-view-heading1, .inner-view-content1 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+}
+.inner-view-heading2, .inner-view-content2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+}
+.inner-view-heading1, .inner-view-heading2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.inner-view-heading1 > span, .inner-view-heading2 > span {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.inner-view-content1, .inner-view-content2 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+.inner-view-content1 > span, .inner-view-content2 > span {
+    text-wrap: wrap;
+    display: block;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--black);
+}
+.closeme {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 3rem;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: unset;
+    cursor: pointer;
+    background-color: red;
+    transition: 0.4s ease-in-out;
+}
+.closeme > i {
+    font-size: 1.5rem;
+    color: var(--white);
+}
+.closeme:hover {
+    box-shadow: 0 0 10px var(--grey);
+    scale: 1.1;
+}
+
+/* Pagination Styling */
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 1rem;
+}
+.pagination > a {
+    display: block;
+    font-size: 0.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+    text-decoration: none;
+    color: blue;
+}
+.pagination > a.active {
+    background-color: var(--brown);
+    color: var(--white);
+}
+
+/* For Hidden Forms */
+.for-search {
+    display: none;
 }
 
