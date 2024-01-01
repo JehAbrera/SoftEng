@@ -27,10 +27,10 @@ require 'dbconnect.php';
                 <i class="fa-solid fa-church"></i> SJCP
             </div>
             <div class="nav-items">
-                <div><i class="fa-solid fa-chart-line"></i>&nbspDashboard</div>
-                <div><i class="fa-solid fa-newspaper"></i>&nbspAnnouncements</div>
-                <div><i class="fa-solid fa-file-pen"></i>&nbspRecords</div>
-                <div class="active-btn"><i class="fa-solid fa-calendar-check"></i>&nbspAppointments</div>
+                <div onclick="window.location.href='admin_DASHBOARD.php'"><i class="fa-solid fa-chart-line"></i>&nbspDashboard</div>
+                <div onclick="window.location.href='admin_ANNOUNCEMENT.php'"><i class="fa-solid fa-newspaper"></i>&nbspAnnouncements</div>
+                <div onclick="window.location.href='admin_RECORDS.php'"><i class="fa-solid fa-file-pen"></i>&nbspRecords</div>
+                <div class="active-btn" onclick="window.location.href='admin_APPOINTMENTLIST.php'"><i class="fa-solid fa-calendar-check"></i>&nbspAppointments</div>
                 <div><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbspLog-out</div>
             </div>
         </div>
@@ -40,23 +40,36 @@ require 'dbconnect.php';
             <div class="record-heading">
                 <div class="internal-heading" onclick="openNav()" id="openNav"><i class="fa-solid fa-bars"></i></div>
                 <div class="internal-heading"><span id="sjcp"><i class="fa-solid fa-church"></i>&nbspSJCP</span> Appointments</div>
-                <form class="record-filter" action="statusHandler.php" method="post">
+                <!--<form class="record-filter" action="statusHandler.php" method="post">
                     <button type="submit" name="stat" value="Pending">Pending</button>&nbsp/&nbsp
                     <button type="submit" name="stat" value="Accepted">Accepted</button>&nbsp/&nbsp
                     <button type="submit" name="stat" value="Completed">Completed</button>&nbsp/&nbsp
                     <button type="submit" name="stat" value="Rejected">Rejected</button>&nbsp/&nbsp
                     <button type="submit" name="stat" value="Canceled">Canceled</button>&nbsp/&nbsp
-                </form>
+                </form>-->
             </div>
-            <?php
-            if (isset($_SESSION['status'])) {
-                $status = $_SESSION['status'];
-            } else {
-                $status = 'Pending';
-            }
-            ?>
             <div class="record-view">
-                <h1><?php echo $status?></h1>
+                <div class="filter-cont">
+                    <span>Filter by:&nbsp</span>
+                    <div class="view-header" onclick="showoption()">
+                        <?php
+                        if (isset($_SESSION['status'])) {
+                            $status = $_SESSION['status'];
+                        } else {
+                            $status = 'Pending';
+                        }
+                        echo $status;
+                        ?>
+                        <i class="fa-solid fa-caret-down"></i>
+                        <form class="record-filter" id="options" action="statusHandler.php" method="post">
+                            <button type="submit" name="stat" value="Pending">Pending</button>&nbsp/&nbsp
+                            <button type="submit" name="stat" value="Accepted">Accepted</button>&nbsp/&nbsp
+                            <button type="submit" name="stat" value="Completed">Completed</button>&nbsp/&nbsp
+                            <button type="submit" name="stat" value="Rejected">Rejected</button>&nbsp/&nbsp
+                            <button type="submit" name="stat" value="Canceled">Canceled</button>&nbsp/&nbsp
+                        </form>
+                    </div>
+                </div>
                 <table>
                     <?php
                     // Number of Record per Page
@@ -78,16 +91,17 @@ require 'dbconnect.php';
                         <th>Reference #</th>
                         <th colspan="2">Name</th>
                         <th colspan="3">Email</th>
-                        <th colspan="2">Date of Appointed</th>
+                        <th colspan="2">Date Appointed</th>
                         <th colspan="2">Time Appointed</th>
                         <th colspan="2">Appointment Type</th>
+                        <th colspan="2">Status</th>
                         <th>Action</th>
 
                     </tr>
                     <?php
                     // Query for Pending
                     if ($status == 'Pending') { 
-                            $query = "SELECT * FROM appointment_details WHERE appointment_status = '$status'  LIMIT $startFrom, $recordsPerPage";
+                            $query = "SELECT * FROM appointment_details WHERE appointment_status = '$status' LIMIT $startFrom, $recordsPerPage" ; //KULANG PA NG ORDER BY DESC
                             $sql = "SELECT COUNT(*) AS total FROM appointment_details WHERE appointment_status = '$status'";
                         //Query for aCCEPTED
                     } else if ($status == 'Accepted') { 
@@ -121,9 +135,10 @@ require 'dbconnect.php';
                                     <td><?php echo $row['appointment_id'] ?></td>
                                     <td colspan="2"><?php echo $row['name'] ?></td>
                                     <td colspan="3"><?php echo $row['email'] ?></td>
-                                    <td colspan="2"><?php echo $row['date_appointed'] ?></td>
-                                    <td colspan="2"><?php echo $row['time_appointed'] ?></td>
+                                    <td colspan="2"><?php echo date('F d, Y', strtotime($row['date_appointed']))?></td>
+                                    <td colspan="2"><?php echo date('h:i:s a', strtotime($row['time_appointed']))?></td>
                                     <td colspan="2"><?php echo $row['appointment_type'] ?></td>
+                                    <td colspan="2"><?php echo $row['appointment_status'] ?></td>
                                     <?php $view = $row['appointment_id']; ?>
                                     <?php $type = $row['appointment_type']; ?>
 
@@ -159,7 +174,7 @@ require 'dbconnect.php';
                                                         //hindi lalabas yung asdd to records kung hindi wedding, baptism, and funeral  
                                                     } else { ?>
                                                         <div class="tooltip">
-                                                        <button type="button" class="positive" onclick="openForm('<?php echo $add ?>')"><i class="fa-solid fa-add"></i></button>
+                                                            <button type="button" class="positive" onclick="openForm('<?php echo $add ?>')"><i class="fa-solid fa-add"></i></button>
                                                             <span class="tooltiptext">Add to records</span>
                                                         </div><?php
                                                     }

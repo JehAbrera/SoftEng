@@ -18,10 +18,28 @@ function hideinput() {
     text.style.display = "none";
     text.disabled = true;
 }
-function seemore(id){
-    if( document.getElementById(id.id).style.display == "block"){
-        document.getElementById(id.id).style.display = "none"
+const nav = document.getElementById('sideNav');
+const bars = document.getElementById('openNav');
+const sjcp = document.getElementById('sjcp');
+const openNav = () => {
+    if (nav.style.width == '0px' || nav.style.width == '') {
+        nav.style.width = '250px';
+        nav.style.padding = '12px';
+        bars.style.display = "none";
+        sjcp.style.display = "none";
     } else {
-        document.getElementById(id.id).style.display = "block"
+        nav.style.width = '0px';
+        nav.style.padding = '0px';
+        bars.style.display = "block";
+        sjcp.style.display = "unset";
+    }
+}
+
+const options = document.getElementById('options');
+function showoption() {
+    if (options.style.display == "none" || options.style.display == "") {
+        options.style.display = "flex";
+    } else {
+        options.style.display = "none";
     }
 }
