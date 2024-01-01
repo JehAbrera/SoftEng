@@ -58,3 +58,12 @@ const openNav = () => {
         sjcp.style.display = "unset";
     }
 }
+
+const options = document.getElementById('options');
+function showoption() {
+    if (options.style.display == "none" || options.style.display == "") {
+        options.style.display = "flex";
+    } else {
+        options.style.display = "none";
+    }
+}

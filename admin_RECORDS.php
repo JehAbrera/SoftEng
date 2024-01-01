@@ -40,12 +40,6 @@ require 'dbconnect.php';
             <div class="record-heading">
                 <div class="internal-heading" onclick="openNav()" id="openNav"><i class="fa-solid fa-bars"></i></div>
                 <div class="internal-heading"><span id="sjcp"><i class="fa-solid fa-church"></i>&nbspSJCP</span> Records</div>
-                <!--<form class="record-filter" action="recordHandler.php" method="post">
-                    <button type="submit" name="recordSub" value="Baptism">Baptism</button>&nbsp/&nbsp
-                    <button type="submit" name="recordSub" value="Confirmation">Confirmation</button>&nbsp/&nbsp
-                    <button type="submit" name="recordSub" value="Wedding">Wedding</button>&nbsp/&nbsp
-                    <button type="submit" name="recordSub" value="Funeral">Funeral Mass</button>&nbsp/&nbsp
-                </form>-->
             </div>
             <?php
             if (isset($_SESSION['recordFilter'])) {
@@ -177,12 +171,13 @@ require 'dbconnect.php';
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['event_date'])) ?></td>
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['birthdate'])) ?></td>
                                     <td colspan="2"><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
-                                    <form action="fillDb.php" method="post">
+                                    <form action="recordHandler.php" method="post">
                                         <?php $view = $row['baptism_id']; ?>
+                                        <input type="hidden" name="event" value="<?php echo $event ?>">
                                         <input type="hidden" name="eventId" value="<?php echo $view ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button><button type="submit"><i class="fa-solid fa-pencil"></i></button>
+                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button><button name="editRec" type="submit"><i class="fa-solid fa-pencil"></i></button>
                                             </div>
                                         </td>
                                     </form>
@@ -232,12 +227,14 @@ require 'dbconnect.php';
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['confirmation_date'])) ?></td>
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['dob'])) ?></td>
                                     <td colspan="2"><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
-                                    <form action="fillDb.php" method="post">
+                                    <form action="recordHandler.php" method="post">
                                         <?php $view = $row['confirmation_id']; ?>
                                         <input type="hidden" name="eventId" value="<?php echo $row['confirmation_id'] ?>">
+                                        <input type="hidden" name="event" value="<?php echo $event ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button><button type="submit"><i class="fa-solid fa-pencil"></i></button>
+                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button>
+                                                <button name="editRec" type="submit"><i class="fa-solid fa-pencil"></i></button>
                                             </div>
                                         </td>
                                     </form>
@@ -283,12 +280,14 @@ require 'dbconnect.php';
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['event_date'])) ?></td>
                                     <td colspan="2"><?php echo $row['groom_lastName'] . ", " . $row['groom_firstName'] ?></td>
                                     <td colspan="2"><?php echo $row['bride_lastName'] . ", " . $row['bride_firstName'] ?></td>
-                                    <form action="" method="post">
+                                    <form action="recordHandler.php" method="post">
                                         <?php $view = $row['wedding_id']; ?>
                                         <input type="hidden" name="eventId" value="<?php echo $row['wedding_id'] ?>">
+                                        <input type="hidden" name="event" value="<?php echo $event ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button><button type="submit"><i class="fa-solid fa-pencil"></i></button>
+                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button>
+                                                <button name="editRec" type="submit"><i class="fa-solid fa-pencil"></i></button>
                                             </div>
                                         </td>
                                     </form>
@@ -338,12 +337,14 @@ require 'dbconnect.php';
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['event_date'])) ?></td>
                                     <td colspan="2"><?php echo date('F d, Y', strtotime($row['date_of_death'])) ?></td>
                                     <td colspan="2"><?php echo $row['lastName'] . ", " . $row['firstName'] ?></td>
-                                    <form action="fillDb.php" method="post">
+                                    <form action="recordHandler.php" method="post">
                                         <?php $view = $row['funeral_id']; ?>
                                         <input type="hidden" name="eventId" value="<?php echo $row['funeral_id'] ?>">
+                                        <input type="hidden" name="event" value="<?php echo $event ?>">
                                         <td>
                                             <div class="action-btn">
-                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button><button type="submit"><i class="fa-solid fa-pencil"></i></button>
+                                                <button type="button" onclick="location.href='<?php echo '?view=' . $view ?>'"><i class="fa-solid fa-eye"></i></button>
+                                                <button name="editRec" type="submit"><i class="fa-solid fa-pencil"></i></button>
                                             </div>
                                         </td>
                                     </form>
