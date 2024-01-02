@@ -21,22 +21,26 @@ require 'dbconnect.php';
     <div class="content-wrapper">
         <!-- Nav Wrapper -->
         <!-- Add active class on active button of current page -->
-        <div class="nav-wrapper">
+        <div class="nav-wrapper" id="sideNav">
+            <i class="fa-solid fa-angles-left close-nav" onclick="openNav()"></i>
             <div class="icon-wrapper">
                 <i class="fa-solid fa-church"></i> SJCP
             </div>
             <div class="nav-items">
-                <button>Dashboard</button>
-                <button class="active-btn">Add Announcement</button>
-                <button>Records</button>
-                <button>Appointments</button>
-                <button>Log-out</button>
+                <div><i class="fa-solid fa-chart-line"></i>&nbspDashboard</div>
+                <div><i class="fa-solid fa-newspaper"></i>&nbspAnnouncements</div>
+                <div class="active-btn"><i class="fa-solid fa-file-pen"></i>&nbspRecords</div>
+                <div><i class="fa-solid fa-calendar-check"></i>&nbspAppointments</div>
+                <div><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbspLog-out</div>
             </div>
         </div>
 
         <!-- Main Content Wrapper -->
         <div class="main-content">
-            <div class="main-heading">SJCP Announcements</div>
+            <div class="record-heading">
+                <div class="internal-heading" onclick="openNav()" id="openNav"><i class="fa-solid fa-bars"></i></div>
+                <div class="internal-heading"><span id="sjcp"><i class="fa-solid fa-church"></i>&nbspSJCP</span> Announcements</div>
+            </div>
             <div class="form-wrapper">
                 <div class="form-card">
                     <button class="backbtn" onclick="openForm(cancel)">
