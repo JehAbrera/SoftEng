@@ -32,12 +32,14 @@ body {
     height: 100vh;
     overflow: hidden;
     display: flex;
+    position: relative;
 }
 
 /* Nav Wrapper */
 .nav-wrapper {
     overflow: hidden;
-    z-index: 10;
+    z-index: 99;
+    position: relative;
     background-color: var(--brown);
     display: flex;
     flex-direction: column;
@@ -45,7 +47,6 @@ body {
     gap: 3rem;
     width: 0px;
     transition: 0.1s ease-in-out;
-    position: relative;
 }
 .nav-wrapper * {
     color: var(--white);
@@ -160,70 +161,81 @@ body {
 
 /* Event Overview */
 /* Baptism Card */
+.event-statistics {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 .inner-stat {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    gap: 1rem;
 }
 .inner-heading {
     font-weight: 600;
 }
 .stat-card {
-    padding: 0.5rem 1rem;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 2px 10px;
-    width: 40%;
-}
-.bapt-icon {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
-    gap: 10%;
-}
-.bapt-icon-wrapper {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 1rem 0;
-}
-.bapt-icon-wrapper > i {
-    font-size: 2.5rem;
-}
-.bapt-icon-wrapper > span {
-    font-weight: 600;
-}
-.bapt-icon-wrapper:first-child > i {
-    color: blue;
-}
-.bapt-icon-wrapper:nth-child(2) > i {
-    color: magenta;
-}
-/* Wedding Card */
-.wedding-count {
-    display: flex;
-    padding: 1rem 0;
-    flex-direction: column;
-    align-items: center;
-}
-.wed-content {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-.wed-content > span:first-child {
-    flex: 1.5;
-    text-align: justify;
-}
-.wed-content > span:nth-child(2) {
-    flex: 1;
-    text-align: center;
+    justify-content: center;
+    overflow: hidden;
 }
 /* For stat Graphs */
+.stat-event {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+.stat-filter {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.chart {
+    width: 90%;
+    height: 15rem;
+}
+.selected {
+    width: 25%;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    outline: 1px solid var(--black);
+}
+.opt-cont {
+    width: 25%;
+    position: absolute;
+    top: 100%;
+    display: none;
+    z-index: 999;
+    flex-direction: column;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 5px;
+    outline: 1px solid var(--black);
+}
+.opt-cont>div:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.chart-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 #chartContainer {
-    margin: 5rem 0 1rem;
-    height: 50vh;
-    width: 100%;
+    width: 60%;
+    height: 20rem;
 }
 
 /* Right Main Content */
