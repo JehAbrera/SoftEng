@@ -36,7 +36,15 @@ require 'dbconnect.php';
                     </button>
                     <?php if ($_GET['page'] == 'Baptism') { ?>
                         <!--BAPTISM FORM-->
-                        <div class="form-heading">
+                        <div class="by2">
+							<small>Event Date:</small>
+							<small>Event Time:</small>
+						</div>
+						<div class="by2">
+							<input type="date" name="eventDate" id="" required>
+							<input type="time" name="eventTime" id="" required>
+						</div>
+						<div class="form-heading">
 							Baptized's Information
 						</div>
 						<div>Name</div>
@@ -120,6 +128,14 @@ require 'dbconnect.php';
 						</div>
                     <?php } else if ($_GET['page'] == 'Confirmation') { ?>
                         <!--CONFIRMATION FORM-->
+						<div class="by2">
+							<small>Event Date:</small>
+							<small>Event Time:</small>
+						</div>
+						<div class="by2">
+							<input type="date" name="eventDate" id="" required>
+							<input type="time" name="eventTime" id="" required>
+						</div>
                         <div class="form-heading">
 							Confirmand's Information
 						</div>
@@ -188,6 +204,14 @@ require 'dbconnect.php';
 						</div>
                     <?php } else if ($_GET['page'] == 'Wedding') { ?>
                         <!--WEDDING FORM-->
+						<div class="by2">
+							<small>Event Date:</small>
+							<small>Event Time:</small>
+						</div>
+						<div class="by2">
+							<input type="date" name="eventDate" id="" required>
+							<input type="time" name="eventTime" id="" required>
+						</div>
                         <div class="form-heading">
 							Groom's Information
 						</div>
@@ -303,6 +327,14 @@ require 'dbconnect.php';
 						</div>
                     <?php } else if ($_GET['page'] == 'Funeral') { ?>
                         <!--FUNERAL FORM-->
+						<div class="by2">
+							<small>Event Date:</small>
+							<small>Event Time:</small>
+						</div>
+						<div class="by2">
+							<input type="date" name="eventDate" id="" required>
+							<input type="time" name="eventTime" id="" required>
+						</div>
                         <div class="form-heading">
 							Deceased's Information
 						</div>

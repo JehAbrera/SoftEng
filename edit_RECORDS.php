@@ -33,6 +33,14 @@ require 'dbconnect.php';
                     $sql = $conn->query($query);
                     if ($sql->num_rows > 0) {
                         while ($row = $sql->fetch_assoc()) { ?>
+							<div class="by2">
+								<small>Event Date:</small>
+								<small>Event Time:</small>
+							</div>
+							<div class="by2">
+								<input type="date" name="eventDate" id="" required>
+								<input type="time" name="eventTime" id="" required>
+							</div>
                             <div class="form-heading">
                                 Baptized's Information
                             </div>
@@ -124,6 +132,14 @@ require 'dbconnect.php';
                     $sql = $conn->query($query);
                     if ($sql->num_rows > 0) {
                         while ($row = $sql->fetch_assoc()) { ?>
+							<div class="by2">
+								<small>Event Date:</small>
+								<small>Event Time:</small>
+							</div>
+							<div class="by2">
+								<input type="date" name="eventDate" id="" required>
+								<input type="time" name="eventTime" id="" required>
+							</div>
 							<div class="form-heading">
 								Confirmand's Information
 							</div>
@@ -199,6 +215,14 @@ require 'dbconnect.php';
                     $sql = $conn->query($query);
                     if ($sql->num_rows > 0) {
                         while ($row = $sql->fetch_assoc()) { ?>
+							<div class="by2">
+								<small>Event Date:</small>
+								<small>Event Time:</small>
+							</div>
+							<div class="by2">
+								<input type="date" name="eventDate" id="" required>
+								<input type="time" name="eventTime" id="" required>
+							</div>
 							<div class="form-heading">
 								Groom's Information
 							</div>
@@ -321,6 +345,14 @@ require 'dbconnect.php';
                     $sql = $conn->query($query);
                     if ($sql->num_rows > 0) {
                         while ($row = $sql->fetch_assoc()) { ?>
+							<div class="by2">
+								<small>Event Date:</small>
+								<small>Event Time:</small>
+							</div>
+							<div class="by2">
+								<input type="date" name="eventDate" id="" required>
+								<input type="time" name="eventTime" id="" required>
+							</div>
 							<div class="form-heading">
 								Deceased's Information
 							</div>
