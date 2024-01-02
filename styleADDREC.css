@@ -46,35 +46,52 @@ body {
 }
 
 /* Main Content */
-.form-title {
-    font-size: 2rem;
-    font-weight: 600;
+form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: white;
+    width: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
-.form-grid-cont {
+.form-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--black);
+}
+.by1 {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.by3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
-.grid-cont {
+.by2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
 }
-.input-box {
-    display: flex;
-    flex-direction: column;
+.by1, .by2, .by3 {
+    margin-bottom: 0.5rem;
 }
-.contactnum {
+.contact {
     display: flex;
 }
-.contactnum > input:first-child {
+.contact > input:first-child {
     width: 20%;
 }
-.contactnum > input:nth-child(2) {
+.contact > input:nth-child(2) {
     width: 100%;
 }
+
+/* Inputs */
 input, select {
-    padding: 0.5rem 1rem;
+    padding: 0.2rem 0.5rem;
 }
 
 /* for buttons */
