@@ -121,7 +121,7 @@ require 'dbconnect.php';
                     <?php } else if ($_GET['page'] == 'Confirmation') { ?>
                         <!--CONFIRMATION FORM-->
                         <div class="form-heading">
-							Confirmant's Information
+							Confirmand's Information
 						</div>
 						<div>Name</div>
 						<div class="by3">

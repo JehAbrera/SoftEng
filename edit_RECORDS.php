@@ -125,7 +125,7 @@ require 'dbconnect.php';
                     if ($sql->num_rows > 0) {
                         while ($row = $sql->fetch_assoc()) { ?>
 							<div class="form-heading">
-								Confirmant's Information
+								Confirmand's Information
 							</div>
 							<div>Name</div>
 							<div class="by3">
