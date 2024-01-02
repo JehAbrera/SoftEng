@@ -14,29 +14,15 @@ require 'dbconnect.php';
     <script src="https://kit.fontawesome.com/678a3c402d.js" crossorigin="anonymous"></script>
     <title>The SJCP - Records</title>
     <link rel="icon" type="image/png" href="tabicon.png">
-    </script>
 </head>
 
 <body>
     <div class="content-wrapper">
-        <!-- Nav Wrapper -->
-        <!-- Add active class on active button of current page -->
-        <div class="nav-wrapper">
-            <div class="icon-wrapper">
-                <i class="fa-solid fa-church"></i> SJCP
-            </div>
-            <div class="nav-items">
-                <button>Dashboard</button>
-                <button>Add Announcement</button>
-                <button class="active-btn">Records</button>
-                <button>Appointments</button>
-                <button>Log-out</button>
-            </div>
-        </div>
 
         <!-- Main Content Wrapper -->
         <div class="main-content">
             <?php if (!isset($_GET['page'])) { ?>
+                <button type="button" onclick="location.href='admin_RECORDS.php'" class="backbtn"><i class="fa-solid fa-arrow-left"></i></button>
                 <div class="opt-area">
                     <button onclick="location.href = '?page=Baptism'">Baptism</button>
                     <button onclick="location.href = '?page=Confirmation'">Confirmation</button>
@@ -269,51 +255,51 @@ require 'dbconnect.php';
                                     <input type="text" id="groom_middleName" name="groom_middleName" placeholder="Tomas" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-grid-cont">
-                            <div class="input-box">
-                                <label for="groom_contactNum"><strong>Contact Number* </strong></label>
-                                <div class="contactnum">
-                                    <input type="text" name="mobile1" value="+63" id="" disabled>
-                                    <input type="tel" id="groom_contactNum" name="groom_contactNum" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="10" pattern="[9]{1}[0-9]{9}" required><br>
+                            <div class="form-grid-cont">
+                                <div class="input-box">
+                                    <label for="groom_contactNum"><strong>Contact Number* </strong></label>
+                                    <div class="contactnum">
+                                        <input type="text" name="mobile1" value="+63" id="" disabled>
+                                        <input type="tel" id="groom_contactNum" name="groom_contactNum" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="10" pattern="[9]{1}[0-9]{9}" required><br>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label for="groom_dob"><strong>Birth Date* </strong></label>
+                                    <input type="date" id="groom_dob" name="groom_dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required><br>
+                                </div>
+                                <div class="input-box">
+                                    <label for="groom_pob"><strong>Birth Place* </strong> </label>
+                                    <input type="text" id="groom_pob" name="groom_pob" placeholder="Taguig City" maxlength="120" required><br>
                                 </div>
                             </div>
-                            <div class="input-box">
-                                <label for="groom_dob"><strong>Birth Date* </strong></label>
-                                <input type="date" id="groom_dob" name="groom_dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required><br>
+                            <div>
+                                <div class="input-box">
+                                    <label for="groom_address"><strong>Present Address* </strong> </label>
+                                    <input type="text" id="groom_address" name="groom_address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
+                                </div>
                             </div>
-                            <div class="input-box">
-                                <label for="groom_pob"><strong>Birth Place* </strong> </label>
-                                <input type="text" id="groom_pob" name="groom_pob" placeholder="Taguig City" maxlength="120" required><br>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="input-box">
-                                <label for="groom_address"><strong>Present Address* </strong> </label>
-                                <input type="text" id="groom_address" name="groom_address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
-                            </div>
-                        </div>
-                        <div class="form-grid-cont">
-                            <div class="input-box">
-                                <label for="groom_fatherName"><strong>Father's Name* </strong> </label>
-                                <input type="text" id="groom_fatherName" name="groom_fatherName" placeholder="Joseph Dela Cruz" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
-                            </div>
-                            <div class="input-box">
-                                <label for="groom_motherName"><strong>Mother's Maiden Name* </strong> </label>
-                                <input type="text" id="groom_motherName" name="groom_motherName" placeholder="Maria Tomas" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
-                            </div>
-                            <div class="input-box">
-                                <label for="groom_religion"><strong>Religion* </strong> </label>
-                                <select id="groom_religion" name="groom_religion">
-                                    <option value="" disabled selected hidden>Select Religion</option>
-                                    <option value="Roman Catholic">Roman Catholic</option>
-                                    <option value="Catholic">Catholic</option>
-                                    <option value="Protestant">Protestant</option>
-                                    <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
-                                    <option value="Jehovah&lsquo;s Witness">Jehovah&lsquo;s Witness</option>
-                                    <option value="Seventh Day Adventist">Seventh Day Adventist</option>
-                                    <option value="Islam">Islam</option>
-                                </select>
+                            <div class="form-grid-cont">
+                                <div class="input-box">
+                                    <label for="groom_fatherName"><strong>Father's Name* </strong> </label>
+                                    <input type="text" id="groom_fatherName" name="groom_fatherName" placeholder="Joseph Dela Cruz" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
+                                </div>
+                                <div class="input-box">
+                                    <label for="groom_motherName"><strong>Mother's Maiden Name* </strong> </label>
+                                    <input type="text" id="groom_motherName" name="groom_motherName" placeholder="Maria Tomas" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
+                                </div>
+                                <div class="input-box">
+                                    <label for="groom_religion"><strong>Religion* </strong> </label>
+                                    <select id="groom_religion" name="groom_religion">
+                                        <option value="" disabled selected hidden>Select Religion</option>
+                                        <option value="Roman Catholic">Roman Catholic</option>
+                                        <option value="Catholic">Catholic</option>
+                                        <option value="Protestant">Protestant</option>
+                                        <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
+                                        <option value="Jehovah&lsquo;s Witness">Jehovah&lsquo;s Witness</option>
+                                        <option value="Seventh Day Adventist">Seventh Day Adventist</option>
+                                        <option value="Islam">Islam</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
@@ -336,51 +322,51 @@ require 'dbconnect.php';
                                     <input type="text" id="bride_middleName" name="bride_middleName" placeholder="Agustin" maxlength="40" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*"><br>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-grid-cont">
-                            <div class="input-box">
-                                <label for="bride_contactNum"><strong>Contact Number* </strong></label>
-                                <div class="contactnum">
-                                    <input type="text" name="mobile1" value="+63" id="" disabled>
-                                    <input type="tel" id="bride_contactNum" name="bride_contactNum" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="10" pattern="[9]{1}[0-9]{9}" required><br>
+                            <div class="form-grid-cont">
+                                <div class="input-box">
+                                    <label for="bride_contactNum"><strong>Contact Number* </strong></label>
+                                    <div class="contactnum">
+                                        <input type="text" name="mobile1" value="+63" id="" disabled>
+                                        <input type="tel" id="bride_contactNum" name="bride_contactNum" placeholder="9123456789" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="10" pattern="[9]{1}[0-9]{9}" required><br>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label for="bride_dob"><strong>Birth Date* </strong></label>
+                                    <input type="date" id="bride_dob" name="bride_dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required><br>
+                                </div>
+                                <div class="input-box">
+                                    <label for="bride_pob"><strong>Birth Place* </strong> </label>
+                                    <input type="text" id="bride_pob" name="bride_pob" maxlength="120" placeholder="Taguig City" required><br>
                                 </div>
                             </div>
-                            <div class="input-box">
-                                <label for="bride_dob"><strong>Birth Date* </strong></label>
-                                <input type="date" id="bride_dob" name="bride_dob" min="<?= date('Y-m-d', strtotime('-100 years')); ?>" max="<?= date('Y-m-d', strtotime('-18 years')); ?>" required><br>
+                            <div>
+                                <div class="input-box">
+                                    <label for="bride_address"><strong>Present Address* </strong> </label>
+                                    <input type="text" id="bride_address" name="bride_address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
+                                </div>
                             </div>
-                            <div class="input-box">
-                                <label for="bride_pob"><strong>Birth Place* </strong> </label>
-                                <input type="text" id="bride_pob" name="bride_pob" maxlength="120" placeholder="Taguig City" required><br>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="input-box">
-                                <label for="bride_address"><strong>Present Address* </strong> </label>
-                                <input type="text" id="bride_address" name="bride_address" placeholder="9 Sampaguita St., Brgy. Pembo, Taguig City" maxlength="120" required><br>
-                            </div>
-                        </div>
-                        <div class="form-grid-cont">
-                            <div class="input-box">
-                                <label for="bride_fatherName"><strong>Father's Name* </strong> </label>
-                                <input type="text" id="bride_fatherName" name="bride_fatherName" placeholder="Francis San Pedro" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
-                            </div>
-                            <div class="input-box">
-                                <label for="bride_motherName"><strong>Mother's Maiden Name* </strong> </label>
-                                <input type="text" id="bride_motherName" name="bride_motherName" placeholder="Teresa Agustin" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
-                            </div>
-                            <div class="input-box">
-                                <label for="bride_religion"><strong>Religion* </strong> </label>
-                                <select id="bride_religion" name="bride_religion">
-                                    <option value="" disabled selected hidden>Select Religion</option>
-                                    <option value="Roman Catholic">Roman Catholic</option>
-                                    <option value="Catholic">Catholic</option>
-                                    <option value="Protestant">Protestant</option>
-                                    <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
-                                    <option value="Jehovah&lsquo;s Witness">Jehovah&lsquo;s Witness</option>
-                                    <option value="Seventh Day Adventist">Seventh Day Adventist</option>
-                                    <option value="Islam">Islam</option>
-                                </select>
+                            <div class="form-grid-cont">
+                                <div class="input-box">
+                                    <label for="bride_fatherName"><strong>Father's Name* </strong> </label>
+                                    <input type="text" id="bride_fatherName" name="bride_fatherName" placeholder="Francis San Pedro" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
+                                </div>
+                                <div class="input-box">
+                                    <label for="bride_motherName"><strong>Mother's Maiden Name* </strong> </label>
+                                    <input type="text" id="bride_motherName" name="bride_motherName" placeholder="Teresa Agustin" title="Format: FirstName LastName" maxlength="100" pattern="[A-Za-zÀ-ÖØ-öø-ÿ.\s\-]*" required><br>
+                                </div>
+                                <div class="input-box">
+                                    <label for="bride_religion"><strong>Religion* </strong> </label>
+                                    <select id="bride_religion" name="bride_religion">
+                                        <option value="" disabled selected hidden>Select Religion</option>
+                                        <option value="Roman Catholic">Roman Catholic</option>
+                                        <option value="Catholic">Catholic</option>
+                                        <option value="Protestant">Protestant</option>
+                                        <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
+                                        <option value="Jehovah&lsquo;s Witness">Jehovah&lsquo;s Witness</option>
+                                        <option value="Seventh Day Adventist">Seventh Day Adventist</option>
+                                        <option value="Islam">Islam</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     <?php } else if ($_GET['page'] == 'Funeral') { ?>

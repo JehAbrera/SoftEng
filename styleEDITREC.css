@@ -1,0 +1,124 @@
+/* Main Style for all file
+/* Must keep */
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --brown: #261700;
+    --pink: #F7E4D7; 
+    --black : #28282B;
+    --white: #F9F6EE;
+    --grey: #696969;
+    --bggreen: #90EE90;
+    --btnRed: #FFCCCB;
+    --btnGreen: #90EE90;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: var(--black);
+}
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Content Styling */
+/* Content Wrapper */
+.content-wrapper {
+    width: 100%;
+    min-width: 1000px;
+    height: 100vh;
+}
+
+/* Body Wrapper */
+.main-content {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1%;
+    min-height: 100vh;
+}
+
+/* Form Styling */
+form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: white;
+    width: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.form-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--black);
+}
+.by1 {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.by3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.by2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.by1, .by2, .by3 {
+    margin-bottom: 0.5rem;
+}
+.contact {
+    display: flex;
+}
+.contact > input:first-child {
+    width: 20%;
+}
+.contact > input:nth-child(2) {
+    width: 100%;
+}
+
+/* Inputs */
+input, select {
+    padding: 0.2rem 0.5rem;
+}
+
+/* For Buttons */
+.main-content button {
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.main-content button:hover {
+    scale: 1.02;
+}
+.backbtn {
+    position: fixed;
+    color: var(--white);
+    top: 1rem;
+    left: 1%;
+    border: none;
+    box-shadow: 0 0 10px 1px grey;
+    background-color: var(--black);
+    border-radius: 5px;
+    width: auto;
+    padding: 1rem;
+}
+.backbtn i {
+    color: var(--white);
+    font-weight: 900;
+}
+.button-area {
+    
+}
