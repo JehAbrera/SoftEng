@@ -206,10 +206,11 @@ body {
     box-shadow: 0 5px 10px grey;
     cursor: pointer;
     font-weight: 600;
+    font-size: clamp(0.7rem, 0.4857rem + 0.6857vw, 1rem);
 }
 
 .main-right {
-    padding: 6rem 0 0 2rem;
+    padding: 6rem 2rem 0 ;
     flex: 3;
 }
 
@@ -226,13 +227,29 @@ body {
     font-size: 7rem;
 }
 
-.profile {
+.profile:not(.delete-acc) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.profile>div:not(.button-area):not(.form-heading):not(.error-box):not(.pass-requirements) {
+.delete-acc {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 0 10px var(--black);
+    padding: 1rem;
+    width: min(80%, 500px);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+}
+
+.profile:not(.delete-acc)>div:not(.button-area):not(.form-heading):not(.error-box):not(.pass-requirements) {
     width: min(100%, 500px);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -290,7 +307,7 @@ button {
 }
 
 button:hover {
-    scale: 1.1;
+    text-decoration: underline;
 }
 
 .main-left>form>button:hover {
@@ -337,6 +354,7 @@ button:hover {
 }
 
 /* popup form */
+#confirmDel,
 #logoutForm,
 #deleteForm,
 #clearForm,
@@ -350,7 +368,9 @@ button:hover {
     z-index: 9999;
     background-color: rgba(0, 0, 0, 0.4);
 }
-
+#confirmDel {
+    display: flex;
+}
 .popupForm {
     background-color: var(--white);
     border-radius: 20px;
@@ -475,5 +495,50 @@ button:hover {
     .foot-info,
     .footer-addwrap {
         font-size: 0.6rem;
+    }
+
+
+    /* main content */
+    .main-content {
+        flex-direction: column;
+    }
+
+    .main-left {
+        height: auto;
+        padding: 3rem 0.5rem 1rem;
+        border: unset;
+        border-bottom: 2px solid var(--black);
+    }
+
+    .main-left > form {
+        flex-direction: row;
+        align-items: stretch;
+        gap: unset;
+    }
+
+    .main-left > form > button {
+        background-color: inherit;
+        border-radius: unset;
+        box-shadow: unset;
+        transition: unset;
+    }
+
+    .main-left > form > button:hover {
+        background-color: unset;
+        color: var(--black);
+    }
+
+    .spanln {
+        display: none;
+    }
+
+    .main-right {
+        margin-bottom: 4rem;
+    }
+
+    .main-right > form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }

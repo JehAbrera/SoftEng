@@ -216,20 +216,22 @@ if (isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn'] == true) {
                             <?php unset($_SESSION['profPage']) ?>
                         </div>
                     <?php } else if ($_SESSION['profPage'] == 'delete') { ?>
-                        <div class="delete-acc profile">
-                            <input type="hidden" name="isChanging" value="deleteAcc">
-                            <div class="form-heading">Confirm Account Deletion</div>
-                            <div>
-                                <strong>Enter "CONFIRM" below to proceed with account deletion.</strong>
+                        <div id="confirmDel">
+                            <div class="delete-acc profile">
+                                <input type="hidden" name="isChanging" value="deleteAcc">
+                                <div class="form-heading">Confirm Account Deletion</div>
+                                <div>
+                                    <p>Enter <strong>"CONFIRM"</strong> below to proceed with account deletion. <br/> Warning! This action is irreversible. You will not be able to recover your former account and will have to register again to schedule an event with the church online.</p>
+                                </div>
+                                <div>
+                                    <input type="text" name="" id="" placeholder="CONFIRM" pattern="CONFIRM" title="Please type CONFIRM" required>
+                                </div>
+                                <div class="button-area">
+                                    <button type="button" onclick="location.href='?'" id="clear">Cancel</button>
+                                    <button type="button" id="submit">Save</button>
+                                </div>
+                                <?php unset($_SESSION['profPage']) ?>
                             </div>
-                            <div>
-                                <input type="text" name="" id="" pattern="CONFIRM" title="Please type CONFIRM" required>
-                            </div>
-                            <div class="button-area">
-                                <button type="button" onclick="openForm(clearForm)" id="clear">Cancel</button>
-                                <button type="button" onclick="openForm(submitForm)" id="submit">Save</button>
-                            </div>
-                            <?php unset($_SESSION['profPage']) ?>
                         </div>
                     <?php } ?>
                     <div id="clearForm">
