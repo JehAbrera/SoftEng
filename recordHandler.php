@@ -28,4 +28,10 @@ if (isset($_POST['filterSub'])) {
     }
 }
 
+if (isset($_POST['editRec'])) {
+    $event = $_POST['event'];
+    $eventId = $_POST['eventId'];
+    header("Location: edit_RECORDS.php?event=$event&id=$eventId");
+}
+
 ?>
